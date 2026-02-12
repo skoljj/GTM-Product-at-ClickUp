@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Old Game → New Game — Why 'Capabilities as a Product' Wins</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --border: #252a3a;
+  --border2: rgba(255,255,255,.09);
+  --text: #e4e7ee;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --text-dim: #3e465c;
+  --white: #EEEFF2;
+  --old-red: #f87171;
+  --old-red-bg: rgba(248,113,113,0.06);
+  --old-red-border: rgba(248,113,113,0.18);
+  --old-red-glow: rgba(248,113,113,0.08);
+  --new-green: #34d399;
+  --new-green-bg: rgba(52,211,153,0.06);
+  --new-green-border: rgba(52,211,153,0.20);
+  --new-green-glow: rgba(52,211,153,0.08);
+  --accent-blue: #60a5fa;
+  --accent-purple: #a78bfa;
+  --accent-amber: #fbbf24;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ═══ NAV ═══ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.nav-mark b { color: var(--white); font-weight: 500; }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  font-size: 11px; color: var(--text-muted); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 80px 40px 60px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 800px 600px at 30% 40%, rgba(248,113,113,0.04), transparent),
+    radial-gradient(ellipse 800px 600px at 70% 40%, rgba(52,211,153,0.04), transparent);
+}
+.hero-badge {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: .25em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 32px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Instrument Serif', serif; font-weight: 400;
+  font-size: clamp(36px, 5vw, 64px); line-height: 1.15;
+  color: var(--white); max-width: 800px; margin-bottom: 24px;
+  position: relative;
+}
+.hero h1 .old { color: var(--old-red); opacity: 0.7; }
+.hero h1 .new { color: var(--new-green); }
+.hero h1 .arrow { color: var(--text-dim); font-style: normal; margin: 0 8px; }
+.hero-sub {
+  font-size: 16px; color: var(--text-mid); max-width: 560px;
+  line-height: 1.7; position: relative;
+}
+.hero-sub strong { color: var(--white); font-weight: 500; }
+
+.scroll-cue {
+  position: absolute; bottom: 40px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: float 2.5s ease-in-out infinite;
+}
+.scroll-cue span {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--text-dim);
+}
+.scroll-cue-line {
+  width: 1px; height: 32px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent);
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+/* ═══ CONTENT WRAPPER ═══ */
+.content { max-width: 1140px; margin: 0 auto; padding: 0 28px 120px; }
+
+/* ═══ DIVIDER ═══ */
+.divider {
+  position: relative; height: 120px;
+  display: flex; align-items: center; justify-content: center;
+}
+.divider::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.divider-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.divider-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.divider-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.divider-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ COMPARISON GRID ═══ */
+.comparison {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  margin-bottom: 80px;
+}
+@media (max-width: 768px) {
+  .comparison { grid-template-columns: 1fr; }
+}
+
+/* Column headers */
+.col-header {
+  padding: 24px 28px; border-radius: 12px 12px 0 0;
+  border: 1px solid; border-bottom: none;
+  display: flex; align-items: center; gap: 14px;
+}
+.col-header.old {
+  border-color: var(--old-red-border);
+  background: linear-gradient(135deg, var(--old-red-bg), transparent);
+}
+.col-header.new {
+  border-color: var(--new-green-border);
+  background: linear-gradient(135deg, var(--new-green-bg), transparent);
+}
+.col-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.col-icon.old { background: rgba(248,113,113,0.12); color: var(--old-red); }
+.col-icon.new { background: rgba(52,211,153,0.12); color: var(--new-green); }
+.col-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+}
+.col-label.old { color: var(--old-red); }
+.col-label.new { color: var(--new-green); }
+.col-title { font-size: 18px; font-weight: 600; color: var(--white); }
+
+/* Card body */
+.col-body {
+  border-radius: 0 0 12px 12px; padding: 28px;
+  border: 1px solid; border-top: none;
+  min-height: 340px;
+}
+.col-body.old {
+  border-color: var(--old-red-border);
+  background: var(--surface);
+}
+.col-body.new {
+  border-color: var(--new-green-border);
+  background: var(--surface);
+}
+.col-body .subtitle {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: .15em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.col-body .subtitle.old { color: var(--old-red); opacity: 0.7; }
+.col-body .subtitle.new { color: var(--new-green); opacity: 0.8; }
+
+/* Bullet items */
+.bullet-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.bullet-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: 8px;
+  transition: background 0.3s;
+}
+.bullet-item:hover { background: rgba(255,255,255,0.02); }
+.bullet-marker {
+  flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%;
+  margin-top: 7px;
+}
+.bullet-marker.old { background: var(--old-red); opacity: 0.5; }
+.bullet-marker.new { background: var(--new-green); }
+.bullet-text { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+.bullet-text strong { color: var(--white); font-weight: 500; }
+.bullet-text em { color: var(--text-muted); font-style: normal; font-size: 13px; }
+.bullet-text .strike {
+  text-decoration: line-through; color: var(--text-dim);
+  text-decoration-color: var(--old-red);
+}
+
+/* ═══ OUTCOMES SECTION ═══ */
+.outcomes-header {
+  text-align: center; margin-bottom: 48px;
+}
+.outcomes-header h2 {
+  font-family: 'Instrument Serif', serif; font-size: 32px;
+  font-weight: 400; color: var(--white); font-style: italic;
+  margin-bottom: 12px;
+}
+.outcomes-header p {
+  font-size: 14px; color: var(--text-muted); max-width: 520px;
+  margin: 0 auto; line-height: 1.7;
+}
+
+.outcomes-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  margin-bottom: 80px;
+}
+@media (max-width: 900px) {
+  .outcomes-grid { grid-template-columns: 1fr; }
+}
+
+.outcome-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 32px 28px; background: var(--surface);
+  position: relative; overflow: hidden;
+  transition: border-color 0.4s, transform 0.3s;
+}
+.outcome-card:hover {
+  border-color: var(--new-green-border);
+  transform: translateY(-2px);
+}
+.outcome-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.outcome-card:nth-child(1)::before { background: var(--accent-blue); }
+.outcome-card:nth-child(2)::before { background: var(--accent-purple); }
+.outcome-card:nth-child(3)::before { background: var(--accent-amber); }
+.outcome-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 48px;
+  font-weight: 300; line-height: 1; margin-bottom: 16px;
+}
+.outcome-card:nth-child(1) .outcome-num { color: var(--accent-blue); opacity: 0.3; }
+.outcome-card:nth-child(2) .outcome-num { color: var(--accent-purple); opacity: 0.3; }
+.outcome-card:nth-child(3) .outcome-num { color: var(--accent-amber); opacity: 0.3; }
+.outcome-title {
+  font-size: 16px; font-weight: 600; color: var(--white);
+  margin-bottom: 12px; line-height: 1.4;
+}
+.outcome-desc {
+  font-size: 13px; color: var(--text-mid); line-height: 1.7;
+}
+
+/* ═══ FLOW DIAGRAM ═══ */
+.flow-section { margin-bottom: 80px; }
+.flow-section h2 {
+  font-family: 'Instrument Serif', serif; font-size: 28px;
+  font-weight: 400; color: var(--white); font-style: italic;
+  text-align: center; margin-bottom: 40px;
+}
+.flow-track {
+  display: flex; align-items: stretch; gap: 0;
+  position: relative; overflow-x: auto; padding: 20px 0;
+}
+.flow-node {
+  flex: 1; min-width: 180px; padding: 24px 20px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); position: relative;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.flow-node:hover {
+  border-color: var(--new-green-border);
+  background: var(--surface-2);
+}
+.flow-node-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--new-green);
+}
+.flow-node-title {
+  font-size: 14px; font-weight: 600; color: var(--white); line-height: 1.4;
+}
+.flow-node-desc {
+  font-size: 12px; color: var(--text-muted); line-height: 1.6;
+}
+.flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; flex-shrink: 0; color: var(--text-dim); font-size: 20px;
+}
+
+/* ═══ VS BRIDGE ═══ */
+.vs-bridge {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; margin: 48px 0 56px; position: relative;
+}
+.vs-line {
+  height: 1px; flex: 1;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.vs-badge {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+  letter-spacing: .2em; color: var(--text-dim);
+  padding: 8px 20px; border: 1px solid var(--border);
+  border-radius: 20px; background: var(--surface);
+}
+
+/* ═══ BOTTOM CTA ═══ */
+.cta-section {
+  text-align: center; padding: 60px 0 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.cta-formula {
+  font-family: 'IBM Plex Mono', monospace; font-size: clamp(20px, 3vw, 36px);
+  letter-spacing: .08em; color: var(--text-dim); margin-bottom: 20px;
+}
+.cta-formula .hi { color: var(--accent-blue); }
+.cta-formula .ai { color: var(--accent-purple); }
+.cta-formula .v { color: var(--new-green); }
+.cta-sub {
+  font-size: 14px; color: var(--text-muted); max-width: 480px;
+  margin: 0 auto; line-height: 1.7;
+}
+
+/* ═══ FOOTER ═══ */
+.footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04); margin-top: 80px;
+}
+.footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ REVEAL ANIMATION ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* stagger children */
+.reveal-stagger > * {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal-stagger.vis > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.vis > *:nth-child(2) { transition-delay: 0.08s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.vis > *:nth-child(3) { transition-delay: 0.16s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.vis > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.vis > *:nth-child(5) { transition-delay: 0.32s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.vis > *:nth-child(6) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-mark">HI<b>^AI</b> = <b>V</b></div>
+  <div class="nav-links">
+    <a href="#comparison" class="active">Old vs New</a>
+    <a href="#outcomes">Outcomes</a>
+    <a href="#motion">Design + Deploy</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">GTM Performance & Productivity</div>
+  <h1>
+    <span class="old">Old Game</span><span class="arrow"> → </span><span class="new">New Game</span>
+  </h1>
+  <p class="hero-sub">
+    From <strong>"operationalize remit"</strong> to <strong>"design + deploy"</strong> —<br>
+    why treating capabilities as a product wins.
+  </p>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-cue-line"></div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- ═══ SECTION 1: SIDE-BY-SIDE COMPARISON ═══ -->
+  <div class="divider" id="comparison">
+    <div class="divider-inner">
+      <div class="divider-num">01</div>
+      <div class="divider-title">The Comparison</div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <div class="comparison reveal">
+    <!-- OLD GAME COLUMN -->
+    <div>
+      <div class="col-header old">
+        <div class="col-icon old">✕</div>
+        <div>
+          <div class="col-label old">Old Game</div>
+          <div class="col-title">Traditional Enablement</div>
+        </div>
+      </div>
+      <div class="col-body old">
+        <div class="subtitle old">"Operationalize Remit"</div>
+        <ul class="bullet-list reveal-stagger">
+          <li class="bullet-item">
+            <span class="bullet-marker old"></span>
+            <span class="bullet-text"><strong>No content support</strong> infrastructure — assets created in isolation, no system to sustain them</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker old"></span>
+            <span class="bullet-text"><strong>No advantaged distribution</strong> — content dies on the vine, never reaches the field at point of need</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker old"></span>
+            <span class="bullet-text"><strong>Island disconnected</strong> from leaders' desired outcomes — enablement runs parallel to strategy, never integrated</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker old"></span>
+            <span class="bullet-text"><strong>"Last-to-know"</strong> — more acted upon than empowered, reactive to decisions already made</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker old"></span>
+            <span class="bullet-text"><strong>No measurement loop</strong> — no way to know if what shipped moved a number, or just checked a box</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEW GAME COLUMN -->
+    <div>
+      <div class="col-header new">
+        <div class="col-icon new">◆</div>
+        <div>
+          <div class="col-label new">New Game</div>
+          <div class="col-title">Design + Deploy</div>
+        </div>
+      </div>
+      <div class="col-body new">
+        <div class="subtitle new">"Capabilities as a Product"</div>
+        <ul class="bullet-list reveal-stagger">
+          <li class="bullet-item">
+            <span class="bullet-marker new"></span>
+            <span class="bullet-text"><strong>Roadmap, intake, launches, adoption, measurement</strong> — treated like a product, with the rigor to match</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker new"></span>
+            <span class="bullet-text"><strong>GTM Units = Integration Partners</strong> — they carry weight in both design and deploy, not bystanders</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker new"></span>
+            <span class="bullet-text"><strong>Intellectual honesty with data</strong> — performance data drives every decision, not opinions or politics</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker new"></span>
+            <span class="bullet-text"><strong>Strategic bets aligned</strong> through a longer lens — not quarter-to-quarter scrambling, but compounding investment</span>
+          </li>
+          <li class="bullet-item">
+            <span class="bullet-marker new"></span>
+            <span class="bullet-text"><strong>Validated learning loops</strong> — feedback, correction, allocation-rebalance, always tightening</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ VS BRIDGE ═══ -->
+  <div class="vs-bridge reveal">
+    <div class="vs-line"></div>
+    <div class="vs-badge">WHY THE SHIFT MATTERS</div>
+    <div class="vs-line"></div>
+  </div>
+
+  <!-- ═══ SECTION 2: THREE OUTCOMES ═══ -->
+  <div class="divider" id="outcomes">
+    <div class="divider-inner">
+      <div class="divider-num">02</div>
+      <div class="divider-title">What This Methodology Forces</div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <div class="outcomes-header reveal">
+    <h2>Three Structural Outcomes</h2>
+    <p>This orientation doesn't just change what enablement does — it changes how the entire GTM org relates to its own performance.</p>
+  </div>
+
+  <div class="outcomes-grid reveal-stagger">
+    <div class="outcome-card">
+      <div class="outcome-num">①</div>
+      <div class="outcome-title">Forces Intellectual Honesty</div>
+      <div class="outcome-desc">
+        This group must be intellectually honest with each other and with performance data.
+        No hiding behind vanity metrics or "we shipped it" as success.
+        The data speaks — and everyone in the room has to listen.
+      </div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">②</div>
+      <div class="outcome-title">Aligns Strategic Bets</div>
+      <div class="outcome-desc">
+        Bets get aligned more completely, more thoughtfully, and through a longer lens.
+        Not reactive quarter-to-quarter pivots — deliberate, compounding investments
+        that build on each other across cycles.
+      </div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-num">③</div>
+      <div class="outcome-title">Increases Confidence in Direction</div>
+      <div class="outcome-desc">
+        Validated learning, feedback loops, course correction, resource allocation and rebalancing.
+        Confidence isn't assumed — it's earned through evidence of what's working
+        and disciplined response to what's not.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3: DESIGN + DEPLOY FLOW ═══ -->
+  <div class="divider" id="motion">
+    <div class="divider-inner">
+      <div class="divider-num">03</div>
+      <div class="divider-title">The New Motion</div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <div class="flow-section reveal">
+    <h2>Design + Deploy: Capabilities as a Product</h2>
+    <div class="flow-track">
+      <div class="flow-node">
+        <div class="flow-node-label">Intake</div>
+        <div class="flow-node-title">Identify Gaps</div>
+        <div class="flow-node-desc">Performance data reveals highest-leverage capability gaps. Prioritized by Expected Revenue Impact (ERI).</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-label">Design</div>
+        <div class="flow-node-title">Co-Build</div>
+        <div class="flow-node-desc">GTM units as integration partners. FLMs and SLMs contribute to curriculum. Built together, not handed down.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-label">Launch</div>
+        <div class="flow-node-title">Ship It</div>
+        <div class="flow-node-desc">Pilot → Measure → Expand. SKO for zero-to-one moments. Release-notes cadence for ongoing updates.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-label">Distribute</div>
+        <div class="flow-node-title">Two-Tier Cascade</div>
+        <div class="flow-node-desc">Direct: Manager → IC. Programmatic: Dept → FLM → IC. In-product ambient reinforcement.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-label">Measure</div>
+        <div class="flow-node-title">RETRO</div>
+        <div class="flow-node-desc">Actual vs. expected impact. Holdout groups. ERI actuals. Slice by cohort, segment, region, manager.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM CTA ═══ -->
+  <div class="cta-section reveal">
+    <div class="cta-formula">
+      <span class="hi">HI</span><sup style="font-size:0.6em; color:var(--accent-purple);">AI</sup> <span style="color:var(--text-dim)">=</span> <span class="v">V</span>
+    </div>
+    <p class="cta-sub">
+      Human Intelligence raised to the power of Artificial Intelligence equals Value.
+      Neither alone is sufficient. The compounding effect is what creates
+      durable, scalable commercial impact.
+    </p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+// Scroll-triggered reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+
+// Active nav link
+const sections = ['comparison', 'outcomes', 'motion'];
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 100;
+  let active = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= y) active = id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+});
+</script>
+</body>
+</html>
