@@ -3,81 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capability Architecture — Module Workshop</title>
+<title>Capability Architecture — Full Experience</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Instrument+Serif&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020408;font-family:'SF Pro Display',system-ui,-apple-system,sans-serif;color:#c8d6e5;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
-h1{font-size:11px;color:#00e5ff;font-weight:300;letter-spacing:.2em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
-h2{font-size:32px;font-weight:200;letter-spacing:.04em;color:#c8d6e5;margin-bottom:4px}
-.sub{font-size:10px;color:#445566;letter-spacing:.1em;margin-bottom:40px}
-.modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;width:100%;max-width:960px}
-.mod{display:block;background:rgba(8,12,24,.85);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:20px 22px;text-decoration:none;color:#c8d6e5;transition:all .3s ease;backdrop-filter:blur(8px);position:relative;overflow:hidden}
-.mod:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
-.mod::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);opacity:0;transition:opacity .3s}
-.mod:hover::before{opacity:1}
-.mod-num{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:6px}
-.mod-title{font-size:16px;font-weight:400;margin-bottom:4px}
-.mod-desc{font-size:10px;color:#556677;line-height:1.5;letter-spacing:.03em}
-.mod-arrow{position:absolute;top:20px;right:20px;font-size:14px;color:var(--accent);opacity:0;transition:opacity .3s}
-.mod:hover .mod-arrow{opacity:1}
-.full{margin-top:30px;display:flex;gap:12px}
-.full a{background:rgba(8,12,24,.85);border:1px solid rgba(0,229,255,.15);color:#00e5ff;padding:8px 18px;border-radius:4px;text-decoration:none;font-size:10px;letter-spacing:.1em;text-transform:uppercase;transition:all .3s}
-.full a:hover{border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.05)}
+body{background:#020408;font-family:'SF Pro Display',system-ui,-apple-system,sans-serif;color:#c8d6e5;overflow-x:hidden}
+
+/* ── Global Nav ── */
+.global-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(2,4,8,.92);border-bottom:1px solid rgba(255,255,255,.04);backdrop-filter:blur(12px)}
+.global-nav-mark{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:#c8d6e5;cursor:pointer;user-select:none;padding:4px 8px;border-radius:4px;transition:background .2s}
+.global-nav-mark:hover{background:rgba(0,229,255,.08)}
+.global-nav-links{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none}
+.global-nav-links::-webkit-scrollbar{display:none}
+.global-nav-links a{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,214,229,.35);text-decoration:none;white-space:nowrap;padding:4px 0;border-bottom:1px solid transparent;transition:all .25s}
+.global-nav-links a:hover,.global-nav-links a.active{color:rgba(200,214,229,.85);border-color:rgba(0,229,255,.5)}
+
+/* ── Chapter Overlay ── */
+.chapter-overlay{position:fixed;inset:0;z-index:600;background:rgba(2,4,8,.96);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+.chapter-overlay.open{opacity:1;pointer-events:all}
+.co-inner{width:90%;max-width:520px}
+.co-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(0,229,255,.5);margin-bottom:20px}
+.ch-list{display:flex;flex-direction:column;gap:6px}
+.ch-link{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:6px;text-decoration:none;color:#c8d6e5;border:1px solid rgba(255,255,255,.04);transition:all .25s}
+.ch-link:hover,.ch-link.current{border-color:rgba(0,229,255,.25);background:rgba(0,229,255,.04)}
+.ch-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(0,229,255,.5);width:28px;text-align:center;flex-shrink:0}
+.ch-info{flex:1}
+.ch-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,214,229,.3);margin-bottom:2px}
+.ch-ttl{font-size:13px;font-weight:400}
+.ch-arrow{font-size:14px;color:rgba(0,229,255,.3);transition:transform .2s}
+.ch-link:hover .ch-arrow{transform:translateX(3px);color:rgba(0,229,255,.7)}
+
+/* ── Section Transitions ── */
+.section-transition{display:flex;align-items:center;justify-content:center;height:120px;background:#020408}
+.section-transition-inner{text-align:center}
+.section-transition-num{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,214,229,.25)}
+.section-transition-title{font-family:'Instrument Serif',serif;font-size:20px;font-weight:400;color:rgba(200,214,229,.5);font-style:italic}
+.section-transition-line{width:1px;height:24px;background:rgba(0,229,255,.12);margin:8px auto 0}
+
+/* ── Module Panels ── */
+.module-panel{width:100%;height:100vh;position:relative}
+.module-panel iframe{width:100%;height:100%;border:none}
+.module-panel .panel-label{position:absolute;bottom:16px;left:16px;z-index:10;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(200,214,229,.2);pointer-events:none}
+.module-panel .open-standalone{position:absolute;bottom:14px;right:16px;z-index:10;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,229,255,.4);text-decoration:none;padding:4px 10px;border:1px solid rgba(0,229,255,.15);border-radius:3px;background:rgba(2,4,8,.7);backdrop-filter:blur(8px);transition:all .2s}
+.module-panel .open-standalone:hover{color:rgba(0,229,255,.8);border-color:rgba(0,229,255,.4)}
 </style>
 </head>
 <body>
-<h1>Capability Architecture · Workshop</h1>
-<h2>Three-Layer Stack — Modular Breakdown</h2>
-<div class="sub">Each module is a standalone Three.js scene you can orbit, inspect, and iterate on independently.</div>
 
-<div class="modules">
-  <a class="mod" href="01-contributor-layer.html" style="--accent:#00e5ff">
-    <div class="mod-num">Module 01</div>
-    <div class="mod-title">Contributor Layer</div>
-    <div class="mod-desc">38 buildings across 6 districts (Commercial, Enterprise, Partnerships, Post Sales, XDR, Operations). Fountain with particle system. 228 ICs mapped to 6-floor buildings.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="02-clickup-glyph.html" style="--accent:#7B68EE">
-    <div class="mod-num">Module 02</div>
-    <div class="mod-title">ClickUp 3D Glyph</div>
-    <div class="mod-desc">Floating 3D ClickUp chevron logo with purple/pink gradient arms, apex vertex, aura rings, and orbital rotation animation.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="03-product-layer-disc.html" style="--accent:#c77dff">
-    <div class="mod-num">Module 03</div>
-    <div class="mod-title">Product Layer Disc</div>
-    <div class="mod-desc">Circular disc shell with 3 internal zones — API Layer (ceiling), Codebase (core ring), MCP Layer (floor). Edge rings, zone labels, interior particles.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="04-api-layer.html" style="--accent:#10a37f">
-    <div class="mod-num">Module 04</div>
-    <div class="mod-title">API Layer</div>
-    <div class="mod-desc">5 LLM partner pods (OpenAI, Anthropic, Gemini, Grok, Perplexity) + Manus. Stacked rotating discs, gateway rings, outward beams into deep space, ambient particle field.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="05-codebase.html" style="--accent:#00e5ff">
-    <div class="mod-num">Module 05</div>
-    <div class="mod-title">Codebase — Studio + Lab</div>
-    <div class="mod-desc">Core ring split into Studio (Create) and Lab (Analyze). Immersive Coderoom with holographic code walls, blinking cursor, ceiling lights, floating data motes.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="06-mcp-gears.html" style="--accent:#7B68EE">
-    <div class="mod-num">Module 06</div>
-    <div class="mod-title">MCP Gears</div>
-    <div class="mod-desc">Floor zone with 4 interlocking gear meshes — ClickUp (native), Salesforce, Gong, Figma. Counter-rotating at varied speeds with teeth detail and inner rings.</div>
-    <div class="mod-arrow">→</div>
-  </a>
-  <a class="mod" href="07-agent-layer.html" style="--accent:#f4a623">
-    <div class="mod-num">Module 07</div>
-    <div class="mod-title">Agent Layer</div>
-    <div class="mod-desc">Execution universe: 6 activity tiles mapped to districts. Activity cubes with particle swarms (800–1400 agents), super agent characters (Scout, Analyst, Builder, Advisor, Orchestrator).</div>
-    <div class="mod-arrow">→</div>
-  </a>
+<!-- ── GLOBAL NAV ── -->
+<nav class="global-nav">
+  <div class="global-nav-mark" id="menuTrigger"><b>HI</b><sup style="font-size:8px;color:rgba(74,80,104,.8)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="#mod-1" class="active">Contributors</a>
+    <a href="#mod-2">ClickUp Glyph</a>
+    <a href="#mod-3">Product Disc</a>
+    <a href="#mod-4">API Layer</a>
+    <a href="#mod-5">Codebase</a>
+    <a href="#mod-6">MCP Gears</a>
+    <a href="#mod-7">Agent Layer</a>
+  </div>
+</nav>
+
+<!-- ── CHAPTER OVERLAY ── -->
+<div class="chapter-overlay" id="chapterOverlay">
+  <div class="co-inner">
+    <div class="co-title">Architecture Modules</div>
+    <div class="ch-list">
+      <a href="#mod-1" class="ch-link" data-section="mod-1"><div class="ch-num">01</div><div class="ch-info"><div class="ch-label">Module One</div><div class="ch-ttl">Contributor Layer</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-2" class="ch-link" data-section="mod-2"><div class="ch-num">02</div><div class="ch-info"><div class="ch-label">Module Two</div><div class="ch-ttl">ClickUp 3D Glyph</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-3" class="ch-link" data-section="mod-3"><div class="ch-num">03</div><div class="ch-info"><div class="ch-label">Module Three</div><div class="ch-ttl">Product Layer Disc</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-4" class="ch-link" data-section="mod-4"><div class="ch-num">04</div><div class="ch-info"><div class="ch-label">Module Four</div><div class="ch-ttl">API Layer</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-5" class="ch-link" data-section="mod-5"><div class="ch-num">05</div><div class="ch-info"><div class="ch-label">Module Five</div><div class="ch-ttl">Codebase — Studio + Lab</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-6" class="ch-link" data-section="mod-6"><div class="ch-num">06</div><div class="ch-info"><div class="ch-label">Module Six</div><div class="ch-ttl">MCP Gears</div></div><div class="ch-arrow">→</div></a>
+      <a href="#mod-7" class="ch-link" data-section="mod-7"><div class="ch-num">07</div><div class="ch-info"><div class="ch-label">Module Seven</div><div class="ch-ttl">Agent Layer</div></div><div class="ch-arrow">→</div></a>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:10px">
+      <a href="workshop.html" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,229,255,.5);text-decoration:none;padding:6px 12px;border:1px solid rgba(0,229,255,.15);border-radius:3px;transition:all .2s">Module Workshop</a>
+      <a href="../product_design_concept1.html" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,229,255,.5);text-decoration:none;padding:6px 12px;border:1px solid rgba(0,229,255,.15);border-radius:3px;transition:all .2s">Original 3D Diagram</a>
+      <a href="../chapters/" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,229,255,.5);text-decoration:none;padding:6px 12px;border:1px solid rgba(0,229,255,.15);border-radius:3px;transition:all .2s">Product Thesis</a>
+    </div>
+  </div>
 </div>
 
-<div class="full">
-  <a href="../product_design_concept1.html">← Full Integrated Diagram</a>
-  <a href="../chapters/">← Product Thesis Chapters</a>
+<div style="height:48px"></div>
+
+<!-- ═══ MODULE 1: CONTRIBUTOR LAYER ═══ -->
+<div class="module-panel" id="mod-1">
+  <iframe src="01-contributor-layer.html" loading="lazy"></iframe>
+  <div class="panel-label">01 — Contributor Layer</div>
+  <a class="open-standalone" href="01-contributor-layer.html">Open Standalone ↗</a>
 </div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 02</div>
+    <div class="section-transition-title">ClickUp 3D Glyph</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 2: CLICKUP GLYPH ═══ -->
+<div class="module-panel" id="mod-2">
+  <iframe src="02-clickup-glyph.html" loading="lazy"></iframe>
+  <div class="panel-label">02 — ClickUp 3D Glyph</div>
+  <a class="open-standalone" href="02-clickup-glyph.html">Open Standalone ↗</a>
+</div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 03</div>
+    <div class="section-transition-title">Product Layer Disc</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 3: PRODUCT LAYER DISC ═══ -->
+<div class="module-panel" id="mod-3">
+  <iframe src="03-product-layer-disc.html" loading="lazy"></iframe>
+  <div class="panel-label">03 — Product Layer Disc</div>
+  <a class="open-standalone" href="03-product-layer-disc.html">Open Standalone ↗</a>
+</div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 04</div>
+    <div class="section-transition-title">API Layer</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 4: API LAYER ═══ -->
+<div class="module-panel" id="mod-4">
+  <iframe src="04-api-layer.html" loading="lazy"></iframe>
+  <div class="panel-label">04 — API Layer</div>
+  <a class="open-standalone" href="04-api-layer.html">Open Standalone ↗</a>
+</div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 05</div>
+    <div class="section-transition-title">Codebase — Studio + Lab</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 5: CODEBASE ═══ -->
+<div class="module-panel" id="mod-5">
+  <iframe src="05-codebase.html" loading="lazy"></iframe>
+  <div class="panel-label">05 — Codebase</div>
+  <a class="open-standalone" href="05-codebase.html">Open Standalone ↗</a>
+</div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 06</div>
+    <div class="section-transition-title">MCP Gears</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 6: MCP GEARS ═══ -->
+<div class="module-panel" id="mod-6">
+  <iframe src="06-mcp-gears.html" loading="lazy"></iframe>
+  <div class="panel-label">06 — MCP Gears</div>
+  <a class="open-standalone" href="06-mcp-gears.html">Open Standalone ↗</a>
+</div>
+
+<div class="section-transition">
+  <div class="section-transition-inner">
+    <div class="section-transition-num">Module 07</div>
+    <div class="section-transition-title">Agent Layer</div>
+    <div class="section-transition-line"></div>
+  </div>
+</div>
+
+<!-- ═══ MODULE 7: AGENT LAYER ═══ -->
+<div class="module-panel" id="mod-7">
+  <iframe src="07-agent-layer.html" loading="lazy"></iframe>
+  <div class="panel-label">07 — Agent Layer</div>
+  <a class="open-standalone" href="07-agent-layer.html">Open Standalone ↗</a>
+</div>
+
+<div style="height:80px;background:#020408"></div>
+
+<script>
+// ── Menu overlay toggle ──
+const overlay=document.getElementById('chapterOverlay');
+const trigger=document.getElementById('menuTrigger');
+function openMenu(){overlay.classList.add('open');updateCurrentModule()}
+function closeMenu(){overlay.classList.remove('open')}
+trigger.addEventListener('click',()=>{overlay.classList.contains('open')?closeMenu():openMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeMenu()});
+document.querySelectorAll('.ch-link').forEach(link=>{link.addEventListener('click',()=>{closeMenu()})});
+
+// ── Smooth scroll for nav links ──
+document.querySelectorAll('a[href^="#mod-"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+    closeMenu();
+  });
+});
+
+// ── Active nav highlight on scroll ──
+const panels=document.querySelectorAll('.module-panel[id]');
+const navLinks=document.querySelectorAll('.global-nav-links a');
+function setActive(){
+  let current='';
+  const y=window.scrollY+200;
+  panels.forEach(p=>{if(p.offsetTop<=y)current=p.id});
+  navLinks.forEach(a=>{
+    const href=a.getAttribute('href');
+    a.classList.toggle('active',href==='#'+current);
+  });
+}
+window.addEventListener('scroll',setActive,{passive:true});
+
+// ── Highlight current module in overlay ──
+function updateCurrentModule(){
+  const mods=['mod-1','mod-2','mod-3','mod-4','mod-5','mod-6','mod-7'];
+  let current=mods[0];
+  const y=window.scrollY+200;
+  mods.forEach(id=>{const el=document.getElementById(id);if(el&&el.offsetTop<=y)current=id});
+  document.querySelectorAll('.ch-link').forEach(link=>{
+    link.classList.toggle('current',link.dataset.section===current);
+  });
+}
+</script>
 </body>
 </html>
