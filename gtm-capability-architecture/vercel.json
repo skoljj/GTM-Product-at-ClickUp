@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/3d", "destination": "/src/product_design_concept1_mobile.html" },
+    { "source": "/framework", "destination": "/src/product_thesis_and_concept_flyover_mobile.html" },
+    { "source": "/", "destination": "/src/product_thesis_and_concept_flyover_mobile.html" }
+  ]
+}
