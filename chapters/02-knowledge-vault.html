@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: The Knowledge Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* S2-S4: .sN-page wrappers get explicit auto-margin centering */
+.s2-page {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* S2-S4 page wrappers must be full-width */
+.s2-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section transitions also center */
+.section-transition {
+  width: 100%;
+}
+
+/* S2: content padding and flex */
+#panel-2 > .s2-page {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 36px 28px 80px;
+}
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════ */
+/* SECTION 2 STYLES (prefixed s2-)                   */
+/* ═══════════════════════════════════════════════════ */
+
+.s2-page { width:100%; max-width:1180px; }
+
+/* Header */
+.s2-header { text-align:center; margin-bottom:44px; }
+.s2-header-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.s2-header h1 { font-family:'Instrument Serif',serif; font-size:36px; font-weight:400; margin-bottom:6px; }
+.s2-header h1 em { color:var(--vault); font-style:italic; }
+.s2-header .s2-sub { font-size:13px; color:var(--text-muted); font-weight:300; max-width:720px; margin:0 auto; line-height:1.55; }
+
+/* ── Thesis Statement ── */
+.thesis {
+  text-align:center; margin-bottom:36px;
+  padding:20px 32px; border-radius:12px;
+  border:1px solid var(--vault-border);
+  background:var(--vault-bg);
+}
+.thesis-text {
+  font-size:15px; color:var(--text); line-height:1.6;
+  font-weight:400; max-width:700px; margin:0 auto;
+}
+.thesis-text strong { font-weight:700; }
+.thesis-text .hq-hl { color:var(--hq); font-weight:600; }
+.thesis-text .aq-hl { color:var(--aq); font-weight:600; }
+
+/* ── Shared ── */
+.s2-label { font-size:7px; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; margin-bottom:5px; }
+.s2-tag { display:inline-block; padding:2px 7px; border-radius:4px; font-size:7.5px; font-weight:600; letter-spacing:0.3px; }
+.s2-tags { display:flex; gap:4px; flex-wrap:wrap; }
+
+/* ── HQ ↔ AQ Dual Column ── */
+.hq-aq-frame {
+  display:grid;
+  grid-template-columns:1fr 56px 1fr;
+  gap:0;
+  margin-bottom:28px;
+}
+.quotient-col {
+  border-radius:14px; padding:24px 22px;
+  position:relative;
+}
+.q-hq {
+  border:1px solid var(--hq-border); background:var(--hq-bg);
+}
+.q-aq {
+  border:1px solid var(--aq-border); background:var(--aq-bg);
+}
+.q-header {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.q-icon {
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700;
+}
+.q-icon.hq { background:var(--hq-accent); color:var(--hq); border:1px solid var(--hq-border); }
+.q-icon.aq { background:var(--aq-accent); color:var(--aq); border:1px solid var(--aq-border); }
+.q-title { font-size:18px; font-weight:700; }
+.q-title.hq { color:var(--hq); }
+.q-title.aq { color:var(--aq); }
+.q-subtitle { font-size:10px; color:var(--text-muted); }
+
+.q-section { margin-bottom:14px; }
+.q-section:last-child { margin-bottom:0; }
+.q-section-title {
+  font-size:9px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px;
+}
+.q-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+.q-card {
+  padding:12px 14px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--border);
+  margin-bottom:6px;
+}
+.q-card:last-child { margin-bottom:0; }
+.q-card-title { font-size:11px; font-weight:700; margin-bottom:3px; }
+.q-card-sub { font-size:9px; color:var(--text-muted); line-height:1.4; }
+.q-card-examples {
+  margin-top:6px; padding-top:6px; border-top:1px solid var(--border);
+}
+.q-example {
+  font-size:8px; color:var(--text-dim); font-family:'DM Mono',monospace;
+  padding:2px 0; display:flex; align-items:flex-start; gap:6px;
+}
+.q-example .qe-arrow { color:var(--text-dim); flex-shrink:0; }
+
+/* Center connector */
+.hq-aq-connector {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:6px; padding:0 4px;
+}
+.conn-line { width:1px; height:20px; background:var(--vault); opacity:0.3; }
+.conn-icon {
+  width:40px; height:40px; border-radius:50%;
+  background:var(--vault-bg); border:2px solid var(--vault-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+}
+.conn-label {
+  font-size:6.5px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; color:var(--vault); text-align:center; line-height:1.3;
+}
+.conn-arrows { color:var(--vault); font-size:12px; opacity:0.5; }
+
+/* ── Single Vault Instance (example) ── */
+.vault-instance {
+  border:1px solid var(--vault-border); background:var(--vault-bg);
+  border-radius:14px; padding:22px 24px;
+  margin-bottom:20px;
+}
+.vi-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.vi-header-left { display:flex; align-items:center; gap:12px; }
+.vi-avatar {
+  width:44px; height:44px; border-radius:12px;
+  background:var(--surface-2); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:var(--text-mid);
+}
+.vi-name { font-size:15px; font-weight:700; }
+.vi-role { font-size:10px; color:var(--text-muted); }
+.vi-role-badge {
+  padding:4px 10px; border-radius:6px;
+  font-size:9px; font-weight:600;
+}
+
+.vi-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.vi-column { display:flex; flex-direction:column; gap:6px; }
+.vi-col-header {
+  font-size:8px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; padding:4px 0;
+  display:flex; align-items:center; gap:6px;
+}
+
+.vi-entry {
+  padding:10px 12px; border-radius:7px;
+  background:var(--surface); border:1px solid var(--border);
+}
+.vi-entry-title { font-size:10px; font-weight:700; margin-bottom:2px; display:flex; align-items:center; gap:6px; }
+.vi-entry-sub { font-size:8.5px; color:var(--text-muted); line-height:1.35; }
+.vi-entry-meta {
+  margin-top:5px; display:flex; gap:4px; flex-wrap:wrap;
+}
+.vi-meta-tag {
+  padding:2px 6px; border-radius:3px; font-size:6.5px; font-weight:600;
+  letter-spacing:0.3px;
+}
+.given-tag { background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.15); color:var(--given); }
+.done-tag { background:rgba(96,165,250,0.08); border:1px solid rgba(96,165,250,0.15); color:var(--done); }
+.gap-tag { background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.15); color:var(--gap); }
+.skill-tag { background:var(--aq-accent); border:1px solid var(--aq-border); color:var(--aq); }
+
+/* ── Scale Visual ── */
+.scale-row {
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:6px;
+  margin-bottom:28px;
+}
+.scale-card {
+  padding:12px 10px; border-radius:8px; text-align:center;
+  background:var(--surface); border:1px solid var(--border);
+  position:relative;
+}
+.scale-card .sc-icon { font-size:18px; margin-bottom:4px; }
+.scale-card .sc-role { font-size:9px; font-weight:700; margin-bottom:1px; }
+.scale-card .sc-count { font-size:8px; color:var(--text-muted); }
+.scale-card .sc-vault-dot {
+  position:absolute; top:6px; right:6px;
+  width:6px; height:6px; border-radius:50%;
+  background:var(--vault);
+}
+
+/* ── Consumers ── */
+.consumers {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:10px; margin-bottom:0;
+}
+.consumer-card {
+  padding:18px 18px; border-radius:10px;
+  background:var(--surface); border:1px solid var(--border);
+  position:relative;
+}
+.consumer-card .cc-accent {
+  position:absolute; top:0; left:10px; right:10px;
+  height:2px; border-radius:0 0 2px 2px;
+}
+.consumer-card .cc-label { margin-bottom:4px; }
+.consumer-card .cc-title { font-size:14px; font-weight:700; margin-bottom:4px; }
+.consumer-card .cc-desc { font-size:10px; color:var(--text-muted); line-height:1.45; margin-bottom:10px; }
+.consumer-card .cc-examples { display:flex; flex-direction:column; gap:4px; }
+.cc-ex {
+  font-size:9px; color:var(--text-mid); display:flex;
+  align-items:flex-start; gap:6px; line-height:1.35;
+}
+.cc-ex .cce-arrow { color:var(--text-dim); flex-shrink:0; }
+
+/* ── Feedback Loop ── */
+.feedback-loop {
+  margin-top:20px; padding:16px 20px;
+  border-radius:10px;
+  border:1px solid var(--action-border);
+  background:var(--action-bg);
+  text-align:center;
+}
+.fl-title {
+  font-size:9px; letter-spacing:2px; text-transform:uppercase;
+  font-weight:700; color:var(--action); margin-bottom:8px;
+}
+.fl-steps {
+  display:flex; align-items:center; justify-content:center;
+  gap:0; flex-wrap:wrap;
+}
+.fl-step {
+  padding:6px 14px; font-size:10px; font-weight:600;
+  color:var(--text-mid);
+}
+.fl-arrow { color:var(--action); font-size:14px; padding:0 4px; opacity:0.5; }
+
+/* Divider */
+.s2-divider {
+  display:flex; justify-content:center; align-items:center;
+  padding:8px 0; gap:8px;
+}
+.s2-divider-line { width:1px; height:14px; background:var(--text-dim); opacity:0.2; }
+.s2-divider-label {
+  font-size:7px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; padding:3px 10px; border-radius:4px;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+}
+.s2-divider-arrow { font-size:9px; color:var(--text-dim); opacity:0.35; }
+
+/* Footer */
+.s2-footer { margin-top:32px; text-align:center; font-size:8.5px; color:var(--text-dim); }
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html">Framework</a>
+    <a href="02-knowledge-vault.html" class="active">Knowledge Vault</a>
+    <a href="03-product-architecture.html">Architecture</a>
+    <a href="04-bowtie-funnel.html">Bowtie</a>
+    <a href="05-opportunity-seeker.html">Opportunity</a>
+    <a href="06-action-layer.html">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel" id="panel-2">
+<div class="s2-page">
+
+  <div class="s2-header">
+    <div class="s2-header-eyebrow">GTM Performance & Productivity · Core Thesis</div>
+    <h1>The <em>Knowledge Vault</em></h1>
+    <div class="s2-sub">Every GTM member gets a personal performance record. What was given to them. What they did with it. Where the gaps are. The AI quotient then prescribes the skills and agents to close those gaps.</div>
+  </div>
+
+  <!-- Thesis Statement -->
+  <div class="thesis">
+    <div class="thesis-text">
+      The <span class="hq-hl">Human Quotient</span> is the record of a person's capability journey —
+      what they've been equipped with, how they've applied it, and where they need to grow.
+      The <span class="aq-hl">AI Quotient</span> is the set of agentic skills prescribed to augment
+      that person — closing gaps the human record reveals. <strong>Together, they are the vault.</strong>
+    </div>
+  </div>
+
+  <!-- ═══ HQ ↔ AQ DUAL COLUMN ═══ -->
+  <div class="hq-aq-frame">
+
+    <!-- Human Quotient -->
+    <div class="quotient-col q-hq">
+      <div class="q-header">
+        <div class="q-icon hq">H</div>
+        <div>
+          <div class="q-title hq">Human Quotient</div>
+          <div class="q-subtitle">The person's capability record</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title" style="color:var(--given)"><div class="q-dot" style="background:var(--given)"></div>What Was Given</div>
+        <div class="q-card">
+          <div class="q-card-title">Capabilities Delivered</div>
+          <div class="q-card-sub">Every playbook, certification, training, coaching brief, onboarding module, and tool that was shipped to this person.</div>
+          <div class="q-card-examples">
+            <div class="q-example"><span class="qe-arrow">→</span>MEDDPIC certification (completed Jan 15)</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Certified Agent expansion playbook v2 (delivered Jan 22)</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Account planning template — Grande size (delivered Feb 1)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title" style="color:var(--done)"><div class="q-dot" style="background:var(--done)"></div>What They Did With It</div>
+        <div class="q-card">
+          <div class="q-card-title">Application & Behavior</div>
+          <div class="q-card-sub">Observable evidence from Gong, Salesforce, and ClickUp that the capability was adopted — or wasn't. Instrumented, not self-reported.</div>
+          <div class="q-card-examples">
+            <div class="q-example"><span class="qe-arrow">→</span>MEDDPIC fields populated in 72% of deals (up from 31%)</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Economic buyer identified in 4 of 12 active opps</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Expansion playbook opened 3x, used in 1 deal review</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title" style="color:var(--gap)"><div class="q-dot" style="background:var(--gap)"></div>Where the Gaps Are</div>
+        <div class="q-card">
+          <div class="q-card-title">Performance Gaps & Growth Areas</div>
+          <div class="q-card-sub">The delta between what was given and what was applied. This is what coaching should target. This is what the AI quotient is prescribed to close.</div>
+          <div class="q-card-examples">
+            <div class="q-example"><span class="qe-arrow">→</span>Consistently skips 3-whys in discovery (Gong pattern)</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Expansion playbook not translating to pipeline</div>
+            <div class="q-example"><span class="qe-arrow">→</span>Deal velocity 40% slower than cohort avg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="hq-aq-connector">
+      <div class="conn-line"></div>
+      <div class="conn-line"></div>
+      <div class="conn-arrows">↔</div>
+      <div class="conn-icon">🔑</div>
+      <div class="conn-label">Per-Person<br>Vault</div>
+      <div class="conn-arrows">↔</div>
+      <div class="conn-line"></div>
+      <div class="conn-line"></div>
+      <div style="margin-top:12px;">
+        <div class="conn-label" style="color:var(--given)">Given</div>
+        <div class="conn-label" style="color:var(--done); margin-top:2px;">Done</div>
+        <div class="conn-label" style="color:var(--gap); margin-top:2px;">Gap</div>
+        <div class="conn-arrows" style="margin-top:4px;">↓</div>
+        <div class="conn-label" style="color:var(--aq); margin-top:2px;">Prescribe</div>
+      </div>
+    </div>
+
+    <!-- AI Quotient -->
+    <div class="quotient-col q-aq">
+      <div class="q-header">
+        <div class="q-icon aq">A</div>
+        <div>
+          <div class="q-title aq">AI Quotient</div>
+          <div class="q-subtitle">Prescribed agentic skills & augmentation</div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title" style="color:var(--aq)"><div class="q-dot" style="background:var(--aq)"></div>Prescribed Based on Gaps</div>
+        <div class="q-card">
+          <div class="q-card-title">Coaching Intelligence Agent</div>
+          <div class="q-card-sub">Gap detected: skipping 3-whys in discovery. Agent now pre-populates FLM coaching brief with specific call excerpts and suggested coaching questions before every 1:1.</div>
+          <div class="vi-entry-meta">
+            <span class="vi-meta-tag skill-tag">Gong MCP</span>
+            <span class="vi-meta-tag gap-tag">Closes: Discovery Gap</span>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-card-title">Deal Strategy Assist</div>
+          <div class="q-card-sub">Gap detected: economic buyer not identified in 67% of deals. Agent surfaces org charts, suggests multi-threading paths, and flags at-risk deals missing EB engagement.</div>
+          <div class="vi-entry-meta">
+            <span class="vi-meta-tag skill-tag">SFDC MCP</span>
+            <span class="vi-meta-tag gap-tag">Closes: EB Qualification</span>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-card-title">Expansion Play Trigger</div>
+          <div class="q-card-sub">Gap detected: expansion playbook consumed but not applied. Agent now surfaces whitespace data and triggers in-workflow nudge when account usage pattern matches propensity model.</div>
+          <div class="vi-entry-meta">
+            <span class="vi-meta-tag skill-tag">ClickUp Agent</span>
+            <span class="vi-meta-tag gap-tag">Closes: Expansion Execution</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-section">
+        <div class="q-section-title" style="color:var(--aq)"><div class="q-dot" style="background:var(--aq)"></div>Leverage & Productivity Skills</div>
+        <div class="q-card">
+          <div class="q-card-title">Deal Review Prep Agent</div>
+          <div class="q-card-sub">Not gap-driven — pure leverage. Reduces FLM deal review prep from 45 min to 5 min by auto-populating pipeline data, call summaries, and risk flags.</div>
+          <div class="vi-entry-meta">
+            <span class="vi-meta-tag skill-tag">Gong + SFDC MCP</span>
+            <span class="vi-meta-tag" style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.15); color:var(--action);">Productivity</span>
+          </div>
+        </div>
+        <div class="q-card">
+          <div class="q-card-title">Ramp Orchestration Agent</div>
+          <div class="q-card-sub">For new hires — sequences onboarding milestones, enforces prerequisite gates, nudges FLM when rep falls behind ramp timeline.</div>
+          <div class="vi-entry-meta">
+            <span class="vi-meta-tag skill-tag">ClickUp Agent</span>
+            <span class="vi-meta-tag" style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.15); color:var(--action);">Onboarding</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SCALE: WHO GETS A VAULT ═══ -->
+  <div class="s2-divider">
+    <div class="s2-divider-line"></div>
+    <div class="s2-divider-label" style="color:var(--vault)">Every GTM Member Gets a Vault</div>
+    <div class="s2-divider-line"></div>
+  </div>
+
+  <div class="scale-row">
+    <div class="scale-card">
+      <div class="sc-vault-dot"></div>
+      <div class="sc-icon">👤</div>
+      <div class="sc-role">SLMs</div>
+      <div class="sc-count">~6 across COM + ENT</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-vault-dot"></div>
+      <div class="sc-icon">👤</div>
+      <div class="sc-role">FLMs</div>
+      <div class="sc-count">21 → 26 managers</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-vault-dot"></div>
+      <div class="sc-icon">👤</div>
+      <div class="sc-role">AEs</div>
+      <div class="sc-count">~135 → 148 reps</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-vault-dot"></div>
+      <div class="sc-icon">👤</div>
+      <div class="sc-role">SEs</div>
+      <div class="sc-count">Solutions Engineers</div>
+    </div>
+    <div class="scale-card">
+      <div class="sc-vault-dot"></div>
+      <div class="sc-icon">👤</div>
+      <div class="sc-role">XDRs</div>
+      <div class="sc-count">BDR / SDR teams</div>
+    </div>
+  </div>
+
+  <!-- ═══ CONSUMERS ═══ -->
+  <div class="s2-divider">
+    <div class="s2-divider-line"></div>
+    <div class="s2-divider-label">Who Consumes the Vault</div>
+    <div class="s2-divider-line"></div>
+    <div class="s2-divider-arrow">▼</div>
+  </div>
+
+  <div class="consumers">
+
+    <!-- FLM -->
+    <div class="consumer-card">
+      <div class="cc-accent" style="background:var(--flm)"></div>
+      <div class="s2-label" style="color:var(--flm)">Coaching Channel</div>
+      <div class="cc-title" style="color:var(--flm)">Frontline Managers</div>
+      <div class="cc-desc">FLMs see their team's vaults. The coaching brief is generated from the vault — not from generic templates. The FLM knows what was given, what stuck, and what to coach on next.</div>
+      <div class="cc-examples">
+        <div class="cc-ex"><span class="cce-arrow">→</span>"3 of your 6 reps haven't applied the expansion playbook. Here are the specific deals where it's relevant."</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>"Rep X completed MEDDPIC cert but Gong shows zero usage in last 8 calls. Coaching opportunity."</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>"New hire is behind on Week 4 ramp gate. Recommend skill practice on competitive positioning."</div>
+      </div>
+    </div>
+
+    <!-- AI Agents -->
+    <div class="consumer-card">
+      <div class="cc-accent" style="background:var(--agent)"></div>
+      <div class="s2-label" style="color:var(--agent)">Action Layer</div>
+      <div class="cc-title" style="color:var(--agent)">AI Agents</div>
+      <div class="cc-desc">Agents read the vault to personalize every interaction. The coaching agent for Rep X is different from Rep Y because their vaults are different. Same capability, different prescription.</div>
+      <div class="cc-examples">
+        <div class="cc-ex"><span class="cce-arrow">→</span>Vault shows gap in EB qualification → agent surfaces org chart and multi-thread suggestions in deal workspace.</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>Vault shows playbook consumed but not applied → agent triggers in-workflow nudge on next matching deal.</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>Vault shows strong discovery but weak closing → agent shifts coaching brief emphasis to negotiation patterns.</div>
+      </div>
+    </div>
+
+    <!-- GTM Product -->
+    <div class="consumer-card">
+      <div class="cc-accent" style="background:var(--product)"></div>
+      <div class="s2-label" style="color:var(--product)">Roadmap Intelligence</div>
+      <div class="cc-title" style="color:var(--product)">GTM Product Team</div>
+      <div class="cc-desc">Aggregate vault data is the product team's demand signal. What capabilities are landing? What's being ignored? Where is the biggest gap across the org? This drives prioritization.</div>
+      <div class="cc-examples">
+        <div class="cc-ex"><span class="cce-arrow">→</span>"78% of Commercial AEs consumed the expansion playbook. 12% applied it. Adoption problem, not awareness."</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>"Enterprise FLMs using coaching briefs 4x/week. Commercial FLMs: 0.5x. Different intervention needed."</div>
+        <div class="cc-ex"><span class="cce-arrow">→</span>"MEDDPIC gaps concentrated in EMEA region. Schedule targeted capability launch Q2."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEEDBACK LOOP ═══ -->
+  <div class="feedback-loop">
+    <div class="fl-title">The Learning System</div>
+    <div class="fl-steps">
+      <div class="fl-step"><strong>Ship Capability</strong></div>
+      <div class="fl-arrow">→</div>
+      <div class="fl-step"><strong>Vault Records</strong> delivery + adoption</div>
+      <div class="fl-arrow">→</div>
+      <div class="fl-step"><strong>Gaps Revealed</strong> per person + aggregate</div>
+      <div class="fl-arrow">→</div>
+      <div class="fl-step"><strong>AI Quotient</strong> prescribes skills</div>
+      <div class="fl-arrow">→</div>
+      <div class="fl-step"><strong>Roadmap Adjusts</strong></div>
+      <div class="fl-arrow">→</div>
+      <div class="fl-step" style="color:var(--action)"><strong>Ship Better</strong></div>
+    </div>
+  </div>
+
+  <div class="s2-footer">
+    GTM Performance & Productivity — The Knowledge Vault &nbsp;|&nbsp; Human Quotient × AI Quotient = Personalized Performance at Scale
+  </div>
+
+</div>
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

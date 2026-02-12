@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Opportunity Seeker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* S5: .os-container uses full panel width (centering via parent flex) */
+.os-container {
+  width: 100%;
+}
+
+/* Section transitions also center */
+.section-transition {
+  width: 100%;
+}
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+/* ═══ SECTION 5: OPPORTUNITY SEEKER v3 — Firmagraphic Filters ═══ */
+#panel-5 { padding: 0 28px 80px; }
+.os-container { max-width: 1180px; margin: 0 auto; width: 100%; }
+.os-header { text-align: center; margin-bottom: 40px; }
+.os-header-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+.os-header h2 { font-family: 'Instrument Serif', serif; font-size: 34px; font-weight: 400; margin-bottom: 8px; }
+.os-header h2 em { color: #34d399; font-style: italic; }
+.os-header .os-sub { font-size: 13px; color: var(--text-muted); font-weight: 300; max-width: 680px; margin: 0 auto; line-height: 1.55; }
+
+/* ── Filter Bar ── */
+.os-filters { margin-bottom: 40px; }
+.os-filter-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+.os-filter-group { display: flex; flex-direction: column; gap: 5px; }
+.os-filter-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--text-dim); text-align: center; padding-left: 4px; }
+.os-filter-options { display: flex; gap: 3px; background: var(--surface, #13161e); border: 1px solid var(--border); border-radius: 9px; padding: 3px; }
+.os-filter-btn { padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 500; color: var(--text-muted); background: transparent; border: 1px solid transparent; cursor: pointer; transition: all 0.25s ease; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+.os-filter-btn:hover { color: var(--text-mid); background: rgba(255,255,255,0.03); }
+.os-filter-btn.active { color: var(--text); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.os-filter-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+/* Active filter summary strip */
+.os-active-filters { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; min-height: 28px; }
+.os-af-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.15); color: #34d399; }
+.os-af-tag .os-af-dim { color: var(--text-dim); font-weight: 400; text-transform: uppercase; letter-spacing: 1px; font-size: 8px; margin-right: 2px; }
+.os-af-reset { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; background: rgba(248,113,113,0.06); border: 1px solid rgba(248,113,113,0.15); color: #f87171; cursor: pointer; transition: all 0.2s; }
+.os-af-reset:hover { background: rgba(248,113,113,0.12); }
+
+/* ── Funnel Visualization ── */
+.os-funnel { display: flex; align-items: stretch; gap: 2px; margin-bottom: 28px; min-height: 260px; }
+.os-stage { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; border-radius: 10px; overflow: hidden; transition: all 0.5s cubic-bezier(0.22,1,0.36,1); }
+.os-stage-fill { position: absolute; bottom: 0; left: 0; right: 0; border-radius: 0 0 10px 10px; transition: height 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease; opacity: 0.12; }
+.os-stage:hover .os-stage-fill { opacity: 0.22; }
+.os-stage-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 14px 6px 18px; height: 100%; text-align: center; gap: 6px; }
+.os-stage-name { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; opacity: 0.7; }
+.os-stage-pct { font-family: 'DM Mono', monospace; font-size: 26px; font-weight: 500; line-height: 1; transition: all 0.5s cubic-bezier(0.22,1,0.36,1); }
+.os-stage-vol { font-size: 10px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+.os-stage-cr { margin-top: auto; padding: 3px 8px; border-radius: 5px; font-size: 9px; font-weight: 600; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); color: var(--text-mid); transition: all 0.4s ease; }
+.os-stage.commit-stage { flex: 0 0 72px; }
+.os-stage.commit-stage .os-stage-fill { background: #34d399 !important; }
+
+/* ── Readout Grid ── */
+.os-readout { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); overflow: hidden; margin-bottom: 20px; }
+.os-readout-divider { background: var(--border); }
+.os-readout-cell { padding: 22px; text-align: center; transition: background 0.3s ease; }
+.os-readout-cell:hover { background: rgba(255,255,255,0.02); }
+.os-readout-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; }
+.os-readout-value { font-family: 'Instrument Serif', serif; font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 5px; transition: all 0.5s cubic-bezier(0.22,1,0.36,1); }
+.os-readout-context { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+/* ── Insight Cards ── */
+.os-insights { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.os-insight { padding: 18px 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); transition: border-color 0.3s, transform 0.25s; }
+.os-insight:hover { border-color: var(--border-light); transform: translateY(-1px); }
+.os-insight-tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.os-insight-tag.bottleneck { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.18); color: #f87171; }
+.os-insight-tag.opportunity { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.18); color: #34d399; }
+.os-insight-tag.leverage { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.18); color: #60a5fa; }
+.os-insight-tag.action { background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.18); color: #fb923c; }
+.os-insight-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.os-insight-body { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+/* ── Responsive ── */
+@media(max-width:860px) {
+  .os-filter-row { flex-direction: column; align-items: center; }
+  .os-funnel { flex-direction: column; min-height: auto; }
+  .os-readout { grid-template-columns: 1fr; }
+  .os-readout-divider { height: 1px; width: 100%; }
+  .os-insights { grid-template-columns: 1fr; }
+}
+
+
+/* ══ OPERATIONAL ROSTER v3 — STAGE-ALIGNED ══ */
+.os-rdiv { margin:56px 0 32px; display:flex; align-items:center; gap:16px; }
+.os-rdiv::before,.os-rdiv::after { content:''; flex:1; height:1px; background:var(--border); }
+.os-rdiv-lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-dim); white-space:nowrap; }
+
+/* Stage strip header */
+.os3-stage-strip {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  gap:2px; margin-bottom:28px;
+  border:1px solid var(--border); border-radius:10px;
+  overflow:hidden; background:var(--surface,#13161e);
+}
+.os3-stage-cell {
+  padding:12px 8px; text-align:center;
+  font-size:10px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; transition:background .3s;
+  cursor:default;
+}
+.os3-stage-cell:hover { background:rgba(255,255,255,0.02); }
+
+/* Layer section headers */
+.os3-layer-hdr {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:20px; padding:0 4px;
+}
+.os3-lh-badge {
+  width:40px; height:40px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:16px; flex-shrink:0;
+}
+.os3-lh-title { font-size:18px; font-weight:600; }
+.os3-lh-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.os3-lh-legend {
+  margin-left:auto; display:flex; align-items:center; gap:16px;
+}
+.os3-leg-item { display:flex; align-items:center; gap:5px; }
+.os3-leg-dot { width:8px; height:8px; border-radius:50%; }
+.os3-leg-lbl { font-size:10px; color:var(--text-dim); }
+
+/* 7-column card grid aligned to stages */
+.os3-grid {
+  display:grid; grid-template-columns:repeat(7,1fr);
+  gap:8px; margin-bottom:40px;
+  align-items:start;
+}
+.os3-col {
+  display:flex; flex-direction:column; gap:8px;
+}
+
+/* Person card */
+.os3-card {
+  padding:14px; border-radius:10px;
+  background:var(--surface,#151921); border:1px solid var(--border,#1e2433);
+  transition:border-color .3s, transform .25s, box-shadow .3s;
+  position:relative;
+}
+.os3-card:hover { border-color:var(--border-light,#2a3450); transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+.os3-card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:6px; }
+.os3-card-role {
+  font-size:8px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; color:var(--text-dim,#5a6480);
+}
+.os3-card-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+  margin-top:1px;
+}
+.os3-card-name { font-size:13px; font-weight:600; color:var(--text,#e8eaf0); margin-bottom:4px; line-height:1.3; }
+.os3-card-metric { font-size:11px; color:var(--text-muted,#8892a8); line-height:1.4; }
+.os3-card-metric strong { color:var(--text,#e8eaf0); font-weight:700; }
+.os3-card-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+.os3-tag {
+  font-size:8px; padding:3px 8px; border-radius:4px;
+  font-weight:600; letter-spacing:.3px;
+}
+.os3-tag-g { background:rgba(52,211,153,.08); color:#34d399; border:1px solid rgba(52,211,153,.15); }
+.os3-tag-y { background:rgba(251,191,36,.08); color:#fbbf24; border:1px solid rgba(251,191,36,.15); }
+.os3-tag-r { background:rgba(248,113,113,.08); color:#f87171; border:1px solid rgba(248,113,113,.15); }
+.os3-tag-b { background:rgba(96,165,250,.08); color:#60a5fa; border:1px solid rgba(96,165,250,.15); }
+.os3-tag-p { background:rgba(167,139,250,.08); color:#a78bfa; border:1px solid rgba(167,139,250,.15); }
+.os3-tag-o { background:rgba(251,146,60,.08); color:#fb923c; border:1px solid rgba(251,146,60,.15); }
+.os3-tag-c { background:rgba(34,211,238,.08); color:#22d3ee; border:1px solid rgba(34,211,238,.15); }
+
+/* Agent card variant */
+.os3-card.agent { border-color:rgba(167,139,250,0.12); }
+.os3-card.agent:hover { border-color:rgba(167,139,250,0.3); }
+.os3-card.agent .os3-card-name { color:#a78bfa; font-size:12px; }
+
+@media(max-width:1100px) {
+  .os3-stage-strip, .os3-grid { grid-template-columns:repeat(4,1fr); }
+}
+@media(max-width:700px) {
+  .os3-stage-strip, .os3-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html">Framework</a>
+    <a href="02-knowledge-vault.html">Knowledge Vault</a>
+    <a href="03-product-architecture.html">Architecture</a>
+    <a href="04-bowtie-funnel.html">Bowtie</a>
+    <a href="05-opportunity-seeker.html" class="active">Opportunity</a>
+    <a href="06-action-layer.html">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel" id="panel-5">
+  <div class="os-container">
+
+    <div class="os-header reveal">
+      <div class="os-header-eyebrow">GTM Optimization</div>
+      <h2>The <em>Opportunity Seeker</em></h2>
+      <div class="os-sub">Filter by segment, vertical, company size, deal band, region, use case, and optimization lens to isolate where conversion gaps create the largest — or smallest — optimization surface for GTM Product investment.</div>
+    </div>
+
+    <!-- ═══ FILTERS ═══ -->
+    <div class="os-filters reveal">
+      <!-- Row 1: Firmographic Dimensions -->
+      <div class="os-filter-row">
+        <div class="os-filter-group">
+          <div class="os-filter-label">Segment</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="segment" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="segment" data-value="plg">PLG</button>
+            <button class="os-filter-btn" data-filter="segment" data-value="commercial">Commercial</button>
+            <button class="os-filter-btn" data-filter="segment" data-value="enterprise">Enterprise</button>
+          </div>
+        </div>
+        <div class="os-filter-group">
+          <div class="os-filter-label">Vertical</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="vertical" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="vertical" data-value="tech">Tech</button>
+            <button class="os-filter-btn" data-filter="vertical" data-value="services">Services</button>
+            <button class="os-filter-btn" data-filter="vertical" data-value="manufacturing">Manufacturing</button>
+          </div>
+        </div>
+        <div class="os-filter-group">
+          <div class="os-filter-label">Company Size</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="companySize" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="companySize" data-value="smb">SMB</button>
+            <button class="os-filter-btn" data-filter="companySize" data-value="mid">Mid-Market</button>
+            <button class="os-filter-btn" data-filter="companySize" data-value="ent">Enterprise</button>
+          </div>
+        </div>
+      </div>
+      <!-- Row 2: Deal & Geographic + Motion -->
+      <div class="os-filter-row">
+        <div class="os-filter-group">
+          <div class="os-filter-label">ACV Band</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="acv" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="acv" data-value="sub25k">&lt;$25K</button>
+            <button class="os-filter-btn" data-filter="acv" data-value="mid">$25–100K</button>
+            <button class="os-filter-btn" data-filter="acv" data-value="over100k">$100K+</button>
+          </div>
+        </div>
+        <div class="os-filter-group">
+          <div class="os-filter-label">Region</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="region" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="region" data-value="nam">NAM</button>
+            <button class="os-filter-btn" data-filter="region" data-value="emea">EMEA</button>
+            <button class="os-filter-btn" data-filter="region" data-value="apac">APAC</button>
+          </div>
+        </div>
+        <div class="os-filter-group">
+          <div class="os-filter-label">Use Case</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="usecase" data-value="all">All</button>
+            <button class="os-filter-btn" data-filter="usecase" data-value="new_business">New Business</button>
+            <button class="os-filter-btn" data-filter="usecase" data-value="expansion">Expansion</button>
+            <button class="os-filter-btn" data-filter="usecase" data-value="retention">Retention</button>
+          </div>
+        </div>
+        <div class="os-filter-group">
+          <div class="os-filter-label">Lens</div>
+          <div class="os-filter-options">
+            <button class="os-filter-btn active" data-filter="lens" data-value="conversion">Conversion</button>
+            <button class="os-filter-btn" data-filter="lens" data-value="velocity">Velocity</button>
+            <button class="os-filter-btn" data-filter="lens" data-value="coverage">Coverage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active filter pills -->
+    <div class="os-active-filters reveal" id="os-active-filters"></div>
+
+    <!-- Funnel Viz -->
+    <div class="os-funnel reveal" id="os-funnel"></div>
+
+    <!-- Readout -->
+    <div class="os-readout reveal" id="os-readout"></div>
+
+    <!-- Insight Cards -->
+    <div class="os-insights reveal" id="os-insights"></div>
+
+    
+    
+    <!-- ══ OPERATIONAL ROSTER v3 — STAGE-ALIGNED ══ -->
+    <div class="os-rdiv reveal">
+      <span class="os-rdiv-lbl">Operational View</span>
+    </div>
+
+    <!-- Stage strip header -->
+    <div class="os3-stage-strip reveal" id="os3-strip"></div>
+
+    <!-- Human Contributors -->
+    <div class="os3-layer-hdr reveal">
+      <div class="os3-lh-badge" style="background:rgba(96,165,250,0.08);color:#60a5fa">H</div>
+      <div>
+        <div class="os3-lh-title" style="color:#60a5fa">Human Contributors</div>
+        <div class="os3-lh-sub" id="os3-human-sub"></div>
+      </div>
+      <div class="os3-lh-legend">
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#34d399"></div><span class="os3-leg-lbl">On Track</span></div>
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#fb923c"></div><span class="os3-leg-lbl">At Risk</span></div>
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#f87171"></div><span class="os3-leg-lbl">Needs Action</span></div>
+      </div>
+    </div>
+    <div class="os3-grid reveal" id="os3-humans"></div>
+
+    <!-- AI Agent Teams -->
+    <div class="os3-layer-hdr reveal">
+      <div class="os3-lh-badge" style="background:rgba(167,139,250,0.08);color:#a78bfa">A</div>
+      <div>
+        <div class="os3-lh-title" style="color:#a78bfa">AI Agent Teams</div>
+        <div class="os3-lh-sub" id="os3-agent-sub"></div>
+      </div>
+      <div class="os3-lh-legend">
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#34d399"></div><span class="os3-leg-lbl">Deployed</span></div>
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#fb923c"></div><span class="os3-leg-lbl">Building</span></div>
+        <div class="os3-leg-item"><div class="os3-leg-dot" style="background:#f87171"></div><span class="os3-leg-lbl">Not Started</span></div>
+      </div>
+    </div>
+    <div class="os3-grid reveal" id="os3-agents"></div>
+
+
+
+  </div>
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+// Single global IntersectionObserver
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+<script>
+(function(){
+/* ═══ MULTI-DIMENSIONAL DATA MODEL ═══
+   Keyed by: segment, then optional facets (vertical, companySize, acv, region, usecase, lens)
+   Fallback: if a combination doesn't exist, walk up to the nearest parent.
+   Data structure: { stages:[], readout:{}, insights:[] }
+*/
+
+// ── BASE DATA by segment×usecase×lens ──
+var BASE = {
+all:{all:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"~2.4M",color:"#a78bfa"},{name:"Education",cr:"CR1: 3.2%",pct:38,vol:"~78K",color:"#818cf8"},{name:"Selection",cr:"CR2: 18%",pct:14,vol:"~14K",color:"#60a5fa"},{name:"Commit",cr:"CR3: 22%",pct:5,vol:"~3.1K",color:"#34d399",commit:true},{name:"Onboard",cr:"CR4: 74%",pct:3.7,vol:"~2.3K",color:"#fbbf24"},{name:"Impact",cr:"CR5: 85%",pct:3.1,vol:"~1.9K",color:"#f87171"},{name:"Grow",cr:"CR6: 31%",pct:1,vol:"~600",color:"#f472b6"}],readout:{biggest:"CR3: SQL→Won",biggestVal:"22%",biggestCtx:"Win rate across all segments — below industry benchmark of 28-35%",surface:"Selection → Commit",surfaceVal:"~$48M",surfaceCtx:"Estimated ARR impact of closing the win rate gap to industry median",action:"FLM Coaching Layer",actionVal:"26 FLMs",actionCtx:"Primary delivery mechanism — coaching intelligence agents, deal inspection, MEDDPIC enforcement"},insights:[{tag:"bottleneck",title:"Win Rate is the Chokepoint",body:"At 22% blended win rate, conversion is at 60-70% of benchmarks. Every 1pp improvement = ~$4M incremental ARR."},{tag:"opportunity",title:"Expansion is Under-Indexed",body:"Only 50% of the expandable install base is assigned to sales. CR6 at 31% has significant headroom."},{tag:"leverage",title:"CR4 is Quietly Strong",body:"Won→Active at 74% suggests the IER motion works. Opportunity: accelerate time-to-first-value."},{tag:"action",title:"Instrument Before Optimizing",body:"Knowledge Vault must be operational before optimization scales. Without per-rep tracking, coaching can't personalize."}]},velocity:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"Avg 0d",color:"#a78bfa"},{name:"Education",cr:"14d avg",pct:72,vol:"2 weeks",color:"#818cf8"},{name:"Selection",cr:"38d avg",pct:48,vol:"5.4 weeks",color:"#60a5fa"},{name:"Commit",cr:"12d avg",pct:28,vol:"Close cycle",color:"#34d399",commit:true},{name:"Onboard",cr:"21d avg",pct:22,vol:"3 weeks",color:"#fbbf24"},{name:"Impact",cr:"45d avg",pct:15,vol:"6.4 weeks",color:"#f87171"},{name:"Grow",cr:"90d avg",pct:8,vol:"~1 quarter",color:"#f472b6"}],readout:{biggest:"Selection Stage",biggestVal:"38 days",biggestCtx:"Longest acquisition stage — deals stall in evaluation and competitive bake-offs",surface:"Total Cycle",surfaceVal:"85 days",surfaceCtx:"Blended avg MQL→close. Enterprise 120+ days; Commercial 55 days",action:"Deal Velocity Agents",actionVal:"3 agents",actionCtx:"Deal Strategy Assist, stall detection, competitive positioning triggers"},insights:[{tag:"bottleneck",title:"Selection Stage is the Time Sink",body:"38 days in Selection = 45% of total sales cycle. Competitive evaluation and multi-stakeholder alignment."},{tag:"opportunity",title:"Champion Enablement Compresses Cycles",body:"Deals with an identified champion close 40% faster. Prioritize champion ID tools."},{tag:"leverage",title:"Onboarding Velocity Drives Expansion",body:"Customers reaching first value in 14 days expand 2.3x more than those taking 30+ days."},{tag:"action",title:"Stage-Specific Playbooks Needed",body:"Each stage needs its own velocity playbook — discovery frameworks, POC templates, implementation runbooks."}]},coverage:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"Marketing",color:"#a78bfa"},{name:"Education",cr:"Mixed",pct:60,vol:"PLG + Sales",color:"#818cf8"},{name:"Selection",cr:"135 AEs",pct:42,vol:"COM + ENT",color:"#60a5fa"},{name:"Commit",cr:"26 FLMs",pct:30,vol:"Mgmt layer",color:"#34d399",commit:true},{name:"Onboard",cr:"CSMs",pct:25,vol:"1:40 ratio",color:"#fbbf24"},{name:"Impact",cr:"TAMs",pct:18,vol:"1:100 ratio",color:"#f87171"},{name:"Grow",cr:"50% assigned",pct:12,vol:"Half uncovered",color:"#f472b6"}],readout:{biggest:"Expansion Coverage",biggestVal:"50%",biggestCtx:"Half of expandable install base has no dedicated sales coverage",surface:"Post-Sales Gap",surfaceVal:"1:100",surfaceCtx:"TAM ratios mean most accounts get reactive attention only",action:"AI Coverage Extension",actionVal:"Digital+Agent",actionCtx:"For uncovered 50%, AI agents become the primary expansion motion"},insights:[{tag:"bottleneck",title:"Enterprise FLM Ratio Stretched",body:"4 Enterprise FLMs for 32→45 AEs = spans of 8-11. Coaching degrades above 6-7 directs without AI."},{tag:"opportunity",title:"PLG-to-Sales Handoff Leaking",body:"Self-serve users with enterprise patterns aren't routed efficiently. Needs propensity scoring."},{tag:"leverage",title:"FLM Layer is the Force Multiplier",body:"26 FLMs influence 135+ AEs. Improving FLM coaching = 5x leverage vs individual rep training."},{tag:"action",title:"Tiered Coverage Model",body:"High-touch (AE-owned), tech-touch (agent-assisted), digital (fully automated) — by propensity."}]}},new_business:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"New logos",color:"#a78bfa"},{name:"Education",cr:"CR1: 2.8%",pct:34,vol:"~58K",color:"#818cf8"},{name:"Selection",cr:"CR2: 15%",pct:11,vol:"~8.7K",color:"#60a5fa"},{name:"Commit",cr:"CR3: 19%",pct:3.5,vol:"~1.7K",color:"#34d399",commit:true},{name:"Onboard",cr:"CR4: 70%",pct:2.5,vol:"~1.2K",color:"#fbbf24"},{name:"Impact",cr:"CR5: 82%",pct:2,vol:"~980",color:"#f87171"},{name:"Grow",cr:"—",pct:0.5,vol:"N/A",color:"#f472b6"}],readout:{biggest:"CR3: SQL→Won",biggestVal:"19%",biggestCtx:"New business win rate 3pp below blended — longer cycles, more competition",surface:"New Logo Gap",surfaceVal:"~$28M",surfaceCtx:"ARR gap between current and target new business win rates",action:"Discovery + MEDDPIC",actionVal:"Phase 1",actionCtx:"Coaching agents focused on discovery quality and MEDDPIC rigor"},insights:[{tag:"bottleneck",title:"Discovery Quality Drives Everything",body:"Reps running 3+ discovery calls before demo have 2.4x higher win rates. Most jump to demo after 1."},{tag:"opportunity",title:"MEDDPIC Adoption is Uneven",body:"72% field completion masks only 34% with meaningful EB documentation."},{tag:"leverage",title:"Competitive Win Rate Variance",body:"Win rate vs Asana: 31%. Vs Monday.com: 18%. Playbooks should be opponent-specific."},{tag:"action",title:"New Logo Coaching Cadence",body:"FLMs should run deal coaching on every new logo opp above $30K with AI-generated briefs."}]}},expansion:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"Install base",color:"#a78bfa"},{name:"Education",cr:"Usage signals",pct:65,vol:"Active users",color:"#818cf8"},{name:"Selection",cr:"Propensity",pct:40,vol:"Expansion-ready",color:"#60a5fa"},{name:"Commit",cr:"CR: 35%",pct:18,vol:"Upsell close",color:"#34d399",commit:true},{name:"Onboard",cr:"Feature adopt",pct:14,vol:"New features",color:"#fbbf24"},{name:"Impact",cr:"CR5: 91%",pct:12,vol:"Retained",color:"#f87171"},{name:"Grow",cr:"CR6: 31%",pct:5,vol:"Multi-expand",color:"#f472b6"}],readout:{biggest:"Coverage Gap",biggestVal:"50%",biggestCtx:"Half of expansion-eligible accounts have no dedicated AE",surface:"Expansion ARR",surfaceVal:"~$22M",surfaceCtx:"Addressable expansion revenue from uncovered accounts",action:"Expansion Playbook",actionVal:"Phase 2",actionCtx:"Whitespace analysis, certified agent upsell triggers, seat expansion signals"},insights:[{tag:"bottleneck",title:"Coverage is the Binding Constraint",body:"50% of expandable accounts are digital/TAM-only. AI agents must fill the gap."},{tag:"opportunity",title:"Certified Agents are the Wedge",body:"12% attach rate on eligible accounts. Each attach = ~$18K ARR. Highest-margin expansion."},{tag:"leverage",title:"Usage Precedes Expansion",body:"Accounts at 80%+ weekly active usage expand 3.2x vs 40-60%. Onboarding feeds expansion."},{tag:"action",title:"Propensity-Triggered Outreach",body:"When usage threshold AND whitespace AND no opp → surface to AE with pre-built context."}]}},retention:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"Active base",color:"#a78bfa"},{name:"Education",cr:"Health score",pct:85,vol:"Healthy",color:"#818cf8"},{name:"Selection",cr:"At-risk",pct:15,vol:"~450 accts",color:"#60a5fa"},{name:"Commit",cr:"Save rate",pct:8,vol:"Intervention",color:"#34d399",commit:true},{name:"Onboard",cr:"Re-engage",pct:6,vol:"Re-activated",color:"#fbbf24"},{name:"Impact",cr:"CR5: 85%",pct:5,vol:"Retained",color:"#f87171"},{name:"Grow",cr:"Renewal",pct:4,vol:"Renewed",color:"#f472b6"}],readout:{biggest:"At-Risk Detection",biggestVal:"15%",biggestCtx:"15% of active base shows churn signals — usage decline, support spikes, champion departure",surface:"Retention Value",surfaceVal:"~$49M",surfaceCtx:"ARR at risk. 5pp save rate improvement protects ~$2.5M annually",action:"Health Monitoring",actionVal:"H2 Priority",actionCtx:"Post-sales health dashboards, churn prediction, automated re-engagement"},insights:[{tag:"bottleneck",title:"Churn is a Lagging Signal",body:"By the time NRR shows churn, the customer decided months ago. Leading indicators must trigger earlier."},{tag:"opportunity",title:"Self-Serve Churn is Invisible",body:"PLG customers churn silently. For ~50% of ARR, only retention motion is product experience."},{tag:"leverage",title:"IER Quality Predicts Retention",body:"Full IER onboarding: 92% retention. Partial: 71%. Retention problem starts at onboarding."},{tag:"action",title:"Tiered Intervention Model",body:"High-value: CSM save. Mid-value: agent re-engagement. Low-value: automated win-back."}]}}}
+,plg:{all:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"~2.1M visits",color:"#a78bfa"},{name:"Education",cr:"Sign-up: 4.1%",pct:42,vol:"~86K",color:"#818cf8"},{name:"Selection",cr:"Activate: 23%",pct:18,vol:"~20K",color:"#60a5fa"},{name:"Commit",cr:"Convert: 4.8%",pct:2.5,vol:"~960",color:"#34d399",commit:true},{name:"Onboard",cr:"Setup: 68%",pct:1.7,vol:"~650",color:"#fbbf24"},{name:"Impact",cr:"Retain: 78%",pct:1.3,vol:"~510",color:"#f87171"},{name:"Grow",cr:"Upgrade: 22%",pct:0.5,vol:"~112",color:"#f472b6"}],readout:{biggest:"Activation→Convert",biggestVal:"4.8%",biggestCtx:"Free-to-paid conversion is the PLG bottleneck — most users never hit paywall",surface:"PLG Revenue",surfaceVal:"~$165M",surfaceCtx:"~50% of $330M ARR. Small conversion improvements have outsized impact",action:"Product-Led Growth",actionVal:"Product Team",actionCtx:"Primarily product org — GTM P&P supports through signal routing and handoff triggers"},insights:[{tag:"bottleneck",title:"Activation is the Gate",body:"23% activation = 77% of sign-ups never build a meaningful workspace. First 48 hours decisive."},{tag:"opportunity",title:"PLG→Sales Bridge",body:"~3% of free users show enterprise patterns (10+ members). Most go undetected — should route to AEs."},{tag:"leverage",title:"Self-Serve Expansion",body:"PLG tier upgrades at 22% are product-driven. AI-surfaced feature gates could push toward 28-30%."},{tag:"action",title:"Outside Core Scope",body:"PLG optimization is Product + Growth. GTM P&P ensures handoff to sales at enterprise thresholds."}]}}}
+,commercial:{all:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"Inbound + BDR",color:"#a78bfa"},{name:"Education",cr:"CR1: 3.5%",pct:40,vol:"Demos + trials",color:"#818cf8"},{name:"Selection",cr:"CR2: 21%",pct:16,vol:"~4.2K SQLs",color:"#60a5fa"},{name:"Commit",cr:"CR3: 24%",pct:6,vol:"~1K won",color:"#34d399",commit:true},{name:"Onboard",cr:"CR4: 76%",pct:4.5,vol:"~780",color:"#fbbf24"},{name:"Impact",cr:"CR5: 86%",pct:3.9,vol:"~670",color:"#f87171"},{name:"Grow",cr:"CR6: 28%",pct:1.2,vol:"~190",color:"#f472b6"}],readout:{biggest:"CR3: SQL→Won",biggestVal:"24%",biggestCtx:"Commercial win rate has 4-6pp headroom. 103 AEs × $800K quota = highest volume motion",surface:"Commercial Gap",surfaceVal:"~$18M",surfaceCtx:"ARR impact of closing win rate to 28% across 103 AEs",action:"FLM Coaching",actionVal:"17 FLMs",actionCtx:"17 Commercial FLMs — coaching briefs, deal inspection, MEDDPIC enforcement"},insights:[{tag:"bottleneck",title:"Mid-Funnel Stall Rate",body:"28% of Commercial SQLs go dark in Selection for 14+ days. Stall detection could trigger re-engagement."},{tag:"opportunity",title:"Certified Agent Attach",body:"Only 8% of Commercial deals include Certified Agents. AEs aren't positioning them in discovery."},{tag:"leverage",title:"FLM Span is Manageable",body:"17 FLMs / 103 AEs = ~6 directs. Ideal ratio. Constraint is coaching quality, not span."},{tag:"action",title:"Phase 1 Primary Target",body:"Commercial is H1 focus. Highest volume, best FLM ratio, most data-rich (highest Gong coverage)."}]}}}
+,enterprise:{all:{conversion:{stages:[{name:"Awareness",cr:"—",pct:100,vol:"ABM + Outbound",color:"#a78bfa"},{name:"Education",cr:"CR1: 1.8%",pct:28,vol:"POC + Workshop",color:"#818cf8"},{name:"Selection",cr:"CR2: 12%",pct:10,vol:"~1.2K SQLs",color:"#60a5fa"},{name:"Commit",cr:"CR3: 18%",pct:3,vol:"~220 won",color:"#34d399",commit:true},{name:"Onboard",cr:"CR4: 82%",pct:2.5,vol:"~180",color:"#fbbf24"},{name:"Impact",cr:"CR5: 89%",pct:2.2,vol:"~160",color:"#f87171"},{name:"Grow",cr:"CR6: 38%",pct:1,vol:"~61",color:"#f472b6"}],readout:{biggest:"CR3: SQL→Won",biggestVal:"18%",biggestCtx:"Enterprise win rate significantly below 25-30% benchmark. Longest cycles, highest stakes",surface:"Enterprise Gap",surfaceVal:"~$12M",surfaceCtx:"Each 1pp improvement = ~$1.2M ARR given $1M quotas and 32→45 AEs",action:"Enterprise FLMs",actionVal:"4→9 FLMs",actionCtx:"Scaling from 4 to 9 — each new FLM needs Vault onboarding and agent deployment"},insights:[{tag:"bottleneck",title:"Win Rate is Critical",body:"18% = 82% of qualified pipeline lost. At $1M quotas, most expensive gap in the business."},{tag:"opportunity",title:"Multi-Threading Deficit",body:"Deals with 3+ contacts win 2.1x more. Only 29% of Enterprise opps are multi-threaded."},{tag:"leverage",title:"FLM Scaling is the Moment",body:"4→9 FLMs is greenfield. Standing up the Vault before ramp = AI-native coaching from Day 1."},{tag:"action",title:"Security + Legal Acceleration",body:"32% of cycle is security/legal. Pre-populated questionnaires could compress by 2-3 weeks."}]}}
+}};
+
+// ── FACET OVERLAYS — modify base data when a facet filter is active ──
+// Each overlay patches readout/insights contextually
+var FACETS = {
+vertical: {
+  tech: {label:"Tech",patch:{readout:{biggestCtx:"+Tech vertical: Higher product sophistication drives longer evaluation but 4pp better win rate vs blended. Tech buyers respond to API depth and integration breadth."},insights:[{idx:1,body:"Tech vertical shows 2.1x higher Certified Agent attach — API-first buyers see agent value immediately."}]}},
+  services: {label:"Prof. Services",patch:{readout:{biggestCtx:"+Services vertical: Decision cycles driven by ROI documentation. Win rate 2pp below blended — needs concrete value calculators and case studies."},insights:[{idx:1,body:"Services firms expand 40% faster than tech — once adopted, project management becomes org-wide. Land-and-expand is the play."}]}},
+  manufacturing: {label:"Manufacturing",patch:{readout:{biggestCtx:"+Manufacturing vertical: Lowest digital maturity segment. Highest churn risk but also highest expansion potential — greenfield workspace adoption."},insights:[{idx:0,body:"Manufacturing has 35% longer onboarding cycles due to change management complexity. IER white-glove critical here."}]}}
+},
+companySize: {
+  smb: {label:"SMB (<200 emp)",patch:{readout:{surfaceCtx:"+SMB: High volume, low ACV. PLG-dominant motion — 85% of SMB revenue is self-serve. Optimization surface is product experience, not sales coverage."},insights:[{idx:2,body:"SMB accounts that hit activation within 72 hours retain at 88%. Speed-to-value is the only lever that matters here."}]}},
+  mid: {label:"Mid-Market (200-2K)",patch:{readout:{surfaceCtx:"+Mid-Market: The conversion sweet spot. High enough ACV to justify sales touch, short enough cycles to iterate fast. 55% of new logo pipeline."},insights:[{idx:2,body:"Mid-Market is where MEDDPIC adoption has most impact — deals are complex enough to need qualification rigor but not so large they get executive attention by default."}]}},
+  ent: {label:"Enterprise (2K+)",patch:{readout:{surfaceCtx:"+Enterprise: Highest ACV, longest cycle, most complex stakeholder map. Multi-threading and executive alignment are table stakes. Security review is the hidden bottleneck."},insights:[{idx:2,body:"Enterprise 2K+ employee accounts have 3.4x higher expansion potential but require dedicated CSM coverage to realize it. ROI is there but capacity is the constraint."}]}}
+},
+acv: {
+  sub25k: {label:"<$25K ACV",patch:{readout:{actionCtx:"+Sub-$25K: High velocity, low touch. Digital-first selling motion — AE involvement should be reserved for accounts showing enterprise usage patterns."},insights:[{idx:3,body:"Deals under $25K that involve more than 2 sales calls have negative ROI on rep time. Automate the bottom, coach the top."}]}},
+  mid: {label:"$25–100K ACV",patch:{readout:{actionCtx:"+$25-100K: Core commercial band. This is where FLM coaching has maximum ROI — enough deal complexity to benefit from MEDDPIC but enough volume to see patterns."},insights:[{idx:3,body:"$25-100K band responds most to competitive positioning. Win rate variance between best and worst competitive playbooks is 14pp in this band."}]}},
+  over100k: {label:"$100K+ ACV",patch:{readout:{actionCtx:"+$100K+: Enterprise deal dynamics. Procurement, legal, security — each adds 2-3 weeks. The optimization surface is cycle compression, not conversion rate lift."},insights:[{idx:3,body:"$100K+ deals with executive sponsor involvement close at 2.8x the rate. Champion programs and exec alignment playbooks are non-negotiable."}]}}
+},
+region: {
+  nam: {label:"NAM",patch:{readout:{biggestCtx:"+NAM: 68% of pipeline. Highest rep density, most mature motion. Optimization is about coaching quality depth, not coverage gaps."},insights:[{idx:0,body:"NAM has the best Gong coverage (94% of calls recorded) making it the ideal pilot region for AI coaching agents. Data density enables personalization."}]}},
+  emea: {label:"EMEA",patch:{readout:{biggestCtx:"+EMEA: 22% of pipeline. MEDDPIC adoption lags NAM by ~18pp. Regional FLM span averaging 8.5 directs — above coaching quality threshold."},insights:[{idx:0,body:"EMEA win rate is 4pp below NAM with similar deal profiles. Gap is coaching consistency — targeted FLM capability launch needed Q2."}]}},
+  apac: {label:"APAC",patch:{readout:{biggestCtx:"+APAC: 10% of pipeline, growing 40% YoY. Greenfield territory with limited FLM coverage. Digital-first GTM motion with agent-assisted expansion."},insights:[{idx:0,body:"APAC is 90% inbound-driven today. Outbound motion doesn't exist yet — opportunity to build AI-native prospecting from Day 1 without legacy habits."}]}}
+}
+};
+
+// ── STATE ──
+var state = {segment:"all",vertical:"all",companySize:"all",acv:"all",region:"all",usecase:"all",lens:"conversion"};
+var DIMS = ["segment","vertical","companySize","acv","region","usecase","lens"];
+var DIM_LABELS = {segment:"Segment",vertical:"Vertical",companySize:"Size",acv:"ACV",region:"Region",usecase:"Use Case",lens:"Lens"};
+
+// ── DATA RESOLVER ──
+function getData(){
+  // 1. Get base data from segment × usecase × lens
+  var seg = BASE[state.segment] || BASE.all;
+  var uc = seg[state.usecase] || seg.all || BASE.all.all;
+  var d = uc[state.lens] || uc.conversion || BASE.all.all.conversion;
+  // Deep clone
+  d = JSON.parse(JSON.stringify(d));
+
+  // 2. Apply facet overlays
+  ["vertical","companySize","acv","region"].forEach(function(dim){
+    if(state[dim]!=="all" && FACETS[dim] && FACETS[dim][state[dim]]){
+      var p = FACETS[dim][state[dim]].patch;
+      if(p.readout){
+        Object.keys(p.readout).forEach(function(k){
+          // Append context rather than replace (prefixed with +)
+          if(typeof p.readout[k]==="string" && p.readout[k].charAt(0)==="+"){
+            d.readout[k] = d.readout[k] + "<br><span style='color:var(--text-mid);font-weight:500'>" + p.readout[k].substring(1) + "</span>";
+          } else {
+            d.readout[k] = p.readout[k];
+          }
+        });
+      }
+      if(p.insights){
+        p.insights.forEach(function(pi){
+          if(d.insights[pi.idx]){
+            d.insights[pi.idx].body = d.insights[pi.idx].body + "<br><span style='color:var(--text-mid);font-style:italic;font-size:10px'>" + pi.body + "</span>";
+          }
+        });
+      }
+    }
+  });
+  return d;
+}
+
+// ── RENDER ──
+function render(){
+  var d = getData();
+  renderFunnel(d.stages);
+  renderReadout(d.readout);
+  renderInsights(d.insights);
+  renderActiveFilters();
+}
+
+function renderFunnel(stages){
+  document.getElementById("os-funnel").innerHTML = stages.map(function(s){
+    return '<div class="os-stage'+(s.commit?" commit-stage":"")+'"><div class="os-stage-fill" style="height:'+Math.max(s.pct,8)+"%;background:"+s.color+'"></div><div class="os-stage-content"><div class="os-stage-name" style="color:'+s.color+'">'+s.name+'</div><div class="os-stage-pct" style="color:'+s.color+'">'+s.pct+'%</div><div class="os-stage-vol">'+s.vol+'</div><div class="os-stage-cr">'+s.cr+"</div></div></div>";
+  }).join("");
+}
+
+function renderReadout(r){
+  document.getElementById("os-readout").innerHTML = '<div class="os-readout-cell"><div class="os-readout-label" style="color:#f87171">Biggest Gap</div><div class="os-readout-value" style="color:#f87171">'+r.biggestVal+'</div><div class="os-readout-context"><strong>'+r.biggest+"</strong><br>"+r.biggestCtx+'</div></div><div class="os-readout-divider"></div><div class="os-readout-cell"><div class="os-readout-label" style="color:#34d399">Optimization Surface</div><div class="os-readout-value" style="color:#34d399">'+r.surfaceVal+'</div><div class="os-readout-context"><strong>'+r.surface+"</strong><br>"+r.surfaceCtx+'</div></div><div class="os-readout-divider"></div><div class="os-readout-cell"><div class="os-readout-label" style="color:#60a5fa">Action Layer</div><div class="os-readout-value" style="color:#60a5fa">'+r.actionVal+'</div><div class="os-readout-context"><strong>'+r.action+"</strong><br>"+r.actionCtx+"</div></div>";
+}
+
+function renderInsights(ins){
+  document.getElementById("os-insights").innerHTML = ins.map(function(i){
+    return '<div class="os-insight"><div class="os-insight-tag '+i.tag+'">'+i.tag+'</div><div class="os-insight-title">'+i.title+'</div><div class="os-insight-body">'+i.body+"</div></div>";
+  }).join("");
+}
+
+function renderActiveFilters(){
+  var el = document.getElementById("os-active-filters");
+  var tags = [];
+  var anyActive = false;
+  DIMS.forEach(function(dim){
+    if(state[dim]!=="all" && !(dim==="lens" && state[dim]==="conversion")){
+      anyActive = true;
+      // Get label from the button
+      var btn = document.querySelector('[data-filter="'+dim+'"][data-value="'+state[dim]+'"]');
+      var label = btn ? btn.textContent.trim() : state[dim];
+      tags.push('<span class="os-af-tag"><span class="os-af-dim">'+DIM_LABELS[dim]+':</span> '+label+'</span>');
+    }
+  });
+  if(anyActive){
+    tags.push('<span class="os-af-reset" id="os-reset-btn">Reset All</span>');
+  }
+  el.innerHTML = tags.join("");
+
+  // Reset handler
+  var rb = document.getElementById("os-reset-btn");
+  if(rb){
+    rb.addEventListener("click",function(){
+      DIMS.forEach(function(dim){ state[dim] = "all"; });
+      state.lens = "conversion";
+      document.querySelectorAll(".os-filter-btn").forEach(function(b){
+        b.classList.toggle("active", b.dataset.value === "all" || (b.dataset.filter==="lens" && b.dataset.value==="conversion"));
+      });
+      render();
+    });
+  }
+}
+
+// ── FILTER HANDLERS ──
+document.querySelectorAll(".os-filter-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    var f = this.dataset.filter, v = this.dataset.value;
+    state[f] = v;
+    // Update active states within this group
+    this.closest(".os-filter-options").querySelectorAll(".os-filter-btn").forEach(function(b){ b.classList.remove("active"); });
+    this.classList.add("active");
+    // Fallback: if segment changes, check usecase availability
+    var seg = BASE[state.segment] || BASE.all;
+    if(!seg[state.usecase]){
+      state.usecase = "all";
+      document.querySelectorAll('[data-filter="usecase"]').forEach(function(b){ b.classList.toggle("active", b.dataset.value==="all"); });
+    }
+    var uc = seg[state.usecase] || seg.all || BASE.all.all;
+    if(!uc[state.lens]){
+      state.lens = "conversion";
+      document.querySelectorAll('[data-filter="lens"]').forEach(function(b){ b.classList.toggle("active", b.dataset.value==="conversion"); });
+    }
+    render();
+  });
+});
+
+// ── INIT ──
+render();
+
+
+
+
+// ═══ OPERATIONAL ROSTER v3 — STAGE-ALIGNED ═══
+var S3_NAMES=['Awareness','Education','Selection','Commit','Onboard','Impact','Grow'];
+var S3_COLORS=['#a78bfa','#818cf8','#60a5fa','#34d399','#fbbf24','#f87171','#f472b6'];
+
+var HUMANS=[
+  // 0: Awareness
+  [{role:"XDR MGR",name:"BDR Lead — West",metric:"Pipeline gen <strong>112%</strong> of target",st:"g",tags:[{t:"Outbound",c:"g"},{t:"12 BDRs",c:"b"}]},
+   {role:"XDR MGR",name:"BDR Lead — East",metric:"Pipeline gen <strong>87%</strong> — ramping 3 new",st:"y",tags:[{t:"Inbound+Out",c:"y"},{t:"10 BDRs",c:"b"}]}],
+  // 1: Education
+  [{role:"FLM",name:"Sarah Chen",metric:"Demo→Opp <strong>34%</strong> · 6 AEs",st:"g",tags:[{t:"Mid-Market",c:"g"},{t:"SE aligned",c:"b"}]},
+   {role:"FLM",name:"Marcus Rivera",metric:"Demo→Opp <strong>28%</strong> · 5 AEs",st:"y",tags:[{t:"SMB",c:"y"},{t:"No SE",c:"r"}]},
+   {role:"FLM",name:"Priya Patel",metric:"Demo→Opp <strong>41%</strong> · 7 AEs",st:"g",tags:[{t:"Mid-Market",c:"g"},{t:"Top performer",c:"g"}]}],
+  // 2: Selection
+  [{role:"FLM",name:"James Okafor",metric:"Win rate <strong>28%</strong> · MEDDPIC 84%",st:"g",tags:[{t:"Above bench",c:"g"},{t:"6 AEs",c:"b"}]},
+   {role:"FLM",name:"Emily Zhang",metric:"Win rate <strong>21%</strong> · MEDDPIC 52%",st:"r",tags:[{t:"Below bench",c:"r"},{t:"7 AEs",c:"b"}]},
+   {role:"FLM",name:"David Kim",metric:"Win rate <strong>24%</strong> · MEDDPIC 71%",st:"g",tags:[{t:"At bench",c:"g"},{t:"5 AEs",c:"b"}]},
+   {role:"FLM",name:"Ana Morales",metric:"Win rate <strong>26%</strong> · MEDDPIC 78%",st:"g",tags:[{t:"Trending up",c:"g"},{t:"6 AEs",c:"b"}]}],
+  // 3: Commit
+  [{role:"FLM",name:"Tom Bradley",metric:"Close cycle <strong>48d</strong> avg",st:"y",tags:[{t:"Negotiation",c:"o"},{t:"Legal lag",c:"r"}]},
+   {role:"FLM",name:"Lisa Nguyen",metric:"Close cycle <strong>38d</strong> avg",st:"g",tags:[{t:"Fast close",c:"g"},{t:"6 AEs",c:"b"}]}],
+  // 4: Onboard
+  [{role:"FLM",name:"Rachel Foster",metric:"TTV <strong>18d</strong> · IER 82%",st:"g",tags:[{t:"CS-aligned",c:"g"},{t:"Handoff strong",c:"b"}]},
+   {role:"FLM",name:"Mike Tanaka",metric:"TTV <strong>31d</strong> · IER 54%",st:"r",tags:[{t:"Handoff gap",c:"r"},{t:"4 AEs",c:"b"}]}],
+  // 5: Impact
+  [{role:"FLM",name:"Karen Dubois",metric:"NPS <strong>62</strong> · Health 78%",st:"y",tags:[{t:"Usage dipping",c:"y"},{t:"Renewal Q2",c:"o"}]},
+   {role:"FLM",name:"Jordan Bell",metric:"NPS <strong>74</strong> · Health 91%",st:"g",tags:[{t:"Stable",c:"g"},{t:"Advocacy",c:"b"}]}],
+  // 6: Grow
+  [{role:"FLM",name:"Chris Lawson",metric:"Expansion <strong>24%</strong> attach",st:"g",tags:[{t:"Cert Agent 8%",c:"o"},{t:"Seats ok",c:"g"}]},
+   {role:"FLM",name:"Nina Petrova",metric:"Expansion <strong>38%</strong> attach",st:"g",tags:[{t:"Cert Agent 19%",c:"g"},{t:"Top expander",c:"g"}]}]
+];
+
+var AGENTS=[
+  // 0: Awareness
+  [{name:"Lead Scoring Engine",desc:"ICP fit scoring · <strong>deployed</strong>",st:"g",tags:[{t:"SFDC MCP",c:"b"},{t:"Auto-route",c:"b"}]},
+   {name:"Intent Signal Aggregator",desc:"6sense + G2 signals · <strong>building</strong>",st:"y",tags:[{t:"API integration",c:"o"}]}],
+  // 1: Education
+  [{name:"Discovery Coach",desc:"3-whys enforcement · <strong>deployed</strong>",st:"g",tags:[{t:"Gong MCP",c:"b"},{t:"Real-time",c:"g"}]},
+   {name:"Competitive Intel Bot",desc:"Battle cards per deal · <strong>building</strong>",st:"y",tags:[{t:"Gong + Web",c:"b"},{t:"Q2 launch",c:"o"}]}],
+  // 2: Selection
+  [{name:"Deal Strategy Assist",desc:"EB identification · <strong>deployed</strong>",st:"g",tags:[{t:"SFDC MCP",c:"b"},{t:"Multi-thread",c:"b"}]},
+   {name:"MEDDPIC Enforcer",desc:"Field completion audit · <strong>deployed</strong>",st:"g",tags:[{t:"SFDC MCP",c:"b"},{t:"Auto-flag",c:"g"}]},
+   {name:"Stall Detection",desc:"14d no-activity alert · <strong>building</strong>",st:"y",tags:[{t:"SFDC + Gong",c:"b"}]}],
+  // 3: Commit
+  [{name:"Proposal Generator",desc:"Auto-build from SFDC · <strong>not started</strong>",st:"r",tags:[{t:"Phase 3",c:"o"},{t:"Template",c:"b"}]},
+   {name:"Legal Accelerator",desc:"Security Q pre-fill · <strong>not started</strong>",st:"r",tags:[{t:"Phase 3",c:"o"},{t:"Procurement",c:"b"}]}],
+  // 4: Onboard
+  [{name:"Ramp Orchestrator",desc:"Milestone sequencing · <strong>deployed</strong>",st:"g",tags:[{t:"ClickUp Agent",c:"b"},{t:"Gates",c:"g"}]},
+   {name:"IER Intake Bot",desc:"Auto workspace setup · <strong>building</strong>",st:"y",tags:[{t:"ClickUp API",c:"b"},{t:"Templates",c:"b"}]}],
+  // 5: Impact
+  [{name:"Health Monitor",desc:"Usage + sentiment tracking · <strong>not started</strong>",st:"r",tags:[{t:"H2 roadmap",c:"o"},{t:"Product data",c:"b"}]},
+   {name:"Churn Predictor",desc:"90d risk scoring · <strong>not started</strong>",st:"r",tags:[{t:"H2 roadmap",c:"o"},{t:"ML model",c:"b"}]}],
+  // 6: Grow
+  [{name:"Expansion Play Trigger",desc:"Whitespace + propensity · <strong>building</strong>",st:"y",tags:[{t:"SFDC + Usage",c:"b"},{t:"Phase 2",c:"o"}]},
+   {name:"Cert Agent Recommender",desc:"Account fit scoring · <strong>not started</strong>",st:"r",tags:[{t:"Phase 2",c:"o"},{t:"Product API",c:"b"}]}]
+];
+
+function renderStageStrip3(){
+  var el=document.getElementById('os3-strip');
+  var h='';
+  for(var i=0;i<7;i++){
+    h+='<div class="os3-stage-cell" style="color:'+S3_COLORS[i]+'">'+S3_NAMES[i].toUpperCase()+'</div>';
+  }
+  el.innerHTML=h;
+}
+
+function renderHumans3(){
+  var el=document.getElementById('os3-humans');
+  var total=0,green=0,yellow=0,red=0;
+  var h='';
+  for(var i=0;i<7;i++){
+    h+='<div class="os3-col">';
+    var people=HUMANS[i]||[];
+    for(var j=0;j<people.length;j++){
+      var p=people[j];
+      total++;
+      if(p.st==='g')green++;else if(p.st==='y')yellow++;else red++;
+      var dc=p.st==='g'?'#34d399':p.st==='y'?'#fb923c':'#f87171';
+      h+='<div class="os3-card">';
+      h+='<div class="os3-card-top"><span class="os3-card-role">'+p.role+'</span><span class="os3-card-dot" style="background:'+dc+'"></span></div>';
+      h+='<div class="os3-card-name">'+p.name+'</div>';
+      h+='<div class="os3-card-metric">'+p.metric+'</div>';
+      if(p.tags&&p.tags.length){
+        h+='<div class="os3-card-tags">';
+        for(var k=0;k<p.tags.length;k++) h+='<span class="os3-tag os3-tag-'+p.tags[k].c+'">'+p.tags[k].t+'</span>';
+        h+='</div>';
+      }
+      h+='</div>';
+    }
+    h+='</div>';
+  }
+  el.innerHTML=h;
+  document.getElementById('os3-human-sub').textContent=total+' Frontline Managers across 7 bowtie stages — '+green+' on track, '+yellow+' at risk, '+red+' needs action';
+}
+
+function renderAgents3(){
+  var el=document.getElementById('os3-agents');
+  var deployed=0,building=0,notstarted=0;
+  var h='';
+  for(var i=0;i<7;i++){
+    h+='<div class="os3-col">';
+    var agents=AGENTS[i]||[];
+    for(var j=0;j<agents.length;j++){
+      var a=agents[j];
+      if(a.st==='g')deployed++;else if(a.st==='y')building++;else notstarted++;
+      var dc=a.st==='g'?'#34d399':a.st==='y'?'#fb923c':'#f87171';
+      h+='<div class="os3-card agent">';
+      h+='<div class="os3-card-top"><span class="os3-card-role">AGENT</span><span class="os3-card-dot" style="background:'+dc+'"></span></div>';
+      h+='<div class="os3-card-name">'+a.name+'</div>';
+      h+='<div class="os3-card-metric">'+a.desc+'</div>';
+      if(a.tags&&a.tags.length){
+        h+='<div class="os3-card-tags">';
+        for(var k=0;k<a.tags.length;k++) h+='<span class="os3-tag os3-tag-'+a.tags[k].c+'">'+a.tags[k].t+'</span>';
+        h+='</div>';
+      }
+      h+='</div>';
+    }
+    h+='</div>';
+  }
+  el.innerHTML=h;
+  document.getElementById('os3-agent-sub').textContent='Agentic skills across the bowtie — '+deployed+' deployed, '+building+' building, '+notstarted+' not started';
+}
+
+renderStageStrip3();
+renderHumans3();
+renderAgents3();
+
+
+
+})();
+</script>
+</body>
+</html>

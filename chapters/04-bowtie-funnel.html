@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4: The Bowtie Funnel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* S4: .s4-page wrapper gets explicit auto-margin centering */
+.s4-page {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* S4 page wrapper must be full-width */
+.s4-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* S4 bowtie inner blocks need full width within flex parent */
+.s4-direction-row,
+.s4-stage-labels,
+.s4-bowtie-container,
+.s4-stage-cards,
+.s4-motion-row,
+.s4-motion-legend,
+.s4-cr-section { width: 100%; }
+
+/* Section transitions also center */
+.section-transition {
+  width: 100%;
+}
+
+/* S4: content layout */
+#panel-4 > .s4-page {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 36px 28px 80px;
+}
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════ */
+/* SECTION 4 STYLES (prefixed s4-)                   */
+/* ═══════════════════════════════════════════════════ */
+
+.s4-page { width: 100%; max-width: 1140px; }
+
+/* Header */
+.s4-header { text-align: center; margin-bottom: 32px; }
+.s4-header-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.s4-header h1 { font-family:'Instrument Serif',serif; font-size:34px; font-weight:400; margin-bottom:5px; }
+.s4-header .s4-sub { font-size:13px; color:var(--text-muted); font-weight:300; }
+
+/* Direction */
+.direction-row { display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:4px; }
+.dir-label { font-size:9px; letter-spacing:3px; text-transform:uppercase; font-weight:700; }
+.dir-label.acq { color:var(--selection); }
+.dir-label.exp { color:var(--onboard); }
+.dir-arrow { width:120px; height:1px; position:relative; }
+.dir-arrow.left { background:linear-gradient(to right,transparent,var(--selection)); }
+.dir-arrow.left::after { content:''; position:absolute; right:-1px; top:-3px; border-left:6px solid var(--selection); border-top:3px solid transparent; border-bottom:3px solid transparent; }
+.dir-arrow.right { background:linear-gradient(to left,transparent,var(--onboard)); }
+.dir-arrow.right::before { content:''; position:absolute; left:-1px; top:-3px; border-right:6px solid var(--onboard); border-top:3px solid transparent; border-bottom:3px solid transparent; }
+
+/* Stage labels */
+.stage-labels { display:flex; margin-bottom:2px; }
+.stage-label-cell { flex:1; text-align:center; padding:5px 0; }
+.stage-label-cell.commit-cell { flex:0 0 72px; }
+.stage-label-text { font-size:8.5px; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+
+/* Bowtie */
+.bowtie-container { width:100%; }
+.bowtie-svg { width:100%; height:auto; display:block; }
+
+/* Stage cards */
+.stage-cards { display:flex; }
+.stage-card { flex:1; padding:10px 9px 12px; border:1px solid var(--border); background:var(--surface); position:relative; }
+.stage-card:first-child { border-radius:8px 0 0 0; }
+.stage-card:last-child { border-radius:0 8px 0 0; }
+.stage-card.commit-card { flex:0 0 72px; text-align:center; border-color:rgba(52,211,153,0.2); background:rgba(52,211,153,0.03); }
+.sc-accent { position:absolute; top:0; left:6px; right:6px; height:2px; border-radius:0 0 2px 2px; }
+.sc-body { font-size:8.5px; color:var(--text-muted); line-height:1.4; }
+
+/* Motion row */
+.motion-row { display:flex; }
+.motion-cell { flex:1; padding:0 9px 10px; border:1px solid var(--border); border-top:none; background:var(--surface); display:flex; flex-direction:column; gap:3px; }
+.motion-cell:first-child { border-radius:0 0 0 8px; }
+.motion-cell:last-child { border-radius:0 0 8px 0; }
+.motion-cell.commit-motion { flex:0 0 72px; border-color:rgba(52,211,153,0.2); background:rgba(52,211,153,0.03); align-items:center; }
+.motion-tag { display:flex; align-items:center; gap:5px; padding:4px 7px; border-radius:5px; font-size:8px; font-weight:600; letter-spacing:0.3px; line-height:1; }
+.motion-tag .mt-label { font-size:7px; text-transform:uppercase; letter-spacing:1px; opacity:0.7; min-width:24px; }
+.motion-tag .mt-text { font-size:8.5px; font-weight:500; }
+.mt-plg { background:var(--plg-bg); color:var(--plg); border:1px solid var(--plg-border); }
+.mt-commercial { background:var(--commercial-bg); color:var(--commercial); border:1px solid var(--commercial-border); }
+.mt-enterprise { background:var(--enterprise-bg); color:var(--enterprise); border:1px solid var(--enterprise-border); }
+
+/* Legend */
+.motion-legend { display:flex; justify-content:center; gap:20px; margin-top:10px; margin-bottom:6px; }
+.ml-item { display:flex; align-items:center; gap:5px; }
+.ml-dot { width:6px; height:6px; border-radius:50%; }
+.ml-text { font-size:9px; color:var(--text-muted); font-weight:500; }
+
+/* ═══ CR SECTION ═══ */
+.cr-section { margin-top: 40px; }
+.cr-section-header {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:24px; padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.cr-section-title {
+  font-family:'Instrument Serif',serif;
+  font-size:22px; font-weight:400; color:var(--text);
+}
+.cr-section-sub { font-size:12px; color:var(--text-muted); }
+
+/* CR Card */
+.cr-card {
+  display:grid; grid-template-columns:180px 1fr;
+  border:1px solid var(--border); border-radius:10px;
+  background:var(--surface); overflow:hidden;
+  margin-bottom:12px;
+  transition: border-color 0.2s ease;
+}
+.cr-card:hover { border-color: var(--border-light, #2f3548); }
+
+.cr-left {
+  padding:20px;
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative;
+}
+.cr-left::before {
+  content:'';
+  position:absolute; left:0; top:12px; bottom:12px; width:3px;
+  border-radius:0 3px 3px 0;
+}
+.cr-card:nth-child(1) .cr-left::before { background: var(--awareness); }
+.cr-card:nth-child(2) .cr-left::before { background: var(--education); }
+.cr-card:nth-child(3) .cr-left::before { background: var(--selection); }
+.cr-card:nth-child(4) .cr-left::before { background: var(--onboard); }
+.cr-card:nth-child(5) .cr-left::before { background: var(--impact); }
+.cr-card:nth-child(6) .cr-left::before { background: var(--grow); }
+
+.cr-num {
+  font-size:28px; font-weight:700; line-height:1;
+  margin-bottom:4px;
+}
+.cr-card:nth-child(1) .cr-num { color: var(--awareness); }
+.cr-card:nth-child(2) .cr-num { color: var(--education); }
+.cr-card:nth-child(3) .cr-num { color: var(--selection); }
+.cr-card:nth-child(4) .cr-num { color: var(--onboard); }
+.cr-card:nth-child(5) .cr-num { color: var(--impact); }
+.cr-card:nth-child(6) .cr-num { color: var(--grow); }
+
+.cr-transition {
+  font-size:13px; font-weight:600; color:var(--text);
+  margin-bottom:2px; display:flex; align-items:center; gap:6px;
+}
+.cr-transition .arr { color:var(--text-dim); font-weight:400; }
+.cr-stages { font-size:9px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; }
+
+.cr-right { padding:20px 24px; display:flex; flex-direction:column; gap:10px; }
+.cr-desc { font-size:12.5px; color:var(--text-mid); line-height:1.55; }
+.cr-owner {
+  padding:7px 11px; border-radius:6px;
+  background:var(--surface-2); border:1px solid var(--border);
+  font-size:10.5px; color:var(--text-muted);
+}
+.cr-owner strong { color:var(--text); font-weight:600; }
+
+.cr-action {
+  padding:10px 14px; border-radius:6px;
+  border:1px solid rgba(52,211,153,0.15);
+  background:rgba(52,211,153,0.04);
+}
+.cr-action-label {
+  font-size:7.5px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--commit); font-weight:700; margin-bottom:4px;
+}
+.cr-action-text { font-size:11.5px; color:var(--text-mid); line-height:1.5; }
+
+/* Footer */
+.s4-footer { margin-top:36px; text-align:center; font-size:8.5px; color:var(--text-dim); letter-spacing:0.5px; }
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html">Framework</a>
+    <a href="02-knowledge-vault.html">Knowledge Vault</a>
+    <a href="03-product-architecture.html">Architecture</a>
+    <a href="04-bowtie-funnel.html" class="active">Bowtie</a>
+    <a href="05-opportunity-seeker.html">Opportunity</a>
+    <a href="06-action-layer.html">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel" id="panel-4">
+<div class="s4-page">
+
+  <div class="s4-header">
+    <div class="s4-header-eyebrow">Revenue Architecture Framework</div>
+    <h1>The Bowtie Funnel</h1>
+    <div class="s4-sub">The complete customer lifecycle for ClickUp's recurring revenue business.</div>
+  </div>
+
+  <div class="direction-row">
+    <div class="dir-label acq">ACQUISITION</div>
+    <div class="dir-arrow left"></div>
+    <div style="width:72px"></div>
+    <div class="dir-arrow right"></div>
+    <div class="dir-label exp">EXPANSION</div>
+  </div>
+
+  <div class="stage-labels">
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--awareness)">AWARENESS</span></div>
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--education)">EDUCATION</span></div>
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--selection)">SELECTION</span></div>
+    <div class="stage-label-cell commit-cell"><span class="stage-label-text" style="color:var(--commit)">COMMIT</span></div>
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--onboard)">ONBOARD</span></div>
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--impact)">IMPACT</span></div>
+    <div class="stage-label-cell"><span class="stage-label-text" style="color:var(--grow)">GROW</span></div>
+  </div>
+
+  <div class="bowtie-container">
+    <svg class="bowtie-svg" viewBox="0 0 1100 200" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="gA" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a78bfa" stop-opacity="0.22"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0.14"/></linearGradient>
+        <linearGradient id="gE" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#818cf8" stop-opacity="0.22"/><stop offset="100%" stop-color="#818cf8" stop-opacity="0.16"/></linearGradient>
+        <linearGradient id="gS" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#60a5fa" stop-opacity="0.25"/><stop offset="100%" stop-color="#60a5fa" stop-opacity="0.18"/></linearGradient>
+        <linearGradient id="gO" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.18"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0.22"/></linearGradient>
+        <linearGradient id="gI" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f87171" stop-opacity="0.16"/><stop offset="100%" stop-color="#f87171" stop-opacity="0.22"/></linearGradient>
+        <linearGradient id="gG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f472b6" stop-opacity="0.14"/><stop offset="100%" stop-color="#f472b6" stop-opacity="0.22"/></linearGradient>
+      </defs>
+      <polygon points="0,2 163,27 163,173 0,198" fill="url(#gA)"/>
+      <line x1="163" y1="27" x2="163" y2="173" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <polygon points="163,27 330,57 330,143 163,173" fill="url(#gE)"/>
+      <line x1="330" y1="57" x2="330" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <polygon points="330,57 493,85 493,115 330,143" fill="url(#gS)"/>
+      <rect x="493" y="2" width="114" height="196" fill="rgba(52,211,153,0.05)" stroke="rgba(52,211,153,0.18)" stroke-width="1"/>
+      <rect x="536" y="72" width="28" height="56" rx="4" ry="4" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.35)" stroke-width="1.5"/>
+      <polygon points="607,85 770,57 770,143 607,115" fill="url(#gO)"/>
+      <line x1="770" y1="57" x2="770" y2="143" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <polygon points="770,57 937,27 937,173 770,143" fill="url(#gI)"/>
+      <line x1="937" y1="27" x2="937" y2="173" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <polygon points="937,27 1100,2 1100,198 937,173" fill="url(#gG)"/>
+
+      <text x="82" y="90" text-anchor="middle" fill="#a78bfa" font-family="DM Sans" font-weight="700" font-size="20">01</text>
+      <text x="82" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Awareness</text>
+      <text x="82" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"I have a problem"</text>
+      <text x="247" y="90" text-anchor="middle" fill="#818cf8" font-family="DM Sans" font-weight="700" font-size="20">02</text>
+      <text x="247" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Education</text>
+      <text x="247" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"What solutions exist?"</text>
+      <text x="412" y="90" text-anchor="middle" fill="#60a5fa" font-family="DM Sans" font-weight="700" font-size="20">03</text>
+      <text x="412" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Selection</text>
+      <text x="412" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"Who can deliver?"</text>
+      <text x="550" y="90" text-anchor="middle" fill="#34d399" font-family="DM Sans" font-weight="700" font-size="14">04</text>
+      <text x="550" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="9">Commit</text>
+      <text x="550" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="7" font-style="italic">"Let's do this"</text>
+      <text x="688" y="90" text-anchor="middle" fill="#fbbf24" font-family="DM Sans" font-weight="700" font-size="20">05</text>
+      <text x="688" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Onboard</text>
+      <text x="688" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"Show me value"</text>
+      <text x="854" y="90" text-anchor="middle" fill="#f87171" font-family="DM Sans" font-weight="700" font-size="20">06</text>
+      <text x="854" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Impact</text>
+      <text x="854" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"This is working"</text>
+      <text x="1018" y="90" text-anchor="middle" fill="#f472b6" font-family="DM Sans" font-weight="700" font-size="20">07</text>
+      <text x="1018" y="108" text-anchor="middle" fill="#e4e7ee" font-family="DM Sans" font-weight="600" font-size="10">Grow</text>
+      <text x="1018" y="120" text-anchor="middle" fill="#6b7590" font-family="DM Sans" font-size="8" font-style="italic">"Let's expand"</text>
+    </svg>
+  </div>
+
+  <div class="stage-cards">
+    <div class="stage-card"><div class="sc-accent" style="background:var(--awareness)"></div><div class="sc-body">Brand discovers ClickUp. Organic search, paid, word-of-mouth, PLG sign-up, or sales outreach.</div></div>
+    <div class="stage-card"><div class="sc-accent" style="background:var(--education)"></div><div class="sc-body">Active evaluation. Free users test features. Sales-led prospects in demos and discovery.</div></div>
+    <div class="stage-card"><div class="sc-accent" style="background:var(--selection)"></div><div class="sc-body">Conversion moment. Free→paid, contracts signed, MSAs executed. MEDDPIC qualified.</div></div>
+    <div class="stage-card commit-card"><div class="sc-accent" style="background:var(--commit)"></div><div class="sc-body" style="font-size:7.5px">The pivot. Acquisition ends, value begins.</div></div>
+    <div class="stage-card"><div class="sc-accent" style="background:var(--onboard)"></div><div class="sc-body">Time to first value. Workspace built, IER intake, workflows live, team active.</div></div>
+    <div class="stage-card"><div class="sc-accent" style="background:var(--impact)"></div><div class="sc-body">Recurring value realized. Usage deepens, productivity improves, tools consolidate.</div></div>
+    <div class="stage-card"><div class="sc-accent" style="background:var(--grow)"></div><div class="sc-body">Upsell, cross-sell, advocacy. Certified Agents, seats, tiers, references.</div></div>
+  </div>
+
+  <div class="motion-row">
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Free sign-up</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Inbound + BDR</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">Outbound + ABM</span></div>
+    </div>
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Self-serve trial</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Demos + SE</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">POC + workshop</span></div>
+    </div>
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Free → Paid</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Contract close</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">MSA + security</span></div>
+    </div>
+    <div class="motion-cell commit-motion">
+      <div class="motion-tag mt-plg" style="font-size:7px;padding:3px 5px"><span class="mt-text">Convert</span></div>
+      <div class="motion-tag mt-commercial" style="font-size:7px;padding:3px 5px"><span class="mt-text">Sign</span></div>
+      <div class="motion-tag mt-enterprise" style="font-size:7px;padding:3px 5px"><span class="mt-text">Launch</span></div>
+    </div>
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Setup wizard</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Kickoff + IER</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">Full rollout</span></div>
+    </div>
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Weekly active</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Feature depth</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">Org-wide adopt</span></div>
+    </div>
+    <div class="motion-cell">
+      <div class="motion-tag mt-plg"><span class="mt-label">PLG</span><span class="mt-text">Tier upgrade</span></div>
+      <div class="motion-tag mt-commercial"><span class="mt-label">COM</span><span class="mt-text">Add-ons + seats</span></div>
+      <div class="motion-tag mt-enterprise"><span class="mt-label">ENT</span><span class="mt-text">Divisions + agents</span></div>
+    </div>
+  </div>
+
+  <div class="motion-legend">
+    <div class="ml-item"><div class="ml-dot" style="background:var(--plg)"></div><div class="ml-text">PLG Self-Serve (~50% of $330M ARR)</div></div>
+    <div class="ml-item"><div class="ml-dot" style="background:var(--commercial)"></div><div class="ml-text">Commercial · 103 AEs · $800K target</div></div>
+    <div class="ml-item"><div class="ml-dot" style="background:var(--enterprise)"></div><div class="ml-text">Enterprise · 32→45 AEs · $1M target</div></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CR EXPLAINER CARDS — ALL VISIBLE ON SCROLL -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="cr-section">
+    <div class="cr-section-header">
+      <div class="cr-section-title">Conversion Rates</div>
+      <div class="cr-section-sub">The measurable handoffs between stages — where the GTM Product org drives impact.</div>
+    </div>
+
+    <!-- CR1 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR1</div>
+        <div class="cr-transition">Lead <span class="arr">→</span> MQL</div>
+        <div class="cr-stages">Awareness → Education</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of everyone who becomes aware of ClickUp, what percentage engages enough to be considered marketing-qualified? This captures the transition from passive awareness to active interest — content consumption, webinar attendance, free workspace creation, or other intent signals that indicate a prospect is worth nurturing further.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> Kyle Coleman (GVP Marketing) — content, PLG sign-ups, digital campaigns, intent signals</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">Largely outside the GTM P&P function's direct scope. However, the action layer supports this through field intelligence — surfacing what messaging resonates in Gong calls back to Marketing to refine top-of-funnel positioning.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CR2 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR2</div>
+        <div class="cr-transition">MQL <span class="arr">→</span> SQL</div>
+        <div class="cr-stages">Education → Selection</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of those marketing-qualified leads, what percentage does the sales team accept as genuinely worth pursuing? This is the XDR qualification moment — the handoff from marketing to sales pipeline. It measures whether MQLs are actually the right fit (ICP match, timing, budget) or just noise.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> XDR team + Kyle Coleman's org — qualification, outbound, hand-off to AEs</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">The action layer provides XDR managers with qualification scorecards and coaching briefs — Gong analysis of discovery calls, ICP fit signals from Salesforce, and pipeline development playbooks sized for the XDR motion.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CR3 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR3</div>
+        <div class="cr-transition">SQL <span class="arr">→</span> Won</div>
+        <div class="cr-stages">Selection → Commit</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of qualified opportunities, what percentage closes? This is the win rate — the conversion the case study is most focused on. It's where MEDDPIC discipline, discovery quality, demo effectiveness, IER positioning, and certified agent selling all live. Currently below industry benchmarks at ClickUp, this is the highest-leverage CR for the GTM P&P function to improve.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> Matt Bauman (Commercial) + Jeff de Reuter (Enterprise) — AEs and FLMs close deals</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">This is the action layer's primary target. Coaching intelligence agents surface MEDDPIC gaps per deal, FLM inspection dashboards highlight at-risk opportunities, in-workflow nudges prompt reps when deals stall, and expansion/certified agent playbooks are triggered by pipeline signals — all through the 17 Commercial and 4→9 Enterprise FLMs.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CR4 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR4</div>
+        <div class="cr-transition">Won <span class="arr">→</span> Active</div>
+        <div class="cr-stages">Commit → Onboard</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of closed deals, what percentage actually gets to first value? This is the pivot point of the bowtie — the IER (Intake, Execution, Report) motion. A deal can be "won" but if the customer never fully onboards, builds their workspace, and achieves first workflow impact, they churn at renewal. This CR measures time-to-first-value.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> Behezad Mehta (GVP Solutions & Success) — CS, TAMs, Implementation via IER</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">The action layer supports the handoff by ensuring AEs properly set expectations during the sale (coached via Gong patterns), that onboarding playbooks are segment-sized, and that post-sales FLMs have visibility into activation milestones. The onboarding agent tracks customer progress and surfaces at-risk implementations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CR5 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR5</div>
+        <div class="cr-transition">Active <span class="arr">→</span> Renew</div>
+        <div class="cr-stages">Onboard → Impact</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of active customers realizing value, what percentage renews? This is the retention motion — CSMs monitoring health scores, TAMs managing broad 1:100 portfolios, and the post-sales team ensuring customers aren't drifting into churn risk. ClickUp's self-serve base adds complexity since many customers renew (or don't) without ever talking to a human.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> Post-Sales Ops (Kevin Lou) + CSMs/TAMs — health scores, retention, satisfaction</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">The action layer here supports post-sales FLMs with customer health dashboards, renewal risk alerts, and playbooks for at-risk accounts. This is a later-phase priority for the GTM P&P function — commercial and enterprise sales are the H1 focus.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CR6 -->
+    <div class="cr-card">
+      <div class="cr-left">
+        <div class="cr-num">CR6</div>
+        <div class="cr-transition">Renew <span class="arr">→</span> Expand</div>
+        <div class="cr-stages">Impact → Grow</div>
+      </div>
+      <div class="cr-right">
+        <div class="cr-desc">Of renewing customers, what percentage grows their spend? This is the expansion playbook — upsell to Certified Agents, cross-sell Super Agents, expand seats, upgrade tiers. ClickUp currently only assigns half its expandable install base to the sales team. The other half gets a digital AI experience or is managed by TAMs at 1:100 ratios.</div>
+        <div class="cr-owner"><strong>Primary owner:</strong> AEs (expansion) + CSMs (advocacy) — cross-sell, upsell, seat expansion</div>
+        <div class="cr-action">
+          <div class="cr-action-label">Action Layer Connection</div>
+          <div class="cr-action-text">The action layer triggers expansion plays using whitespace analysis from Salesforce, usage propensity models, and certified agent opportunity detection. FLM dashboards show which reps have expansion pipeline, and coaching briefs surface account-level expansion signals from Gong calls. The expansion playbook is a Phase 2 capability launch on the roadmap.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s4-footer">Framework: Winning by Design — Revenue Architecture & Bowtie Model &nbsp;|&nbsp; Adapted for ClickUp GTM Performance & Productivity</div>
+</div>
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

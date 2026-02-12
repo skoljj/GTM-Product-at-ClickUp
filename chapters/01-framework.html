@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Framework — HI^AI = V</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* S1 overrides: hide its built-in nav */
+#panel-1 .topbar { display: none; }
+#panel-1 .hero { padding-top: 40px; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#panel-1 {
+  padding: 0 28px 80px;
+}
+#panel-1 > section,
+#panel-1 > .s1-divider,
+#panel-1 > nav.topbar {
+  width: 100%;
+  max-width: 1140px;
+}
+#panel-1 > section.hero {
+  max-width: none;
+  width: 100%;
+}
+
+.section-transition {
+  width: 100%;
+}
+
+#panel-1 > section { box-sizing: border-box; }
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════ */
+/* SECTION 1 STYLES (prefixed s1-)                   */
+/* ═══════════════════════════════════════════════════ */
+
+/* ═══ NAV ═══ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 40px;
+  background:rgba(12,15,20,.6);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  animation:slideDown .5s ease;
+}
+.topbar-mark{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:400;
+  letter-spacing:.16em;color:var(--dim);
+}
+.topbar-mark b{color:var(--white);font-weight:500}
+.topbar-nav{display:flex;gap:28px}
+.topbar-nav a{
+  font-size:12px;color:var(--dim);text-decoration:none;
+  letter-spacing:.04em;transition:color .25s;
+}
+.topbar-nav a:hover{color:var(--gray)}
+
+/* ═══ HERO ═══ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:100px 32px 64px;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 30%,rgba(100,115,165,.045) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.hero-tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:36px;
+  animation:fadeUp .6s ease .1s both;
+}
+
+.hero-graphic{
+  width:100%;max-width:920px;position:relative;
+  animation:fadeUp .8s ease .25s both;
+}
+.hero-graphic img{
+  width:100%;height:auto;display:block;
+}
+
+.hero-subtitle{
+  margin-top:44px;text-align:center;
+  animation:fadeUp .7s ease .5s both;
+}
+.hero-subtitle .primary{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(17px,2vw,26px);
+  font-weight:400;font-style:italic;
+  color:var(--accent);line-height:1.55;
+}
+.hero-subtitle .secondary{
+  display:block;margin-top:14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:clamp(10px,.9vw,12px);font-weight:300;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);
+}
+
+.scroll-cue{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  animation:fadeUp .6s ease .9s both;
+}
+.scroll-cue span{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.22em;color:var(--dim);text-transform:uppercase;
+}
+.scroll-cue .bar{
+  width:1px;height:26px;
+  background:linear-gradient(to bottom,var(--dim),transparent);
+  animation:breathe 2.2s ease infinite;
+}
+
+/* ═══ SECTIONS ═══ */
+.s1-wrap{max-width:1060px;margin:0 auto;padding:0 32px}
+section{padding:88px 0}
+
+.s1-divider{
+  max-width:1060px;margin:0 auto;
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--border2),transparent);
+}
+
+.sec-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:40px;
+  display:flex;align-items:center;gap:14px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ═══ FORMULA STATEMENT ═══ */
+.statement{text-align:center;margin-bottom:56px}
+.statement h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(24px,3.2vw,44px);
+  font-weight:400;line-height:1.35;color:var(--white);
+}
+.statement h2 em{font-style:italic;color:var(--accent)}
+.statement p{
+  font-size:15px;color:var(--gray);max-width:540px;
+  margin:18px auto 0;line-height:1.75;
+}
+
+/* ═══ TRIO CARDS ═══ */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.s1-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  padding:36px 28px;position:relative;overflow:hidden;
+  transition:border-color .35s,transform .25s;
+}
+.s1-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.s1-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,.07),transparent);
+  opacity:0;transition:opacity .35s;
+}
+.s1-card:hover::after{opacity:1}
+
+.card-icon{
+  width:44px;height:44px;border-radius:11px;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;
+  color:var(--white);margin-bottom:24px;
+}
+.card-title{
+  font-family:'Playfair Display',serif;font-size:20px;
+  font-weight:400;color:var(--white);margin-bottom:6px;
+}
+.card-def{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--dim);letter-spacing:.04em;margin-bottom:20px;line-height:1.5;
+}
+.card-body{font-size:13.5px;color:var(--gray);line-height:1.75}
+
+.factors{
+  list-style:none;margin-top:18px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.factors li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:13px;color:var(--gray);line-height:1.6;
+}
+.s1-tag{
+  flex-shrink:0;margin-top:2px;
+  font-family:'IBM Plex Mono',monospace;font-size:9.5px;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--dim);background:var(--bg3);
+  border:1px solid var(--border);border-radius:3px;
+  padding:2px 7px;
+}
+
+/* ═══ EQUATION BLOCK ═══ */
+.eq-block{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:48px;margin-top:56px;
+  position:relative;overflow:hidden;
+}
+.eq-block::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:260px;height:260px;
+  background:radial-gradient(circle,rgba(100,115,165,.035),transparent 70%);
+  pointer-events:none;
+}
+.eq-head{display:flex;align-items:flex-end;gap:20px;margin-bottom:36px}
+.eq-sym{
+  font-family:'Playfair Display',serif;font-size:56px;
+  font-weight:400;color:var(--white);line-height:1;
+}
+.eq-sym sup{font-size:.45em;vertical-align:super;color:var(--gray)}
+.eq-note{font-size:14px;color:var(--gray);line-height:1.55;padding-bottom:8px}
+
+.eq-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.eq-col h4{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+.eq-col p{font-size:13.5px;color:var(--gray);line-height:1.8}
+
+/* ═══ TWO READS ═══ */
+.dual{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px;
+}
+.dual-card{
+  padding:36px 28px;border:1px solid var(--border);
+  border-radius:14px;background:var(--bg2);
+  transition:border-color .3s;
+}
+.dual-card:hover{border-color:var(--border2)}
+.dual-num{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--dim);letter-spacing:.12em;margin-bottom:10px;
+}
+.dual-card h3{
+  font-family:'Playfair Display',serif;font-size:17px;
+  font-weight:400;color:var(--white);margin-bottom:8px;
+}
+.dual-card .formula-line{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--accent);letter-spacing:.04em;margin-bottom:14px;
+}
+.dual-card p{font-size:13px;color:var(--gray);line-height:1.75}
+
+/* ═══ PRINCIPLES ═══ */
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+.princ{
+  padding:28px 24px;border:1px solid var(--border);
+  border-radius:12px;background:var(--bg2);
+  transition:border-color .3s;
+}
+.princ:hover{border-color:var(--border2)}
+.princ-num{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--dim);letter-spacing:.12em;margin-bottom:10px;
+}
+.princ h3{
+  font-family:'Playfair Display',serif;font-size:17px;
+  font-weight:400;color:var(--white);margin-bottom:8px;
+}
+.princ p{font-size:13px;color:var(--gray);line-height:1.7}
+
+/* ═══ FOOTER ═══ */
+footer{
+  padding:48px 32px;text-align:center;
+  border-top:1px solid var(--border);
+}
+footer p{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--dim);letter-spacing:.1em;
+}
+
+/* ═══ ANIMATION ═══ */
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes breathe{0%,100%{opacity:.25}50%{opacity:.8}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:860px){
+  .topbar{padding:14px 20px}
+  .topbar-nav{display:none}
+  .hero{padding:88px 20px 60px}
+  .s1-wrap{padding:0 20px}
+  section{padding:60px 0}
+  .trio,.eq-grid,.dual,.principles{grid-template-columns:1fr}
+  .eq-block{padding:28px}
+  .eq-head{flex-direction:column;align-items:flex-start;gap:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html" class="active">Framework</a>
+    <a href="02-knowledge-vault.html">Knowledge Vault</a>
+    <a href="03-product-architecture.html">Architecture</a>
+    <a href="04-bowtie-funnel.html">Bowtie</a>
+    <a href="05-opportunity-seeker.html">Opportunity</a>
+    <a href="06-action-layer.html">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel" id="panel-1">
+<nav class="topbar">
+  <div class="topbar-mark"><b>HI</b> ^ <b>AI</b> = <b>V</b></div>
+  <div class="topbar-nav">
+    <a href="#formula">Formula</a>
+    <a href="#components">Components</a>
+    <a href="#reads">Two Reads</a>
+    <a href="#equation">Equation</a>
+    <a href="#principles">Principles</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-tag">A framework for compounding intelligence</div>
+
+  <div class="hero-graphic">
+    <img src="../applied HI ^ applied AI = actual V_files/formula-hero.svg" alt="applied HI ^ applied AI = actual V — visual formula with glass-morphic iconography">
+  </div>
+
+  <div class="hero-subtitle">
+    <span class="secondary">Human quotient × AI quotient = Real outcome</span>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Explore</span>
+    <div class="bar"></div>
+  </div>
+</section>
+
+<!-- ═══ THE FORMULA ═══ -->
+<div class="s1-divider"></div>
+<section id="formula">
+  <div class="s1-wrap">
+    <div class="sec-label reveal vis">01 — The Formula</div>
+    <div class="statement reveal vis">
+      <h2>
+        <em>applied</em> Human Intelligence<br>
+        <span style="font-size:.55em;color:var(--dim);font-family:&#39;IBM Plex Mono&#39;,monospace;letter-spacing:.1em">RAISED TO THE POWER OF</span><br>
+        <em>applied</em> Artificial Intelligence<br>
+        <span style="font-size:.55em;color:var(--dim);font-family:&#39;IBM Plex Mono&#39;,monospace;letter-spacing:.1em">EQUALS</span><br>
+        <em>actual</em> Value
+      </h2>
+      <p>
+        This isn't addition. It's exponentiation. The quality of human input sets the base. The sophistication of AI application sets the exponent. Together they produce value that neither achieves alone — and the gap between linear and exponential is where real outcomes live.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPONENTS ═══ -->
+<div class="s1-divider"></div>
+<section id="components">
+  <div class="s1-wrap">
+    <div class="sec-label reveal vis">02 — Components</div>
+
+    <div class="trio">
+      <div class="s1-card reveal vis">
+        <div class="card-icon">HI</div>
+        <div class="card-title">Human Intelligence</div>
+        <div class="card-def">HI = f ( creativity, effort, focus )</div>
+        <div class="card-body">
+          The irreducible human contribution. Not raw IQ — intelligence applied through deliberate action. The base of the equation: without it, the exponent has nothing to amplify.
+        </div>
+        <ul class="factors">
+          <li><span class="s1-tag">Creativity</span>The ability to frame problems others haven't seen. Connecting disparate ideas into novel solutions.</li>
+          <li><span class="s1-tag">Effort</span>Sustained, directed energy. Not busy-work — the willingness to push through ambiguity and iterate toward clarity.</li>
+          <li><span class="s1-tag">Focus</span>The discipline to prioritize ruthlessly. Knowing what matters, what to ignore, and when to go deep.</li>
+        </ul>
+      </div>
+
+      <div class="s1-card reveal vis">
+        <div class="card-icon">AI</div>
+        <div class="card-title">Artificial Intelligence</div>
+        <div class="card-def">AI = f ( context, proximity, leverage )</div>
+        <div class="card-body">
+          The multiplier. Not a tool that replaces thinking — one that compounds it. The exponent: the closer and more contextually precise, the more powerful the amplification.
+        </div>
+        <ul class="factors">
+          <li><span class="s1-tag">Context</span>AI is only as powerful as the information it operates on. Rich, structured context unlocks exponential capability.</li>
+          <li><span class="s1-tag">Proximity</span>How close AI sits to the moment of decision or action. Embedded in the workflow, not bolted on after.</li>
+          <li><span class="s1-tag">Leverage</span>The ratio of output to input. Small, precise interventions that create outsized outcomes across the system.</li>
+        </ul>
+      </div>
+
+      <div class="s1-card reveal vis">
+        <div class="card-icon">V</div>
+        <div class="card-title">actual Value</div>
+        <div class="card-def">V = Σ ( outcomes, results, impact )</div>
+        <div class="card-body">
+          The sum consequence. Not a single metric — the aggregate of everything that matters, measured across the dimensions that define success.
+        </div>
+        <ul class="factors">
+          <li><span class="s1-tag">Outcomes</span>Immediate, observable changes. The deal closed. Ramp time decreased. The rep hit quota. Concrete, measurable shifts.</li>
+          <li><span class="s1-tag">Results</span>Patterns that emerge across outcomes. Trend lines, not snapshots. Consistent attainment, not one-off wins.</li>
+          <li><span class="s1-tag">Impact</span>Second-order effects. Culture shifts, capability building, compounding organizational intelligence over time.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TWO READS ═══ -->
+<div class="s1-divider"></div>
+<section id="reads">
+  <div class="s1-wrap">
+    <div class="sec-label reveal vis">03 — Two Reads of the Same Idea</div>
+    <div class="statement reveal vis">
+      <p style="max-width:600px">
+        The framework expresses itself two ways — one exponential, one multiplicative. Different syntax, same conviction: human capability and AI capability are not independent variables. They compound.
+      </p>
+    </div>
+
+    <div class="dual">
+      <div class="dual-card reveal vis">
+        <div class="dual-num">Read 01 — Exponential</div>
+        <h3>The Power Expression</h3>
+        <div class="formula-line">applied HI  ^  applied AI  =  actual V</div>
+        <p>
+          Human intelligence is the base. Artificial intelligence is the exponent. "Applied" does the heaviest lifting in both terms — raw potential means nothing without execution. The word "actual" on value is deliberate: this framework doesn't count potential or intent. It counts what shipped, what changed, what compounded.
+        </p>
+      </div>
+      <div class="dual-card reveal vis">
+        <div class="dual-num">Read 02 — Multiplicative</div>
+        <h3>The Quotient Expression</h3>
+        <div class="formula-line">Human Quotient × AI Quotient = Real Outcome</div>
+        <p>
+          A "quotient" implies a score — something measurable, something improvable. Your human quotient (how well people execute) multiplied by your AI quotient (how well systems amplify) equals the real outcome. Not the theoretical one. Not the one in the deck. The one in the pipeline, the board report, the culture.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE EQUATION ═══ -->
+<div class="s1-divider"></div>
+<section id="equation">
+  <div class="s1-wrap">
+    <div class="sec-label reveal">04 — The Equation</div>
+
+    <div class="eq-block reveal">
+      <div class="eq-head">
+        <div class="eq-sym">HI<sup>AI</sup> = V</div>
+        <div class="eq-note">
+          The relationship is exponential, not additive.<br>
+          This changes everything about how we build enablement.
+        </div>
+      </div>
+      <div class="eq-grid">
+        <div class="eq-col">
+          <h4>Why Exponentiation</h4>
+          <p>
+            If HI&nbsp;=&nbsp;2 and AI&nbsp;=&nbsp;10, addition gives you 12. Exponentiation gives you 1,024. The gap between organizations that bolt AI on and those that compound through it will be orders of magnitude — not incremental percentages. Enablement becomes a product discipline: you're engineering the base and calibrating the exponent.
+          </p>
+        </div>
+        <div class="eq-col">
+          <h4>Why "Applied" &amp; "Actual"</h4>
+          <p>
+            Raw intelligence — human or artificial — is potential energy. <em>Applied</em> intelligence is kinetic. It's the difference between knowing MEDDPIC and running it instinctively in live discovery. Between having Gong data and surfacing the exact coaching insight when a manager needs it. And "actual" value means we measure what shipped, not what was planned. Application is where theory becomes outcome.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRINCIPLES ═══ -->
+<div class="s1-divider"></div>
+<section id="principles">
+  <div class="s1-wrap">
+    <div class="sec-label reveal">05 — Operating Principles</div>
+
+    <div class="principles">
+      <div class="princ reveal">
+        <div class="princ-num">01</div>
+        <h3>Raise the base first</h3>
+        <p>Before adding AI, ensure the human intelligence layer is strong. Clear processes, well-framed problems, skilled practitioners. A higher base always beats a higher exponent on a weak foundation.</p>
+      </div>
+      <div class="princ reveal">
+        <div class="princ-num">02</div>
+        <h3>Proximity over power</h3>
+        <p>An imperfect AI intervention at the point of need beats a sophisticated one delivered after the fact. Embed intelligence into workflows, not slide decks. Closer to action, greater the compound.</p>
+      </div>
+      <div class="princ reveal">
+        <div class="princ-num">03</div>
+        <h3>Measure the sum, not the parts</h3>
+        <p>Value is outcomes plus results plus impact. A deal closed through a shortcut is an outcome, not a result. Sustained attainment is a result. Culture change is impact. Optimize for all three.</p>
+      </div>
+      <div class="princ reveal">
+        <div class="princ-num">04</div>
+        <h3>Context is the constraint</h3>
+        <p>The bottleneck is almost never AI capability. It's the quality, structure, and timeliness of the context it receives. Invest in context architecture before model sophistication.</p>
+      </div>
+      <div class="princ reveal">
+        <div class="princ-num">05</div>
+        <h3>Quotients are trainable</h3>
+        <p>Neither the human quotient nor the AI quotient is fixed. Both improve through deliberate investment — coaching, tooling, workflow design, feedback loops. Real outcomes are engineered, not hoped for.</p>
+      </div>
+      <div class="princ reveal">
+        <div class="princ-num">06</div>
+        <h3>Actual over theoretical</h3>
+        <p>The words "actual" and "real" aren't decorative. They're a commitment to measuring what happened, not what was planned. Decks don't close deals. Dashboards don't change behavior. Shipped capability does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

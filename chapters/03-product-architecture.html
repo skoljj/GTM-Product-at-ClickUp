@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: Product Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* S2-S4: .sN-page wrappers get explicit auto-margin centering */
+.s3-page {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* S2-S4 page wrappers must be full-width */
+.s3-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section transitions also center */
+.section-transition {
+  width: 100%;
+}
+
+/* S3: content padding */
+#panel-3 > .s3-page {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 36px 28px 80px;
+}
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════ */
+/* SECTION 3 STYLES (prefixed s3-)                   */
+/* ═══════════════════════════════════════════════════ */
+
+.s3-page { width:100%; max-width:1240px; }
+
+/* Header */
+.s3-header { text-align:center; margin-bottom:40px; }
+.s3-header-eyebrow { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+.s3-header h1 { font-family:'Instrument Serif',serif; font-size:34px; font-weight:400; margin-bottom:5px; }
+.s3-header .s3-sub { font-size:13px; color:var(--text-muted); font-weight:300; max-width:750px; margin:0 auto; line-height:1.5; }
+
+/* ── Shared ── */
+.s3-card {
+  border-radius:10px; border:1px solid var(--border);
+  background:var(--surface); padding:14px 16px; position:relative;
+}
+.s3-label {
+  font-size:7px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; margin-bottom:5px;
+}
+.s3-title { font-size:13px; font-weight:700; margin-bottom:2px; line-height:1.25; }
+.s3-sub-text { font-size:9.5px; color:var(--text-muted); line-height:1.4; }
+.s3-accent-bar {
+  position:absolute; top:0; left:10px; right:10px; height:2px;
+  border-radius:0 0 2px 2px;
+}
+.s3-left-bar {
+  position:absolute; left:0; top:10px; bottom:10px; width:3px;
+  border-radius:0 3px 3px 0;
+}
+.s3-tag {
+  display:inline-block; padding:2px 7px; border-radius:4px;
+  font-size:7.5px; font-weight:600; letter-spacing:0.3px;
+}
+.s3-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+
+/* ── Divider arrows ── */
+.s3-divider {
+  display:flex; justify-content:center; align-items:center;
+  padding:6px 0; gap:8px;
+}
+.s3-divider-line { width:1px; height:14px; background:var(--text-dim); opacity:0.2; }
+.s3-divider-label {
+  font-size:7px; letter-spacing:1.5px; text-transform:uppercase;
+  font-weight:700; padding:3px 10px; border-radius:4px;
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--text-dim);
+}
+.s3-divider-arrow { font-size:9px; color:var(--text-dim); opacity:0.35; }
+
+/* ═══════════════════════════════════════ */
+/* SECTION 1: DESIGN SYSTEM INHERITANCE   */
+/* ═══════════════════════════════════════ */
+.design-system-row {
+  display:grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap:0;
+  align-items:center;
+  margin-bottom:12px;
+}
+.ds-card {
+  border-radius:12px; padding:18px 20px;
+  position:relative; overflow:hidden;
+}
+.ds-product {
+  border:1px solid var(--figma-border);
+  background:var(--figma-bg);
+}
+.ds-gtm {
+  border:1px solid var(--action-border);
+  background:var(--action-bg);
+}
+.ds-card .ds-eyebrow {
+  font-size:7px; letter-spacing:2px; text-transform:uppercase;
+  font-weight:700; margin-bottom:6px;
+}
+.ds-card .ds-title { font-size:15px; font-weight:700; margin-bottom:3px; }
+.ds-card .ds-sub { font-size:10px; color:var(--text-muted); line-height:1.4; margin-bottom:10px; }
+.ds-tokens {
+  display:flex; gap:4px; flex-wrap:wrap;
+}
+.ds-token {
+  padding:3px 8px; border-radius:5px;
+  font-size:8px; font-weight:600;
+}
+.ds-token.figma {
+  background:rgba(244,114,182,0.08); border:1px solid rgba(244,114,182,0.18); color:var(--figma);
+}
+.ds-token.action {
+  background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.18); color:var(--action);
+}
+.ds-inherit {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  color:var(--text-dim);
+}
+.ds-inherit-arrow { font-size:22px; opacity:0.4; }
+.ds-inherit-label {
+  font-size:6.5px; letter-spacing:1px; text-transform:uppercase;
+  font-weight:700; writing-mode:horizontal-tb;
+}
+
+/* Figma MCP callout */
+.figma-mcp-bridge {
+  display:flex; align-items:center; justify-content:center;
+  gap:10px; padding:8px 0; margin-bottom:4px;
+}
+.fmb-line {
+  height:1px; width:60px;
+  background:linear-gradient(to right, transparent, var(--figma), transparent);
+}
+.fmb-chip {
+  display:flex; align-items:center; gap:6px;
+  padding:6px 14px; border-radius:8px;
+  background:var(--figma-bg); border:1px solid var(--figma-border);
+}
+.fmb-icon {
+  width:18px; height:18px; border-radius:4px;
+  background:rgba(244,114,182,0.15); display:flex;
+  align-items:center; justify-content:center;
+  font-size:9px; font-weight:700; color:var(--figma);
+}
+.fmb-text { font-size:9px; font-weight:600; color:var(--figma); }
+.fmb-sub { font-size:7.5px; color:var(--text-muted); }
+
+/* ═══════════════════════════════════════ */
+/* SECTION 2: AI MODEL APIS               */
+/* ═══════════════════════════════════════ */
+.apis-row {
+  display:grid; grid-template-columns:180px 1fr 180px;
+  gap:12px; margin-bottom:4px; align-items:start;
+}
+.api-chips {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.api-chips-label {
+  font-size:7px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text-dim); font-weight:700;
+}
+.api-grid {
+  display:flex; gap:5px; flex-wrap:wrap; justify-content:center;
+}
+.api-chip {
+  display:flex; align-items:center; gap:5px;
+  padding:7px 11px; border-radius:7px;
+  background:var(--api-bg); border:1px solid var(--api-border);
+  font-size:9px; font-weight:600; color:var(--api);
+}
+.api-icon {
+  width:16px; height:16px; border-radius:4px;
+  background:rgba(96,165,250,0.12);
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; font-weight:700;
+}
+
+/* ═══════════════════════════════════════ */
+/* SECTION 3: CORE ENGINE                 */
+/* ═══════════════════════════════════════ */
+.core-row {
+  display:grid;
+  grid-template-columns: 190px 1fr 48px 130px 190px;
+  gap:12px; align-items:center;
+  margin-bottom:4px;
+}
+
+/* RAG */
+.rag {
+  border:1px solid var(--rag-border); background:var(--rag-bg);
+  border-radius:10px; padding:14px;
+}
+.rag-member {
+  padding:5px 7px; border-radius:5px; margin-bottom:4px;
+  background:var(--surface); border:1px solid var(--border);
+}
+.rag-member:last-child { margin-bottom:0; }
+.rag-member-name { font-size:8.5px; font-weight:600; margin-bottom:2px; }
+.rag-chips { display:flex; gap:3px; flex-wrap:wrap; }
+.rag-chip {
+  padding:2px 5px; border-radius:3px; font-size:6.5px; font-weight:600;
+  background:rgba(148,163,184,0.07); border:1px solid rgba(148,163,184,0.12);
+  color:var(--text-muted);
+}
+
+/* Orchestrator */
+.orch {
+  border:1px solid var(--orch-border); background:var(--orch-bg);
+  border-radius:12px; padding:22px 20px; text-align:center;
+}
+.orch .s3-label { color:var(--orch); }
+.orch .s3-title { font-size:17px; }
+.orch .s3-sub-text { margin-top:6px; text-align:center; }
+.orch-inputs {
+  display:flex; gap:5px; justify-content:center; margin-top:12px; flex-wrap:wrap;
+}
+.orch-input {
+  padding:4px 10px; border-radius:5px; font-size:8px; font-weight:600;
+}
+
+/* Connector */
+.connector {
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:2px;
+}
+.connector-arrows { color:var(--action); font-size:14px; letter-spacing:1px; }
+.connector-label {
+  font-size:6px; letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--action); font-weight:700; white-space:nowrap;
+}
+
+/* MCP Node */
+.mcp {
+  width:120px; height:120px; border-radius:50%;
+  border:2px solid var(--mcp-border); background:var(--mcp-bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; margin:0 auto;
+}
+.mcp .s3-label { color:var(--mcp); margin-bottom:1px; }
+.mcp .s3-title { font-size:14px; }
+.mcp .s3-sub-text { font-size:7.5px; }
+
+/* Tools Stack */
+.tools {
+  display:flex; flex-direction:column; gap:5px;
+}
+.tool {
+  padding:9px 12px; border-radius:7px;
+  border:1px solid var(--border); background:var(--surface);
+  position:relative;
+}
+.tool .tool-name { font-size:10px; font-weight:700; padding-left:8px; }
+.tool .tool-desc { font-size:7.5px; color:var(--text-muted); padding-left:8px; }
+.tool.figma-tool {
+  border-color:var(--figma-border);
+  background:var(--figma-bg);
+}
+
+/* ═══════════════════════════════════════ */
+/* SECTION 4: CLICKUP PLATFORM            */
+/* ═══════════════════════════════════════ */
+.platform {
+  border:1px solid var(--platform-border); background:var(--platform-bg);
+  border-radius:14px; padding:20px 22px;
+}
+.platform-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+.platform-title { font-size:14px; font-weight:700; color:var(--platform); }
+.platform-sub { font-size:9px; color:var(--text-muted); }
+.platform-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.plat-card {
+  padding:12px 14px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--border);
+}
+.plat-card .pc-title { font-size:10.5px; font-weight:700; margin-bottom:3px; }
+.plat-card .pc-sub { font-size:8.5px; color:var(--text-muted); line-height:1.4; }
+.plat-card .s3-tags { margin-top:5px; }
+.pc-tag {
+  padding:2px 6px; border-radius:3px; font-size:7px; font-weight:600;
+  background:rgba(167,139,250,0.07); border:1px solid rgba(167,139,250,0.14);
+  color:var(--platform);
+}
+
+/* ═══════════════════════════════════════ */
+/* SECTION 5: ANALYTICS                   */
+/* ═══════════════════════════════════════ */
+.analytics {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+  margin-top:8px;
+}
+.analytics-card {
+  padding:12px 14px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--border);
+}
+.analytics-card .ac-title { font-size:10px; font-weight:700; margin-bottom:3px; }
+.analytics-card .ac-sub { font-size:8px; color:var(--text-muted); line-height:1.4; }
+
+/* Footer */
+.s3-footer {
+  margin-top:36px; text-align:center;
+  font-size:8.5px; color:var(--text-dim); letter-spacing:0.5px;
+}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html">Framework</a>
+    <a href="02-knowledge-vault.html">Knowledge Vault</a>
+    <a href="03-product-architecture.html" class="active">Architecture</a>
+    <a href="04-bowtie-funnel.html">Bowtie</a>
+    <a href="05-opportunity-seeker.html">Opportunity</a>
+    <a href="06-action-layer.html">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel" id="panel-3">
+<div class="s3-page">
+
+  <div class="s3-header">
+    <div class="s3-header-eyebrow">GTM Performance & Productivity</div>
+    <h1>Product Architecture</h1>
+    <div class="s3-sub">How the GTM Product org builds, delivers, and measures capabilities — from ClickUp's product design system through AI orchestration to the field's primary workspace.</div>
+  </div>
+
+  <!-- ═══ DESIGN SYSTEM INHERITANCE ═══ -->
+  <div class="design-system-row">
+    <div class="ds-card ds-product">
+      <div class="ds-eyebrow" style="color:var(--figma)">ClickUp Product Design Team</div>
+      <div class="ds-title">Product Design System</div>
+      <div class="ds-sub">Existing Figma component library, design tokens, variables, and layout patterns maintained by ClickUp's product design org. The source of truth.</div>
+      <div class="ds-tokens">
+        <span class="ds-token figma">Components</span>
+        <span class="ds-token figma">Variables</span>
+        <span class="ds-token figma">Tokens</span>
+        <span class="ds-token figma">Layouts</span>
+        <span class="ds-token figma">Typography</span>
+        <span class="ds-token figma">Color System</span>
+      </div>
+    </div>
+
+    <div class="ds-inherit">
+      <div class="ds-inherit-arrow">→</div>
+      <div class="ds-inherit-label" style="color:var(--figma)">Inherits</div>
+    </div>
+
+    <div class="ds-card ds-gtm">
+      <div class="ds-eyebrow" style="color:var(--action)">GTM Environment (Carved Out)</div>
+      <div class="ds-title">GTM Capability Surfaces</div>
+      <div class="ds-sub">Dashboards, playbooks, coaching tools, and inspection views built on the same design system — visually native to ClickUp, purpose-built for the field.</div>
+      <div class="ds-tokens">
+        <span class="ds-token action">FLM Dashboards</span>
+        <span class="ds-token action">Coaching Briefs</span>
+        <span class="ds-token action">Pipeline Views</span>
+        <span class="ds-token action">Playbooks</span>
+        <span class="ds-token action">Scorecards</span>
+        <span class="ds-token action">Ramp Trackers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Figma MCP Bridge -->
+  <div class="figma-mcp-bridge">
+    <div class="fmb-line"></div>
+    <div class="fmb-chip">
+      <div class="fmb-icon">F</div>
+      <div>
+        <div class="fmb-text">Figma MCP Server</div>
+        <div class="fmb-sub">Design tokens, components, layout constraints → structured data for LLMs</div>
+      </div>
+    </div>
+    <div class="fmb-line"></div>
+  </div>
+
+  <div class="s3-divider">
+    <div class="s3-divider-line"></div>
+    <div class="s3-divider-label" style="color:var(--figma)">Design → Code Pipeline</div>
+    <div class="s3-divider-line"></div>
+    <div class="s3-divider-arrow">▼</div>
+  </div>
+
+  <!-- ═══ AI MODEL APIS ═══ -->
+  <div class="apis-row">
+    <div class="s3-card" style="border-color:rgba(251,191,36,0.18); background:rgba(251,191,36,0.03);">
+      <div class="s3-accent-bar" style="background:var(--proto)"></div>
+      <div class="s3-label" style="color:var(--proto)">Prototyping</div>
+      <div class="s3-title" style="font-size:11px">Rapid Build Tools</div>
+      <div class="s3-sub-text">Lovable, Replit, Glide — prototype capabilities before engineering handoff</div>
+    </div>
+
+    <div class="api-chips">
+      <div class="api-chips-label">AI Model APIs</div>
+      <div class="api-grid">
+        <div class="api-chip"><div class="api-icon">A</div>Anthropic (Claude)</div>
+        <div class="api-chip"><div class="api-icon">G</div>OpenAI (GPT)</div>
+        <div class="api-chip"><div class="api-icon">G</div>Gemini Pro 1.5</div>
+        <div class="api-chip"><div class="api-icon">X</div>Grok</div>
+        <div class="api-chip"><div class="api-icon">P</div>Perplexity</div>
+      </div>
+    </div>
+
+    <div class="s3-card" style="border-color:rgba(244,114,182,0.18); background:rgba(244,114,182,0.03);">
+      <div class="s3-accent-bar" style="background:var(--hr)"></div>
+      <div class="s3-label" style="color:var(--hr)">Compliance</div>
+      <div class="s3-title" style="font-size:11px">HR & Learning</div>
+      <div class="s3-sub-text">Workday → LMS — force participation & compliance tracking</div>
+    </div>
+  </div>
+
+  <div class="s3-divider">
+    <div class="s3-divider-line"></div>
+    <div class="s3-divider-arrow">▼</div>
+  </div>
+
+  <!-- ═══ CORE ENGINE ═══ -->
+  <div class="core-row">
+
+    <!-- RAG Vault -->
+    <div class="rag">
+      <div class="s3-label" style="color:var(--rag)">Knowledge Layer</div>
+      <div class="s3-title" style="font-size:11px; margin-bottom:3px;">RAG Knowledge Vault</div>
+      <div class="s3-sub-text" style="font-size:8px; margin-bottom:8px;">Personalized Lived Experience — provenance retrieval per GTM member</div>
+      <div class="rag-member">
+        <div class="rag-member-name">GTM Member A</div>
+        <div class="rag-chips">
+          <span class="rag-chip">Decisions</span><span class="rag-chip">Actions</span><span class="rag-chip">Mantras</span><span class="rag-chip">Docs</span>
+        </div>
+      </div>
+      <div class="rag-member">
+        <div class="rag-member-name">GTM Member B</div>
+        <div class="rag-chips">
+          <span class="rag-chip">Decisions</span><span class="rag-chip">Actions</span><span class="rag-chip">Mantras</span><span class="rag-chip">Docs</span>
+        </div>
+      </div>
+      <div class="rag-member">
+        <div class="rag-member-name">GTM Member C</div>
+        <div class="rag-chips">
+          <span class="rag-chip">Decisions</span><span class="rag-chip">Actions</span><span class="rag-chip">Mantras</span><span class="rag-chip">Docs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orchestrator -->
+    <div class="orch">
+      <div class="s3-label" style="color:var(--orch)">AI Orchestrator & Logic Hub</div>
+      <div class="s3-title">Cursor / Claude Code</div>
+      <div class="s3-sub-text">Routes queries, applies skill definitions, retrieves provenance, reads design context via Figma MCP, and triggers actions across the stack.</div>
+      <div class="orch-inputs">
+        <span class="orch-input" style="background:rgba(251,146,60,0.10); border:1px solid rgba(251,146,60,0.2); color:var(--skill);">Skill Definition</span>
+        <span class="orch-input" style="background:var(--figma-bg); border:1px solid var(--figma-border); color:var(--figma);">Figma Context</span>
+        <span class="orch-input" style="background:var(--rag-bg); border:1px solid var(--rag-border); color:var(--rag);">Provenance</span>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="connector">
+      <div class="connector-arrows">→→</div>
+      <div class="connector-label">Action Layer</div>
+    </div>
+
+    <!-- MCP Node -->
+    <div class="mcp">
+      <div class="s3-label" style="color:var(--mcp)">Protocol</div>
+      <div class="s3-title">MCP</div>
+      <div class="s3-sub-text">Model Context<br>Protocol Server</div>
+    </div>
+
+    <!-- Tools Stack -->
+    <div class="tools">
+      <div class="tool">
+        <div class="s3-left-bar" style="background:var(--sfdc)"></div>
+        <div class="tool-name" style="color:var(--sfdc)">SFDC (Salesforce)</div>
+        <div class="tool-desc">CRM Data · Pipeline · Deals</div>
+      </div>
+      <div class="tool">
+        <div class="s3-left-bar" style="background:var(--gong)"></div>
+        <div class="tool-name" style="color:var(--gong)">Gong</div>
+        <div class="tool-desc">Call Intelligence · Transcripts</div>
+      </div>
+      <div class="tool">
+        <div class="s3-left-bar" style="background:var(--cu-tool)"></div>
+        <div class="tool-name" style="color:var(--cu-tool)">ClickUp</div>
+        <div class="tool-desc">Tasks · Workflows · Docs</div>
+      </div>
+      <div class="tool figma-tool">
+        <div class="s3-left-bar" style="background:var(--figma)"></div>
+        <div class="tool-name" style="color:var(--figma)">Figma</div>
+        <div class="tool-desc">Design System · Components · Tokens</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s3-divider">
+    <div class="s3-divider-line"></div>
+    <div class="s3-divider-label" style="color:var(--action)">Action Layer</div>
+    <div class="s3-divider-line"></div>
+    <div class="s3-divider-arrow">▼</div>
+  </div>
+
+  <!-- ═══ CLICKUP PLATFORM ═══ -->
+  <div class="platform">
+    <div class="platform-header">
+      <div>
+        <div class="platform-title">ClickUp (Container Platform)</div>
+        <div class="platform-sub">Where capabilities are delivered, consumed, and measured — the field's primary workspace. Built on ClickUp's product design system.</div>
+      </div>
+    </div>
+    <div class="platform-grid">
+      <div class="plat-card">
+        <div class="pc-title">Instance / Interface</div>
+        <div class="pc-sub">User-facing surfaces where reps and FLMs interact with capabilities. Dashboards, views, and automations built from inherited design tokens.</div>
+        <div class="s3-tags">
+          <span class="s3-tag pc-tag">Dashboards</span><span class="s3-tag pc-tag">Views</span><span class="s3-tag pc-tag">Automations</span><span class="s3-tag pc-tag">Docs</span>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="pc-title">ClickUp Task Management</div>
+        <div class="pc-sub">Structured work — coaching tasks, ramp milestones, capability launch tracking, FLM action items, sprint cadences.</div>
+        <div class="s3-tags">
+          <span class="s3-tag pc-tag">Tasks</span><span class="s3-tag pc-tag">Goals</span><span class="s3-tag pc-tag">Sprints</span><span class="s3-tag pc-tag">Custom Fields</span>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="pc-title">Media Library</div>
+        <div class="pc-sub">Short-form video, playbooks, podcast content, certification materials — omnichannel content hub with consumption tracking.</div>
+        <div class="s3-tags">
+          <span class="s3-tag pc-tag">Video</span><span class="s3-tag pc-tag">Playbooks</span><span class="s3-tag pc-tag">Podcasts</span><span class="s3-tag pc-tag">Guides</span>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="pc-title">ClickUp Agents</div>
+        <div class="pc-sub">Native AI agents embedded in the workspace — coaching nudges, deal guidance, onboarding orchestration, content surfacing. The "Do" layer.</div>
+        <div class="s3-tags">
+          <span class="s3-tag pc-tag">Coaching</span><span class="s3-tag pc-tag">Onboarding</span><span class="s3-tag pc-tag">Deal Intel</span><span class="s3-tag pc-tag">Content</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ANALYTICS ═══ -->
+  <div class="analytics">
+    <div class="analytics-card">
+      <div class="ac-title">Consumption Data</div>
+      <div class="ac-sub">Time series tracking of content views, playbook opens, video completions across segments.</div>
+    </div>
+    <div class="analytics-card">
+      <div class="ac-title">Activity Tracking</div>
+      <div class="ac-sub">Agent interactions, coaching brief opens, dashboard usage, capability adoption rates per FLM.</div>
+    </div>
+    <div class="analytics-card">
+      <div class="ac-title">Behavior Attribution</div>
+      <div class="ac-sub">Connecting capability adoption to Gong call patterns, MEDDPIC usage, pipeline changes.</div>
+    </div>
+    <div class="analytics-card">
+      <div class="ac-title">Outcome Measurement</div>
+      <div class="ac-sub">Ramp time, win rate, attainment, retention — the lagging indicators the action layer is built to move.</div>
+    </div>
+  </div>
+
+  <div class="s3-footer">
+    GTM Performance & Productivity — Product Architecture v2 &nbsp;|&nbsp; Design System Inheritance → AI Orchestration → MCP Protocol → ClickUp Container
+  </div>
+
+</div>
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

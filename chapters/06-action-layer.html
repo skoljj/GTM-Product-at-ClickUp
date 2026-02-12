@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: The Action Layer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ MERGED ROOT VARIABLES ═══ */
+:root {
+  --accent: #D0D8EC;
+  --action: #34d399;
+  --action-bg: rgba(52,211,153,0.06);
+  --action-border: rgba(52,211,153,0.20);
+  --agent: #34d399;
+  --api: #60a5fa;
+  --api-bg: rgba(96,165,250,0.06);
+  --api-border: rgba(96,165,250,0.18);
+  --aq: #a78bfa;
+  --aq-accent: rgba(167,139,250,0.10);
+  --aq-bg: rgba(167,139,250,0.05);
+  --aq-border: rgba(167,139,250,0.20);
+  --awareness: #a78bfa;
+  --bg: #0c0e13;
+  --bg2: #111520;
+  --bg3: #161B27;
+  --border: #252a3a;
+  --border-light: #2f3548;
+  --border2: rgba(255,255,255,.09);
+  --commercial: #fb923c;
+  --commercial-bg: rgba(251,146,60,0.10);
+  --commercial-border: rgba(251,146,60,0.25);
+  --commit: #34d399;
+  --cu-tool: #a78bfa;
+  --dim: #4A5068;
+  --done: #60a5fa;
+  --education: #818cf8;
+  --enterprise: #a78bfa;
+  --enterprise-bg: rgba(168,85,247,0.10);
+  --enterprise-border: rgba(168,85,247,0.25);
+  --faint: #2A3040;
+  --figma: #f472b6;
+  --figma-bg: rgba(244,114,182,0.06);
+  --figma-border: rgba(244,114,182,0.22);
+  --flm: #fb923c;
+  --gap: #f87171;
+  --given: #fbbf24;
+  --gong: #34d399;
+  --gray: #828A9E;
+  --grow: #f472b6;
+  --hq: #60a5fa;
+  --hq-accent: rgba(96,165,250,0.10);
+  --hq-bg: rgba(96,165,250,0.05);
+  --hq-border: rgba(96,165,250,0.20);
+  --hr: #f472b6;
+  --impact: #f87171;
+  --mcp: #34d399;
+  --mcp-bg: rgba(52,211,153,0.06);
+  --mcp-border: rgba(52,211,153,0.22);
+  --off: #C8CDD8;
+  --onboard: #fbbf24;
+  --orch: #f59e0b;
+  --orch-bg: rgba(245,158,11,0.06);
+  --orch-border: rgba(245,158,11,0.22);
+  --platform: #a78bfa;
+  --platform-bg: rgba(167,139,250,0.04);
+  --platform-border: rgba(167,139,250,0.16);
+  --plg: #60a5fa;
+  --plg-bg: rgba(59,130,246,0.10);
+  --plg-border: rgba(59,130,246,0.25);
+  --product: #f472b6;
+  --proto: #fbbf24;
+  --rag: #94a3b8;
+  --rag-bg: rgba(148,163,184,0.05);
+  --rag-border: rgba(148,163,184,0.16);
+  --selection: #60a5fa;
+  --sfdc: #60a5fa;
+  --skill: #fb923c;
+  --surface: #13161e;
+  --surface-2: #1a1e2a;
+  --surface-3: #212636;
+  --text: #e4e7ee;
+  --text-dim: #3e465c;
+  --text-mid: #a0a8be;
+  --text-muted: #6b7590;
+  --vault: #f59e0b;
+  --vault-bg: rgba(245,158,11,0.04);
+  --vault-border: rgba(245,158,11,0.18);
+  --white: #EEEFF2;
+}
+
+
+/* ═══ GLOBAL STYLES ═══ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ STICKY NAV ═══ */
+.global-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 56px;
+  background: rgba(12,14,19,0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.global-nav-mark {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  letter-spacing: .16em; color: var(--text-dim);
+}
+.global-nav-mark b { color: var(--white, #eee); font-weight: 500; }
+.global-nav-links { display: flex; gap: 4px; }
+.global-nav-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: .03em; padding: 6px 14px; border-radius: 6px;
+  transition: color .25s, background .25s;
+}
+.global-nav-links a:hover { color: var(--text-mid); background: rgba(255,255,255,0.04); }
+.global-nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* ═══ SECTION TRANSITIONS ═══ */
+.section-transition {
+  position: relative; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+}
+.section-transition::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.012) 50%, var(--bg) 100%);
+}
+.section-transition-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.section-transition-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--text-dim);
+}
+.section-transition-title {
+  font-family: 'Instrument Serif', serif; font-size: 20px;
+  font-weight: 400; color: var(--text-mid); font-style: italic;
+}
+.section-transition-line {
+  width: 1px; height: 24px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent); opacity: 0.4;
+}
+
+/* ═══ GLOBAL REVEAL ═══ */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* ═══ GLOBAL FOOTER ═══ */
+.global-footer {
+  padding: 48px 32px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.global-footer p {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  color: var(--text-dim); letter-spacing: .1em; line-height: 1.8;
+}
+
+/* ═══ PANEL LAYOUT ═══ */
+.section-panel { position: relative; }
+
+/* ═══ UNIVERSAL CENTERING ═══ */
+.section-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Section transitions also center */
+.section-transition {
+  width: 100%;
+}
+
+@media(max-width:860px) {
+  .global-nav { padding: 0 16px; }
+  .global-nav-links { display: none; }
+}
+
+/* ═══ SECTION 6: FLM ACTION LAYER ═══ */
+#panel-6 {
+  padding: 0 28px 80px;
+}
+.flm-container {
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+}
+.flm-container svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<nav class="global-nav">
+  <div class="global-nav-mark"><b>HI</b><sup style="font-size:8px;color:var(--dim,#4A5068)">AI</sup> = <b>V</b></div>
+  <div class="global-nav-links">
+    <a href="01-framework.html">Framework</a>
+    <a href="02-knowledge-vault.html">Knowledge Vault</a>
+    <a href="03-product-architecture.html">Architecture</a>
+    <a href="04-bowtie-funnel.html">Bowtie</a>
+    <a href="05-opportunity-seeker.html">Opportunity</a>
+    <a href="06-action-layer.html" class="active">Action Layer</a>
+  </div>
+</nav>
+<div style="height:56px"></div>
+
+<div class="section-panel reveal" id="panel-6">
+  <div class="flm-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1816" width="1800" height="1816">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap');
+    </style>
+  </defs>
+  <rect width="1800" height="2800" fill="#0c0f14"/><text x="900.0" y="50" font-family="DM Sans, sans-serif" font-size="11" font-weight="700" fill="#5a6480" text-anchor="middle" letter-spacing="2.5">GTM Performance &amp; Productivity · Case Study Architecture</text><text x="900.0" y="95" font-family="Instrument Serif, sans-serif" font-size="36" font-weight="400" fill="#e8eaf0" text-anchor="middle">The Action Layer — Mapped to FLM Customers</text><text x="900.0" y="130" font-family="DM Sans, sans-serif" font-size="14" font-weight="300" fill="#8892a8" text-anchor="middle">The GTM Product serves 21 frontline managers (growing to 26+) as its primary "buyers."</text><text x="900.0" y="150" font-family="DM Sans, sans-serif" font-size="14" font-weight="300" fill="#8892a8" text-anchor="middle">The action layer is how capabilities reach them in-workflow, not as training events.</text><rect x="48.0" y="180" width="560.0" height="90" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="64.0" y="202" font-family="DM Sans, sans-serif" font-size="9" font-weight="700" fill="#8b5cf6" text-anchor="start" letter-spacing="1.5">LAYER 1 · KNOW</text><text x="64.0" y="222" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#e8eaf0" text-anchor="start">Awareness &amp; Understanding</text><text x="64.0" y="240" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">Content, campaigns, comms. Why this matters,</text><text x="64.0" y="254" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">what's changing, what's expected.</text><rect x="620.0" y="180" width="560.0" height="90" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="636.0" y="202" font-family="DM Sans, sans-serif" font-size="9" font-weight="700" fill="#ec4899" text-anchor="start" letter-spacing="1.5">LAYER 2 · LEARN</text><text x="636.0" y="222" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#e8eaf0" text-anchor="start">Competency &amp; Skill</text><text x="636.0" y="240" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">Role-based curriculum, certifications, practice</text><text x="636.0" y="254" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">sandboxes, graduation gates.</text><rect x="1192.0" y="180" width="560.0" height="90" rx="10" fill="#0f1a17" stroke="#1a3d30" stroke-width="1.5"/><text x="1208.0" y="202" font-family="DM Sans, sans-serif" font-size="9" font-weight="700" fill="#10b981" text-anchor="start" letter-spacing="1.5">LAYER 3 · DO</text><text x="1208.0" y="222" font-family="DM Sans, sans-serif" font-size="15" font-weight="700" fill="#e8eaf0" text-anchor="start">In-Workflow Action</text><text x="1208.0" y="240" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">Agentic assists, coaching prompts, deal intelligence,</text><text x="1208.0" y="254" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">inspection tools, feedback loops.</text><text x="1472.0" y="288" font-family="DM Sans, sans-serif" font-size="12" font-weight="400" fill="#10b981" text-anchor="middle">▼</text><text x="58" y="310" font-family="DM Sans, sans-serif" font-size="9" font-weight="700" fill="#10b981" text-anchor="start" letter-spacing="2">ACTION LAYER COMPONENTS</text><rect x="48" y="326" width="340" height="105" rx="10" fill="#0f1a17" stroke="#1a3d30" stroke-width="1"/><rect x="48" y="336" width="3" height="85" rx="1.5" fill="#10b981"/><text x="68" y="350" font-family="DM Sans, sans-serif" font-size="16" font-weight="400" fill="#e8eaf0" text-anchor="start">🤖</text><text x="68" y="370" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">Coaching Intelligence Agent</text><text x="68" y="388" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Reads Gong transcripts via MCP. Surfaces MEDDPIC gaps,</text><text x="68" y="402" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">talk-time patterns, missing discovery questions.</text><rect x="68" y="410" width="58.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="75" y="421" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">Gong MCP</text><rect x="130.0" y="410" width="74.5" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="137.0" y="421" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">ClickUp MCP</text><rect x="48" y="439" width="340" height="105" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="68" y="463" font-family="DM Sans, sans-serif" font-size="16" font-weight="400" fill="#e8eaf0" text-anchor="start">📊</text><text x="68" y="483" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">FLM Inspection Dashboard</text><text x="68" y="501" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Pre-built pipeline views by FLM. Deal health scores, stage</text><text x="68" y="515" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">velocity, forecast accuracy — all auto-populated.</text><rect x="68" y="523" width="91.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="75" y="534" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">Salesforce MCP</text><rect x="163.0" y="523" width="52.5" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="170.0" y="534" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">ClickUp</text><rect x="48" y="552" width="340" height="105" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="68" y="576" font-family="DM Sans, sans-serif" font-size="16" font-weight="400" fill="#e8eaf0" text-anchor="start">⚡</text><text x="68" y="596" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">In-Workflow Nudges</text><text x="68" y="614" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Contextual prompts triggered by signals: deal stalled,</text><text x="68" y="628" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">MEDDPIC incomplete, expansion whitespace detected.</text><rect x="68" y="636" width="91.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="75" y="647" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">ClickUp Agents</text><rect x="163.0" y="636" width="69.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="170.0" y="647" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">Salesforce</text><rect x="48" y="665" width="340" height="105" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="68" y="689" font-family="DM Sans, sans-serif" font-size="16" font-weight="400" fill="#e8eaf0" text-anchor="start">📈</text><text x="68" y="709" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">Adoption &amp; Outcome Loops</text><text x="68" y="727" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Capability usage → behavior change → business outcome.</text><text x="68" y="741" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Tracks playbook application and metric movement.</text><rect x="68" y="749" width="58.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="75" y="760" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">GTM Data</text><rect x="130.0" y="749" width="36.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="137.0" y="760" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">Gong</text><rect x="48" y="778" width="340" height="105" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="68" y="802" font-family="DM Sans, sans-serif" font-size="16" font-weight="400" fill="#e8eaf0" text-anchor="start">🎯</text><text x="68" y="822" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">Onboarding Agent</text><text x="68" y="840" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Guided ramp journeys with graduation gates. Tracks</text><text x="68" y="854" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">progress, surfaces next-best-action for new hires.</text><rect x="68" y="862" width="91.0" height="16" rx="4" fill="rgba(16,185,129,0.1)" stroke="#1a3d30" stroke-width="0.5"/><text x="75" y="873" font-family="DM Sans, sans-serif" font-size="7.5" font-weight="600" fill="#10b981" text-anchor="start">ClickUp Agents</text><rect x="416" y="306" width="1336" height="520" rx="14" fill="#151921" stroke="#2a3042" stroke-width="1"/><rect x="416" y="306" width="1336" height="50" rx="14" fill="#151921" stroke="#2a3042" stroke-width="1"/><circle cx="436" cy="331" r="5" fill="#3b82f6" stroke="none" stroke-width="0"/><text x="450" y="336" font-family="DM Sans, sans-serif" font-size="13" font-weight="700" fill="#e8eaf0" text-anchor="start">Commercial Sales</text><text x="1736" y="334" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="end">FLMs: 17  |  SLMs: 3  |  AEs: ~103  |  GVP: Matt Bauman</text><line x1="416" y1="356" x2="1752" y2="356" stroke="#2a3042" stroke-width="1" opacity="1"/><rect x="436" y="372" width="32" height="16" rx="4" fill="#131a2a" stroke="#1e3a5f" stroke-width="0.5"/><text x="452" y="384" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#3b82f6" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="384" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">AMER · ~53 AEs · New from SmartSheet</text><line x1="452" y1="388" x2="452" y2="434" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="502" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="502" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 1</text><text x="502" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="544" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="578" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="578" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 2</text><text x="578" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="620" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="654" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="654" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 3</text><text x="654" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="696" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="730" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="730" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 4</text><text x="730" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="772" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="806" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="806" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 5</text><text x="806" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="848" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="882" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="882" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 6</text><text x="882" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="924" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="958" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="958" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 7</text><text x="958" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="1000" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="1034" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="1034" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 8</text><text x="1034" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="1076" y="396" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="1110" y="416" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="1110" y="430" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 9</text><text x="1110" y="440" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="436" y="462" width="32" height="16" rx="4" fill="#131a2a" stroke="#1e3a5f" stroke-width="0.5"/><text x="452" y="474" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#3b82f6" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="474" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">EMEA · ~30 AEs · Dublin + London hubs</text><line x1="452" y1="478" x2="452" y2="524" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="486" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="502" y="506" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="502" y="520" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 10</text><text x="502" y="530" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="544" y="486" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="578" y="506" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="578" y="520" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 11</text><text x="578" y="530" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="620" y="486" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="654" y="506" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="654" y="520" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 12</text><text x="654" y="530" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="696" y="486" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="730" y="506" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="730" y="520" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 13</text><text x="730" y="530" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="772" y="486" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="806" y="506" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="806" y="520" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 14</text><text x="806" y="530" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~6 AEs</text><rect x="436" y="552" width="32" height="16" rx="4" fill="#131a2a" stroke="#1e3a5f" stroke-width="0.5"/><text x="452" y="564" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#3b82f6" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="564" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">APAC · ~9 AEs · Sydney + Melbourne</text><line x1="452" y1="568" x2="452" y2="614" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="576" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="502" y="596" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="502" y="610" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 15</text><text x="502" y="620" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~3 AEs</text><rect x="544" y="576" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="578" y="596" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="578" y="610" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 16</text><text x="578" y="620" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~3 AEs</text><rect x="620" y="576" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1"/><text x="654" y="596" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="654" y="610" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 17</text><text x="654" y="620" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~3 AEs</text><rect x="416" y="696" width="1336" height="128" rx="0" fill="#0f1a17" stroke="none" stroke-width="1"/><line x1="416" y1="696" x2="1752" y2="696" stroke="#2a3042" stroke-width="1" opacity="1"/><text x="436" y="714" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#10b981" text-anchor="start" letter-spacing="1.5">ACTION LAYER → 17 COMMERCIAL FLMs</text><rect x="432.0" y="728" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="442.0" y="742" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="456.0" y="742" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">Weekly coaching brief</text><text x="456.0" y="756" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">auto-generated from Gong. Top 3 deals to inspect, call patterns to coach.</text><rect x="1088.0" y="728" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="1098.0" y="742" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="1112.0" y="742" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">Pipeline health dashboard</text><text x="1112.0" y="756" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">pre-populated. Stage velocity, commit accuracy, participation rate.</text><rect x="432.0" y="774" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="442.0" y="788" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="456.0" y="788" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">Capability adoption tracker</text><text x="456.0" y="802" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">per team. Certified agent pipeline? Expansion playbook usage?</text><rect x="1088.0" y="774" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="1098.0" y="788" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="1112.0" y="788" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">New hire ramp tracker</text><text x="1112.0" y="802" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">with graduation gates. FLM sees progress against 3-month target.</text><rect x="416" y="846" width="1336" height="540" rx="14" fill="#151921" stroke="#2a3042" stroke-width="1"/><rect x="416" y="846" width="1336" height="50" rx="14" fill="#151921" stroke="#2a3042" stroke-width="1"/><circle cx="436" cy="871" r="5" fill="#f59e0b" stroke="none" stroke-width="0"/><text x="450" y="876" font-family="DM Sans, sans-serif" font-size="13" font-weight="700" fill="#e8eaf0" text-anchor="start">Enterprise Sales</text><text x="1736" y="874" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="end">FLMs: 4 → 9  |  SLMs: 2 → 3  |  AEs: ~32 → 45  |  GVP: Jeff de Reuter</text><line x1="416" y1="896" x2="1752" y2="896" stroke="#2a3042" stroke-width="1" opacity="1"/><rect x="436" y="912" width="32" height="16" rx="4" fill="#1a1810" stroke="#3d3520" stroke-width="0.5"/><text x="452" y="924" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#f59e0b" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="924" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">West · Retained legacy leader</text><line x1="452" y1="928" x2="452" y2="974" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="936" width="68" height="50" rx="7" fill="#1c2230" stroke="#3d3520" stroke-width="1" opacity="1"/><text x="502" y="956" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="502" y="970" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 1</text><text x="502" y="980" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~8 AEs</text><rect x="544" y="936" width="68" height="50" rx="7" fill="#1c2230" stroke="#3d3520" stroke-width="1" opacity="1"/><text x="578" y="956" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="578" y="970" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 2</text><text x="578" y="980" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~8 AEs</text><rect x="436" y="1002" width="32" height="16" rx="4" fill="#1a1810" stroke="#3d3520" stroke-width="0.5"/><text x="452" y="1014" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#f59e0b" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="1014" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">East · Jeff bringing SmartSheet crew</text><line x1="452" y1="1018" x2="452" y2="1064" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="1026" width="68" height="50" rx="7" fill="#1c2230" stroke="#3d3520" stroke-width="1" opacity="1"/><text x="502" y="1046" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="502" y="1060" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 3</text><text x="502" y="1070" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~8 AEs</text><rect x="544" y="1026" width="68" height="50" rx="7" fill="#1c2230" stroke="#3d3520" stroke-width="1" opacity="1"/><text x="578" y="1046" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="middle">👤</text><text x="578" y="1060" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#8892a8" text-anchor="middle">FLM 4</text><text x="578" y="1070" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">~8 AEs</text><rect x="620" y="1026" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/><text x="654" y="1046" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#5a6480" text-anchor="middle">＋</text><text x="654" y="1060" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#5a6480" text-anchor="middle">FLM 5</text><text x="654" y="1070" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">Hiring</text><rect x="696" y="1026" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/><text x="730" y="1046" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#5a6480" text-anchor="middle">＋</text><text x="730" y="1060" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#5a6480" text-anchor="middle">FLM 6</text><text x="730" y="1070" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">Hiring</text><rect x="436" y="1092" width="32" height="16" rx="4" fill="#1a1810" stroke="#3d3520" stroke-width="0.5"/><text x="452" y="1104" font-family="DM Sans, sans-serif" font-size="7" font-weight="700" fill="#f59e0b" text-anchor="middle" letter-spacing="1">SLM</text><text x="476" y="1104" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="start">TBD · Expanding as team scales to 45 AEs</text><line x1="452" y1="1108" x2="452" y2="1154" stroke="#2a3042" stroke-width="2" opacity="1"/><rect x="468" y="1116" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/><text x="502" y="1136" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#5a6480" text-anchor="middle">＋</text><text x="502" y="1150" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#5a6480" text-anchor="middle">FLM 7</text><text x="502" y="1160" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">Hiring</text><rect x="544" y="1116" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/><text x="578" y="1136" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#5a6480" text-anchor="middle">＋</text><text x="578" y="1150" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#5a6480" text-anchor="middle">FLM 8</text><text x="578" y="1160" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">Hiring</text><rect x="620" y="1116" width="68" height="50" rx="7" fill="#1c2230" stroke="#2a3042" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/><text x="654" y="1136" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#5a6480" text-anchor="middle">＋</text><text x="654" y="1150" font-family="DM Sans, sans-serif" font-size="8" font-weight="500" fill="#5a6480" text-anchor="middle">FLM 9</text><text x="654" y="1160" font-family="DM Sans, sans-serif" font-size="7" font-weight="400" fill="#5a6480" text-anchor="middle">Hiring</text><rect x="416" y="1246" width="1336" height="128" rx="0" fill="#0f1a17" stroke="none" stroke-width="1"/><line x1="416" y1="1246" x2="1752" y2="1246" stroke="#2a3042" stroke-width="1" opacity="1"/><text x="436" y="1264" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#10b981" text-anchor="start" letter-spacing="1.5">ACTION LAYER → 4 (→9) ENTERPRISE FLMs</text><rect x="432.0" y="1278" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="442.0" y="1292" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="456.0" y="1292" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">Deal strategy agent</text><text x="456.0" y="1306" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">for complex, longer-cycle deals. Economic buyer gaps, multi-threading status.</text><rect x="1088.0" y="1278" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="1098.0" y="1292" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="1112.0" y="1292" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">Account plan intelligence</text><text x="1112.0" y="1306" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">auto-populated whitespace analysis, IER status, expansion triggers.</text><rect x="432.0" y="1324" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="442.0" y="1338" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="456.0" y="1338" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">New FLM onboarding agent</text><text x="456.0" y="1352" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">critical for 5 incoming managers. ClickUp methodology rapid-ramp.</text><rect x="1088.0" y="1324" width="648.0" height="40" rx="6" fill="rgba(16,185,129,0.04)" stroke="#1a3d30" stroke-width="0.5"/><text x="1098.0" y="1338" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#10b981" text-anchor="start">→</text><text x="1112.0" y="1338" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="600" fill="#e8eaf0" text-anchor="start">9-month ramp orchestration</text><text x="1112.0" y="1352" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#8892a8" text-anchor="start">for new AEs. Milestone tracking, prerequisite gates, coaching prompts.</text><text x="58" y="1406" font-family="DM Sans, sans-serif" font-size="9" font-weight="700" fill="#5a6480" text-anchor="start" letter-spacing="2">HOW THE ACTION LAYER SIZES: ONE SOUP, DIFFERENT CONTAINERS</text><rect x="48.0" y="1426" width="560.0" height="180" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="64.0" y="1448" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">☕ Tall · 1:Many</text><rect x="501.0" y="1436" width="93.0" height="18" rx="4" fill="#1c2230" stroke="#2a3042" stroke-width="0.5"/><text x="586.0" y="1448" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="end">All 21→26 FLMs</text><text x="64.0" y="1472" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Shared coaching brief template — same Gong-powered format</text><text x="64.0" y="1494" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Universal pipeline dashboard with segment-specific filters</text><text x="64.0" y="1516" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Capability adoption scorecards</text><text x="64.0" y="1538" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Release-notes style capability updates</text><text x="64.0" y="1560" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Monthly FLM community / office hours</text><rect x="620.0" y="1426" width="560.0" height="180" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="636.0" y="1448" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">☕☕ Grande · Segment-Specific</text><rect x="1062.0" y="1436" width="104.0" height="18" rx="4" fill="#1c2230" stroke="#2a3042" stroke-width="0.5"/><text x="1158.0" y="1448" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="end">17 COM · 4→9 ENT</text><text x="636.0" y="1472" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Commercial: territory plan heavyweight — 100+ accounts</text><text x="636.0" y="1494" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Enterprise: account plan heavyweight — whitespace, multi-product</text><text x="636.0" y="1516" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Different ramp timelines: 3mo COM vs 7mo ENT</text><text x="636.0" y="1538" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Segment-tuned Gong scorecards</text><text x="636.0" y="1560" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Expansion playbook variants</text><rect x="1192.0" y="1426" width="560.0" height="180" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="1208.0" y="1448" font-family="DM Sans, sans-serif" font-size="12" font-weight="700" fill="#e8eaf0" text-anchor="start">☕☕☕ Venti · White-Glove</text><rect x="1623.0" y="1436" width="115.0" height="18" rx="4" fill="#1c2230" stroke="#2a3042" stroke-width="0.5"/><text x="1730.0" y="1448" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="end">Select FLMs + SLMs</text><text x="1208.0" y="1472" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  New FLM onboarding (5 incoming ENT managers)</text><text x="1208.0" y="1494" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  SLM coaching-the-coach sessions with Art's input</text><text x="1208.0" y="1516" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Pilot group for new capability launches</text><text x="1208.0" y="1538" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Individualized plans for underperforming teams</text><text x="1208.0" y="1560" font-family="DM Sans, sans-serif" font-size="9" font-weight="400" fill="#8892a8" text-anchor="start">→  Custom deal-room support for strategic opps</text><rect x="48" y="1626" width="1704" height="70" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="331.3333333333333" y="1646" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#5a6480" text-anchor="middle" letter-spacing="1.5">TARGET MARKET</text><text x="331.3333333333333" y="1664" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="middle">The field — ~103 COM AEs, ~32→45 ENT AEs</text><text x="331.3333333333333" y="1678" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="middle">Reps, SEs, XDRs do the work</text><line x1="614.6666666666666" y1="1634" x2="614.6666666666666" y2="1688" stroke="#2a3042" stroke-width="1" opacity="1"/><text x="898.0" y="1646" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#5a6480" text-anchor="middle" letter-spacing="1.5">CHANNEL / BUYER</text><text x="898.0" y="1664" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="middle">FLMs + SLMs — 21→26 managers</text><text x="898.0" y="1678" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="middle">They adopt capabilities and inspect application</text><line x1="1181.3333333333333" y1="1634" x2="1181.3333333333333" y2="1688" stroke="#2a3042" stroke-width="1" opacity="1"/><text x="1464.6666666666665" y="1646" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="#5a6480" text-anchor="middle" letter-spacing="1.5">PRODUCT ORG</text><text x="1464.6666666666665" y="1664" font-family="DM Sans, sans-serif" font-size="10" font-weight="400" fill="#8892a8" text-anchor="middle">GTM Perf &amp; Productivity + Ops + Engineering</text><text x="1464.6666666666665" y="1678" font-family="DM Sans, sans-serif" font-size="8" font-weight="400" fill="#5a6480" text-anchor="middle">We build, launch, measure, iterate</text><rect x="48" y="1716" width="1704" height="70" rx="10" fill="#151921" stroke="#2a3042" stroke-width="1"/><text x="68" y="1734" font-family="DM Sans, sans-serif" font-size="14" font-weight="400" fill="#e8eaf0" text-anchor="start">💡</text><text x="92" y="1734" font-family="DM Sans, sans-serif" font-size="11" font-weight="700" fill="#e8eaf0" text-anchor="start">Why the action layer matters most for Enterprise right now:</text><text x="92" y="1752" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">Jeff is hiring 5 new FLMs who've never managed at ClickUp. They arrive with SmartSheet muscle memory into a radically different motion.</text><text x="92" y="1768" font-family="DM Sans, sans-serif" font-size="9.5" font-weight="400" fill="#8892a8" text-anchor="start">The action layer prevents a 9-month "figure it out" ramp — embedding coaching cadence, deal inspection, and pipeline standards into day-one tools.</text>
+</svg>
+  </div>
+</div>
+
+<footer class="global-footer">
+  <p>GTM PERFORMANCE & PRODUCTIVITY — CLICKUP<br>JJ WORKMAN — 2026</p>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
