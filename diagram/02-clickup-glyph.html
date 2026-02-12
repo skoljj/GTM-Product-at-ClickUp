@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2 — ClickUp 3D Glyph</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020408;overflow:hidden;font-family:'SF Pro Display',system-ui,-apple-system,sans-serif;color:#c8d6e5}
+canvas{position:fixed;top:0;left:0;z-index:0}
+#hud{position:fixed;top:16px;left:16px;z-index:100;pointer-events:none}
+#hud h1{font-size:11px;color:#7B68EE;font-weight:300;letter-spacing:.15em;text-transform:uppercase;opacity:.9}
+#hud .sub{font-size:9px;color:#445566;margin-top:3px;letter-spacing:.08em}
+#hud .title{font-size:28px;font-weight:200;letter-spacing:.04em;margin-top:8px;color:#7B68EE}
+#hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(100,130,160,.5);pointer-events:none;transition:opacity .8s}
+#back{position:fixed;bottom:24px;right:24px;z-index:100;background:rgba(8,12,24,.85);border:1px solid rgba(123,104,238,.2);color:#7B68EE;padding:6px 14px;border-radius:3px;cursor:pointer;font-size:9px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(8px)}
+#back:hover{border-color:rgba(123,104,238,.5)}
+</style>
+</head>
+<body>
+<div id="hud">
+  <h1>Capability Architecture · Module 2</h1>
+  <div class="sub">Drag to orbit · Scroll to zoom</div>
+  <div class="title">CLICKUP 3D GLYPH</div>
+</div>
+<div id="hint">DRAG TO ORBIT 360° · SCROLL TO ZOOM</div>
+<a id="back" href="../product_design_concept1.html">← Full Diagram</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x020408,0.001);
+const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,2500);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.15;
+document.body.appendChild(renderer.domElement);
+
+let drag=false,pM={x:0,y:0};
+let sph={theta:0.6,phi:0.85,r:18};
+const lookTarget=new THREE.Vector3(0,0,0);
+function camUp(){
+  camera.position.x=lookTarget.x+sph.r*Math.sin(sph.phi)*Math.sin(sph.theta);
+  camera.position.y=lookTarget.y+sph.r*Math.cos(sph.phi);
+  camera.position.z=lookTarget.z+sph.r*Math.sin(sph.phi)*Math.cos(sph.theta);
+  camera.lookAt(lookTarget);
+}
+camUp();
+renderer.domElement.addEventListener('pointerdown',e=>{drag=true;pM={x:e.clientX,y:e.clientY}});
+renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;sph.theta-=(e.clientX-pM.x)*0.005;sph.phi=Math.max(0.1,Math.min(2.9,sph.phi+(e.clientY-pM.y)*0.005));pM={x:e.clientX,y:e.clientY};camUp()});
+renderer.domElement.addEventListener('pointerup',()=>drag=false);
+renderer.domElement.addEventListener('pointerleave',()=>drag=false);
+renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();sph.r=Math.max(8,Math.min(60,sph.r+e.deltaY*0.05));camUp()},{passive:false});
+
+scene.add(new THREE.AmbientLight(0x223344,0.5));
+[[0x7B68EE,2.5,[-8,12,-5]],[0xE040FB,1.8,[8,8,10]],[0x00e5ff,1.2,[0,-5,0]]]
+.forEach(([c,i,p])=>{const pl=new THREE.PointLight(c,i,80);pl.position.set(...p);scene.add(pl)});
+
+const starGeo=new THREE.BufferGeometry();const sP=new Float32Array(3000*3);
+for(let i=0;i<3000;i++){const r=100+Math.random()*400,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+sP[i*3]=r*Math.sin(ph)*Math.cos(th);sP[i*3+1]=r*Math.sin(ph)*Math.sin(th);sP[i*3+2]=r*Math.cos(ph)}
+starGeo.setAttribute('position',new THREE.BufferAttribute(sP,3));
+scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0x5577aa,size:0.3,transparent:true,opacity:0.4})));
+
+// ═══ CLICKUP 3D GLYPH ═══
+const clickupGroup=new THREE.Group();
+const cuColor=0x7B68EE;
+const cuColor2=0xE040FB;
+
+const cuArmW=0.4, cuArmLen=3.5, cuArmH=0.4;
+const cuAngle=Math.PI/5;
+
+// Left arm
+const leftArm=new THREE.Mesh(
+  new THREE.BoxGeometry(cuArmW,cuArmLen,cuArmH),
+  new THREE.MeshPhysicalMaterial({color:cuColor,metalness:0.85,roughness:0.15,transparent:true,opacity:0.6})
+);
+leftArm.rotation.z=cuAngle;
+leftArm.position.set(-1.1,0.3,0);
+clickupGroup.add(leftArm);
+clickupGroup.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(cuArmW,cuArmLen,cuArmH)),new THREE.LineBasicMaterial({color:cuColor,transparent:true,opacity:0.8}));m.rotation.z=cuAngle;m.position.set(-1.1,0.3,0);return m})());
+
+// Right arm
+const rightArm=new THREE.Mesh(
+  new THREE.BoxGeometry(cuArmW,cuArmLen,cuArmH),
+  new THREE.MeshPhysicalMaterial({color:cuColor2,metalness:0.85,roughness:0.15,transparent:true,opacity:0.6})
+);
+rightArm.rotation.z=-cuAngle;
+rightArm.position.set(1.1,0.3,0);
+clickupGroup.add(rightArm);
+clickupGroup.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(cuArmW,cuArmLen,cuArmH)),new THREE.LineBasicMaterial({color:cuColor2,transparent:true,opacity:0.8}));m.rotation.z=-cuAngle;m.position.set(1.1,0.3,0);return m})());
+
+// Apex
+const apexBlock=new THREE.Mesh(
+  new THREE.BoxGeometry(0.8,0.8,cuArmH),
+  new THREE.MeshPhysicalMaterial({color:0xFFFFFF,metalness:0.9,roughness:0.1,transparent:true,opacity:0.35})
+);
+apexBlock.position.set(0,1.8,0);
+clickupGroup.add(apexBlock);
+clickupGroup.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(0.8,0.8,cuArmH)),new THREE.LineBasicMaterial({color:0xFFFFFF,transparent:true,opacity:0.6}));m.position.set(0,1.8,0);return m})());
+
+// Inner glow
+const cuGlow=new THREE.Mesh(new THREE.SphereGeometry(1.8,16,16),new THREE.MeshBasicMaterial({color:cuColor,transparent:true,opacity:0.06}));
+clickupGroup.add(cuGlow);
+
+// Aura rings
+const cuAuraPts=[];for(let j=0;j<=64;j++){const a=(j/64)*Math.PI*2;cuAuraPts.push(new THREE.Vector3(Math.cos(a)*3,0,Math.sin(a)*3))}
+clickupGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(cuAuraPts),new THREE.LineBasicMaterial({color:cuColor,transparent:true,opacity:0.2})));
+const cuAura2=[];for(let j=0;j<=48;j++){const a=(j/48)*Math.PI*2;cuAura2.push(new THREE.Vector3(Math.cos(a)*2.2,1.2,Math.sin(a)*2.2))}
+clickupGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(cuAura2),new THREE.LineBasicMaterial({color:cuColor2,transparent:true,opacity:0.15})));
+
+// Label
+(()=>{const c=document.createElement('canvas');c.width=512;c.height=64;const x=c.getContext('2d');
+x.font='bold 32px monospace';x.fillStyle='#7B68EE';x.globalAlpha=0.85;x.textAlign='center';x.fillText('CLICKUP',256,30);
+x.font='400 16px monospace';x.globalAlpha=0.45;x.fillText('ORCHESTRATION · MCP',256,52);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));
+s.position.set(0,-3,0);s.scale.set(10,1.5,1);clickupGroup.add(s)})();
+
+scene.add(clickupGroup);
+
+// ═══ ANIMATE ═══
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);const t=clock.getElapsedTime();
+  clickupGroup.rotation.y+=0.008;
+  clickupGroup.position.y=Math.sin(t*0.5)*1.0;
+  cuGlow.material.opacity=0.04+0.04*Math.sin(t*1.2);
+  renderer.render(scene,camera);
+}
+animate();
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+setTimeout(()=>{document.getElementById('hint').style.opacity='0'},5000);
+</script>
+</body>
+</html>
