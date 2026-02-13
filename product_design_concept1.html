@@ -212,6 +212,14 @@ let currentView=0,targetView={...VIEWS[0]},isTransitioning=false;
 let autoRotating=false,autoRotateStartTime=0,autoRotateStartTheta=0;
 const AUTO_ROTATE_DURATION=5; // seconds for full 360°
 
+// Idle zoom-out for System View
+let lastInteractionTime=0,idleZooming=false;
+const IDLE_THRESHOLD=30; // seconds before zoom-out begins
+const IDLE_ZOOM_MAX_R=800; // deep-space pull-back radius
+const IDLE_ZOOM_SPEED=0.008; // radius units per frame (smooth crawl)
+function resetIdle(){lastInteractionTime=-1;if(idleZooming){idleZooming=false}} // -1 = flag to sync with clock in loop
+['pointerdown','pointermove','wheel','keydown'].forEach(evt=>window.addEventListener(evt,resetIdle,{passive:true}));
+
 // Menu
 window.toggleDiagramMenu=function(){document.getElementById('diagram-overlay').classList.toggle('open')};
 window.closeDiagramMenu=function(){document.getElementById('diagram-overlay').classList.remove('open')};
@@ -222,7 +230,9 @@ window.goToView=function(idx){
   currentView=idx;const v=VIEWS[idx];
   targetView={targetY:v.targetY,r:v.r,phi:v.phi,theta:v.theta};
   isTransitioning=true;
-  autoRotating=false; // cancel any in-progress rotation; will restart after transition
+  autoRotating=false;
+  idleZooming=false;
+  resetIdle(); // restart idle clock on any view change
   document.getElementById('layer-name').textContent=v.name;
   document.getElementById('layer-name').style.color=v.color;
   document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
@@ -1238,6 +1248,23 @@ function animate(){
     sph.phi=targetView.phi+Math.sin(progress*Math.PI*2)*0.12;
     camUp();
     if(progress>=1){autoRotating=false;sph.theta=autoRotateStartTheta;sph.phi=targetView.phi;camUp()}
+  }
+
+  // Sync idle timer with Three.js clock
+  if(lastInteractionTime<0)lastInteractionTime=t;
+  if(lastInteractionTime===0)lastInteractionTime=t;
+
+  // Idle zoom-out on System View (layer 4)
+  if(currentView===3&&!isTransitioning&&!autoRotating&&!drag){
+    const idleSec=t-lastInteractionTime;
+    if(idleSec>IDLE_THRESHOLD&&sph.r<IDLE_ZOOM_MAX_R){
+      idleZooming=true;
+      sph.r+=IDLE_ZOOM_SPEED*(1+((sph.r-220)/200)); // accelerate gently as we pull back
+      // Very slow drift rotation so it feels alive
+      sph.theta+=0.0008;
+      sph.phi+=(1.1-sph.phi)*0.002; // ease toward a slightly higher vantage
+      camUp();
+    }
   }
 
   allAntennas.forEach(tip=>{tip.material.opacity=0.15+0.85*Math.abs(Math.sin(t*2.5+tip.userData.ph))});
