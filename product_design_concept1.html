@@ -6,7 +6,7 @@
 <title>Capability Architecture — Three Layer Stack</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020408;overflow-x:hidden;font-family:'SF Pro Display',system-ui,-apple-system,sans-serif;color:#c8d6e5}
+body{background:#020408;overflow-x:hidden;font-family:'SF Pro Display',system-ui,-apple-system,sans-serif;color:#c8d6e5;outline:none}
 canvas{position:fixed;top:0;left:0;z-index:0}
 
 #nav-dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:18px}
@@ -86,7 +86,7 @@ canvas{position:fixed;top:0;left:0;z-index:0}
 
 </style>
 </head>
-<body>
+<body tabindex="0" autofocus>
 <div id="hi-nav" onclick="toggleDiagramMenu()"><b>HI</b><sup style="font-size:8px;color:rgba(74,80,104,.8)">AI</sup> = <b>V</b></div>
 <div id="diagram-overlay">
   <div class="do-inner">
@@ -212,6 +212,12 @@ let currentView=0,targetView={...VIEWS[0]},isTransitioning=false;
 let autoRotating=false,autoRotateStartTime=0,autoRotateStartTheta=0;
 const AUTO_ROTATE_DURATION=5; // seconds for full 360°
 
+// Product Layer: sweep below looking up after orbit completes
+let productBelowAnim=false,productBelowStart=0;
+const PRODUCT_BELOW_DURATION=3; // seconds to ease to below-view
+const PRODUCT_BELOW_PHI=2.85; // nearly straight below (looking up through disc)
+const PRODUCT_BELOW_R=50; // tighter radius for dramatic below-view
+
 // Idle zoom-out for System View
 let lastInteractionTime=0,idleZooming=false;
 const IDLE_THRESHOLD=30; // seconds before zoom-out begins
@@ -231,6 +237,7 @@ window.goToView=function(idx){
   targetView={targetY:v.targetY,r:v.r,phi:v.phi,theta:v.theta};
   isTransitioning=true;
   autoRotating=false;
+  productBelowAnim=false;
   idleZooming=false;
   resetIdle(); // restart idle clock on any view change
   document.getElementById('layer-name').textContent=v.name;
@@ -307,7 +314,7 @@ function camUp(){
   camera.lookAt(lookTarget);
 }
 camUp();
-renderer.domElement.addEventListener('pointerdown',e=>{drag=true;autoRotating=false;pM={x:e.clientX,y:e.clientY}});
+renderer.domElement.addEventListener('pointerdown',e=>{drag=true;autoRotating=false;productBelowAnim=false;pM={x:e.clientX,y:e.clientY}});
 renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;sph.theta-=(e.clientX-pM.x)*0.005;sph.phi=Math.max(0.1,Math.min(2.9,sph.phi+(e.clientY-pM.y)*0.005));pM={x:e.clientX,y:e.clientY};camUp()});
 renderer.domElement.addEventListener('pointerup',()=>drag=false);
 renderer.domElement.addEventListener('pointerleave',()=>drag=false);
@@ -1247,7 +1254,24 @@ function animate(){
     // Subtle altitude oscillation during orbit (dip down then back up)
     sph.phi=targetView.phi+Math.sin(progress*Math.PI*2)*0.12;
     camUp();
-    if(progress>=1){autoRotating=false;sph.theta=autoRotateStartTheta;sph.phi=targetView.phi;camUp()}
+    if(progress>=1){
+      autoRotating=false;sph.theta=autoRotateStartTheta;sph.phi=targetView.phi;camUp();
+      // Product Layer: begin sweep to below-view
+      if(currentView===1){productBelowAnim=true;productBelowStart=t}
+    }
+  }
+
+  // Product Layer below-view sweep (camera dives below disc, looking up)
+  if(productBelowAnim&&!drag){
+    const elapsed=t-productBelowStart;
+    const progress=Math.min(elapsed/PRODUCT_BELOW_DURATION,1);
+    const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
+    sph.phi=targetView.phi+eased*(PRODUCT_BELOW_PHI-targetView.phi);
+    sph.r=targetView.r+eased*(PRODUCT_BELOW_R-targetView.r);
+    // Slow theta drift during descent
+    sph.theta+=0.002*(1-progress);
+    camUp();
+    if(progress>=1)productBelowAnim=false;
   }
 
   // Sync idle timer with Three.js clock
@@ -1354,6 +1378,9 @@ function animate(){
 animate();
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 setTimeout(()=>{document.getElementById('controls-hint').style.opacity='0'},5000);
+// Ensure keyboard works immediately without click
+document.body.focus();
+window.focus();
 }
 </script>
 </body>
