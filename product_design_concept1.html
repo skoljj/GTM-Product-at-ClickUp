@@ -13,10 +13,30 @@ canvas{position:fixed;top:0;left:0;z-index:0}
 .nav-dot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(0,229,255,0.3);background:transparent;cursor:pointer;transition:all 0.4s ease;position:relative}
 .nav-dot:hover{border-color:rgba(0,229,255,0.8);transform:scale(1.3)}
 .nav-dot.active{background:rgba(0,229,255,0.8);border-color:#00e5ff;box-shadow:0 0 12px rgba(0,229,255,0.4)}
-.nav-dot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(0,229,255,0.5);opacity:0;transition:opacity 0.3s;pointer-events:none}
-.nav-dot:hover::after{opacity:1}
+.nav-dot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,229,255,0.25);opacity:1;transition:color 0.3s;pointer-events:none;font-family:'SF Pro Display',system-ui,sans-serif;font-weight:300}
+.nav-dot:hover::after{color:rgba(0,229,255,0.7)}
+.nav-dot.active::after{color:rgba(0,229,255,0.55)}
 
-#layer-hud{position:fixed;top:16px;left:16px;z-index:100;pointer-events:none;transition:opacity 0.5s}
+#hi-nav{position:fixed;top:12px;left:14px;z-index:300;font-family:'SF Pro Display',system-ui,sans-serif;font-size:12px;color:#c8d6e5;cursor:pointer;user-select:none;letter-spacing:.06em;padding:6px 10px;border-radius:4px;transition:background .2s;backdrop-filter:blur(8px);pointer-events:all}
+#hi-nav:hover{background:rgba(0,229,255,.06)}
+#diagram-overlay{position:fixed;inset:0;z-index:250;background:rgba(2,4,8,.96);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
+#diagram-overlay.open{opacity:1;pointer-events:all}
+.do-inner{width:90%;max-width:520px}
+.do-title{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(0,229,255,.5);margin-bottom:16px;font-family:'SF Pro Display',system-ui,sans-serif}
+.do-list{display:flex;flex-direction:column;gap:5px}
+.do-link{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:6px;text-decoration:none;color:#c8d6e5;border:1px solid rgba(255,255,255,.04);transition:all .25s;font-family:'SF Pro Display',system-ui,sans-serif}
+.do-link:hover{border-color:rgba(0,229,255,.25);background:rgba(0,229,255,.04)}
+.do-num{font-size:10px;color:rgba(0,229,255,.45);width:24px;text-align:center;flex-shrink:0;font-weight:300}
+.do-info{flex:1}
+.do-label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,214,229,.25);margin-bottom:1px}
+.do-ttl{font-size:12px;font-weight:400}
+.do-arrow{font-size:13px;color:rgba(0,229,255,.25);transition:transform .2s}
+.do-link:hover .do-arrow{transform:translateX(3px);color:rgba(0,229,255,.6)}
+.do-divider{height:1px;background:rgba(255,255,255,.04);margin:10px 0}
+.do-ext{display:inline-block;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,229,255,.4);text-decoration:none;padding:5px 10px;border:1px solid rgba(0,229,255,.12);border-radius:3px;transition:all .2s;margin-right:8px;margin-top:14px}
+.do-ext:hover{color:rgba(0,229,255,.7);border-color:rgba(0,229,255,.35)}
+
+#layer-hud{position:fixed;top:44px;left:14px;z-index:100;pointer-events:none;transition:opacity 0.5s}
 #layer-hud h1{font-size:11px;color:#00e5ff;font-weight:300;letter-spacing:0.15em;text-transform:uppercase;opacity:0.9}
 #layer-hud .sub{font-size:9px;color:#445566;margin-top:3px;letter-spacing:0.08em}
 #layer-name{font-size:28px;font-weight:200;letter-spacing:0.04em;margin-top:8px;transition:color 0.5s}
@@ -67,6 +87,24 @@ canvas{position:fixed;top:0;left:0;z-index:0}
 </style>
 </head>
 <body>
+<div id="hi-nav" onclick="toggleDiagramMenu()"><b>HI</b><sup style="font-size:8px;color:rgba(74,80,104,.8)">AI</sup> = <b>V</b></div>
+<div id="diagram-overlay">
+  <div class="do-inner">
+    <div class="do-title">Capability Architecture</div>
+    <div class="do-list">
+      <a class="do-link" href="javascript:void(0)" onclick="closeDiagramMenu();goToView(0)"><div class="do-num">1</div><div class="do-info"><div class="do-label">Layer One</div><div class="do-ttl">Contributor Layer</div></div><div class="do-arrow">&rarr;</div></a>
+      <a class="do-link" href="javascript:void(0)" onclick="closeDiagramMenu();goToView(1)"><div class="do-num">2</div><div class="do-info"><div class="do-label">Layer Two</div><div class="do-ttl">Product Layer</div></div><div class="do-arrow">&rarr;</div></a>
+      <a class="do-link" href="javascript:void(0)" onclick="closeDiagramMenu();goToView(2)"><div class="do-num">3</div><div class="do-info"><div class="do-label">Layer Three</div><div class="do-ttl">Agent Universe</div></div><div class="do-arrow">&rarr;</div></a>
+      <a class="do-link" href="javascript:void(0)" onclick="closeDiagramMenu();goToView(3)"><div class="do-num">&infin;</div><div class="do-info"><div class="do-label">Full View</div><div class="do-ttl">System View</div></div><div class="do-arrow">&rarr;</div></a>
+      <div class="do-divider"></div>
+      <a class="do-link" href="diagram/workshop.html"><div class="do-num">&middot;</div><div class="do-info"><div class="do-label">Workshop</div><div class="do-ttl">Individual Module Lab</div></div><div class="do-arrow">&rarr;</div></a>
+      <a class="do-link" href="chapters/"><div class="do-num">&middot;</div><div class="do-info"><div class="do-label">Presentation</div><div class="do-ttl">Product Thesis &amp; Concept Flyover</div></div><div class="do-arrow">&rarr;</div></a>
+    </div>
+    <a class="do-ext" href="diagram/stacked.html">Stacked Scroll View</a>
+    <a class="do-ext" href="old-game-new-game.html">Future &gt; Legacy</a>
+  </div>
+</div>
+
 <div id="layer-hud">
   <h1>Capability Architecture &middot; Three-Layer Stack</h1>
   <div class="sub">Scroll or click dots to inspect each layer &middot; Drag to orbit 360&deg;</div>
@@ -171,11 +209,20 @@ const VIEWS=[
   {name:'SYSTEM VIEW',color:'#88aacc',targetY:0,r:220,phi:1.05,theta:0.4},
 ];
 let currentView=0,targetView={...VIEWS[0]},isTransitioning=false;
+let autoRotating=false,autoRotateStartTime=0,autoRotateStartTheta=0;
+const AUTO_ROTATE_DURATION=5; // seconds for full 360°
+
+// Menu
+window.toggleDiagramMenu=function(){document.getElementById('diagram-overlay').classList.toggle('open')};
+window.closeDiagramMenu=function(){document.getElementById('diagram-overlay').classList.remove('open')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDiagramMenu()});
+document.getElementById('diagram-overlay').addEventListener('click',function(e){if(e.target===this)closeDiagramMenu()});
 
 window.goToView=function(idx){
   currentView=idx;const v=VIEWS[idx];
   targetView={targetY:v.targetY,r:v.r,phi:v.phi,theta:v.theta};
   isTransitioning=true;
+  autoRotating=false; // cancel any in-progress rotation; will restart after transition
   document.getElementById('layer-name').textContent=v.name;
   document.getElementById('layer-name').style.color=v.color;
   document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
@@ -250,7 +297,7 @@ function camUp(){
   camera.lookAt(lookTarget);
 }
 camUp();
-renderer.domElement.addEventListener('pointerdown',e=>{drag=true;pM={x:e.clientX,y:e.clientY}});
+renderer.domElement.addEventListener('pointerdown',e=>{drag=true;autoRotating=false;pM={x:e.clientX,y:e.clientY}});
 renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;sph.theta-=(e.clientX-pM.x)*0.005;sph.phi=Math.max(0.1,Math.min(2.9,sph.phi+(e.clientY-pM.y)*0.005));pM={x:e.clientX,y:e.clientY};camUp()});
 renderer.domElement.addEventListener('pointerup',()=>drag=false);
 renderer.domElement.addEventListener('pointerleave',()=>drag=false);
@@ -1171,7 +1218,26 @@ function animate(){
     sph.r+=(targetView.r-sph.r)*ls;
     if(!drag){sph.phi+=(targetView.phi-sph.phi)*ls*0.5;sph.theta+=(targetView.theta-sph.theta)*ls*0.3}
     camUp();
-    if(Math.abs(lookTarget.y-targetView.targetY)<0.1)isTransitioning=false;
+    if(Math.abs(lookTarget.y-targetView.targetY)<0.1){
+      isTransitioning=false;
+      // Begin auto-rotation orbit
+      autoRotating=true;
+      autoRotateStartTime=t;
+      autoRotateStartTheta=sph.theta;
+    }
+  }
+
+  // Auto-rotation: full 360° orbit with altitude wave
+  if(autoRotating&&!drag){
+    const elapsed=t-autoRotateStartTime;
+    const progress=Math.min(elapsed/AUTO_ROTATE_DURATION,1);
+    // Smooth ease-in-out
+    const eased=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
+    sph.theta=autoRotateStartTheta+eased*Math.PI*2;
+    // Subtle altitude oscillation during orbit (dip down then back up)
+    sph.phi=targetView.phi+Math.sin(progress*Math.PI*2)*0.12;
+    camUp();
+    if(progress>=1){autoRotating=false;sph.theta=autoRotateStartTheta;sph.phi=targetView.phi;camUp()}
   }
 
   allAntennas.forEach(tip=>{tip.material.opacity=0.15+0.85*Math.abs(Math.sin(t*2.5+tip.userData.ph))});
