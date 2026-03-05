@@ -15,16 +15,24 @@ canvas{position:fixed;top:0;left:0;z-index:0}
 #hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(100,130,160,.5);pointer-events:none;transition:opacity .8s}
 #back{position:fixed;bottom:24px;right:24px;z-index:100;background:rgba(8,12,24,.85);border:1px solid rgba(16,163,127,.2);color:#10a37f;padding:6px 14px;border-radius:3px;cursor:pointer;font-size:9px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(8px)}
 #back:hover{border-color:rgba(16,163,127,.5)}
+.zoom-controls{position:fixed;bottom:56px;right:24px;z-index:100;display:flex;flex-direction:column;gap:4px}
+.zoom-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(8,12,24,.85);border:1px solid rgba(16,163,127,.2);color:#10a37f;font-size:18px;line-height:1;border-radius:4px;cursor:pointer;backdrop-filter:blur(8px);transition:border-color .2s,background .15s;user-select:none;padding:0;font-family:system-ui}
+.zoom-btn:hover{border-color:rgba(16,163,127,.5)}
+.zoom-btn:active{background:rgba(16,163,127,.1)}
 </style>
 </head>
 <body>
 <div id="hud">
   <h1>Capability Architecture · Module 4</h1>
-  <div class="sub">Drag to orbit · Scroll to zoom</div>
+  <div class="sub">Drag to orbit · Scroll or +/− to zoom</div>
   <div class="title">API LAYER</div>
 </div>
-<div id="hint">DRAG TO ORBIT 360° · SCROLL TO ZOOM</div>
+<div id="hint">DRAG TO ORBIT 360° · SCROLL OR +/− TO ZOOM</div>
 <a id="back" href="../product_design_concept1.html">← Full Diagram</a>
+<div class="zoom-controls">
+  <button class="zoom-btn" id="zoomIn" title="Zoom in (+)">+</button>
+  <button class="zoom-btn" id="zoomOut" title="Zoom out (−)">−</button>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -52,7 +60,16 @@ renderer.domElement.addEventListener('pointerdown',e=>{drag=true;pM={x:e.clientX
 renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;sph.theta-=(e.clientX-pM.x)*0.005;sph.phi=Math.max(0.1,Math.min(2.9,sph.phi+(e.clientY-pM.y)*0.005));pM={x:e.clientX,y:e.clientY};camUp()});
 renderer.domElement.addEventListener('pointerup',()=>drag=false);
 renderer.domElement.addEventListener('pointerleave',()=>drag=false);
-renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();sph.r=Math.max(25,Math.min(250,sph.r+e.deltaY*0.15));camUp()},{passive:false});
+const MIN_R=25,MAX_R=250;let targetR=sph.r;const isEmbed=window!==window.top;
+if(!isEmbed){renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();targetR=Math.max(MIN_R,Math.min(MAX_R,targetR+e.deltaY*0.12))},{passive:false})}
+document.getElementById('zoomIn').addEventListener('click',()=>{targetR=Math.max(MIN_R,targetR-sph.r*0.2)});
+document.getElementById('zoomOut').addEventListener('click',()=>{targetR=Math.min(MAX_R,targetR+sph.r*0.2)});
+window.addEventListener('keydown',e=>{if(e.key==='='||e.key==='+'){e.preventDefault();targetR=Math.max(MIN_R,targetR-sph.r*0.2)}else if(e.key==='-'||e.key==='_'){e.preventDefault();targetR=Math.min(MAX_R,targetR+sph.r*0.2)}});
+let lastPinchDist=0;
+renderer.domElement.addEventListener('touchstart',e=>{if(e.touches.length===2){e.preventDefault();const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;lastPinchDist=Math.sqrt(dx*dx+dy*dy)}},{passive:false});
+renderer.domElement.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;const dist=Math.sqrt(dx*dx+dy*dy);targetR=Math.max(MIN_R,Math.min(MAX_R,targetR+(lastPinchDist-dist)*0.3));lastPinchDist=dist}},{passive:false});
+if('ontouchstart' in window){document.getElementById('hint').textContent='DRAG TO ORBIT 360\u00b0 \u00b7 PINCH TO ZOOM'}
+else if(isEmbed){document.getElementById('hint').textContent='DRAG TO ORBIT 360\u00b0 \u00b7 USE + / \u2212 TO ZOOM'}
 
 scene.add(new THREE.AmbientLight(0x223344,0.5));
 [[0x10a37f,2.5,[0,8,0]],[0xd4a574,1.2,[15,0,15]],[0x4285F4,1.2,[-15,0,-15]],[0x1DA1F2,0.8,[20,5,0]],[0x20B2AA,0.8,[-20,5,0]]]
@@ -70,7 +87,7 @@ const API_ITEMS=[
   {name:'OpenAI',color:0x10a37f,sym:'◆'},
   {name:'Anthropic',color:0xd4a574,sym:'◈'},
   {name:'Gemini',color:0x4285F4,sym:'◇'},
-  {name:'Grok',color:0x1DA1F2,sym:'▣'},
+  {name:'XAI',color:0x1DA1F2,sym:'▣'},
   {name:'Perplexity',color:0x20B2AA,sym:'◎'},
 ];
 const apiBaseY=0;
@@ -113,11 +130,11 @@ API_ITEMS.forEach((api,i)=>{
   scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(px,py+3,pz),new THREE.Vector3(px,8,pz)]),new THREE.LineBasicMaterial({color:api.color,transparent:true,opacity:0.25})));
 
   // Label
-  const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');
-  ctx.font='bold 48px monospace';ctx.fillStyle='#'+api.color.toString(16).padStart(6,'0');ctx.globalAlpha=0.9;ctx.textAlign='center';ctx.fillText(api.sym,256,45);
-  ctx.font='bold 22px monospace';ctx.globalAlpha=0.8;ctx.fillText(api.name.toUpperCase(),256,78);
+  const c=document.createElement('canvas');c.width=768;c.height=128;const ctx=c.getContext('2d');
+  ctx.font='bold 64px monospace';ctx.fillStyle='#'+api.color.toString(16).padStart(6,'0');ctx.globalAlpha=0.9;ctx.textAlign='center';ctx.fillText(api.sym,384,55);
+  ctx.font='bold 32px monospace';ctx.globalAlpha=0.85;ctx.fillText(api.name.toUpperCase(),384,100);
   const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));
-  s.position.set(px,py-3.5,pz);s.scale.set(10,2,1);scene.add(s);
+  s.position.set(px,py-4.5,pz);s.scale.set(14,3,1);scene.add(s);
 
   // Radial beam from hub
   const mid=new THREE.Vector3(px*0.3,py+1,pz*0.3);
@@ -201,6 +218,7 @@ function animate(){
   for(let i=0;i<apiFieldN;i++){const ox=afp[i*3],oz=afp[i*3+2];const cs=Math.cos(0.0005),sn=Math.sin(0.0005);
   afp[i*3]=ox*cs-oz*sn;afp[i*3+2]=ox*sn+oz*cs;afp[i*3+1]+=Math.sin(t*0.15+i*0.01)*0.02}
   apiFieldPts.geometry.attributes.position.needsUpdate=true;
+  if(Math.abs(sph.r-targetR)>0.01){sph.r+=(targetR-sph.r)*0.12;camUp()}
   renderer.render(scene,camera);
 }
 animate();

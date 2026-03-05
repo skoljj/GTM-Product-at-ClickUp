@@ -15,16 +15,24 @@ canvas{position:fixed;top:0;left:0;z-index:0}
 #hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(100,130,160,.5);pointer-events:none;transition:opacity .8s}
 #back{position:fixed;bottom:24px;right:24px;z-index:100;background:rgba(8,12,24,.85);border:1px solid rgba(199,125,255,.2);color:#c77dff;padding:6px 14px;border-radius:3px;cursor:pointer;font-size:9px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(8px)}
 #back:hover{border-color:rgba(199,125,255,.5)}
+.zoom-controls{position:fixed;bottom:56px;right:24px;z-index:100;display:flex;flex-direction:column;gap:4px}
+.zoom-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(8,12,24,.85);border:1px solid rgba(199,125,255,.2);color:#c77dff;font-size:18px;line-height:1;border-radius:4px;cursor:pointer;backdrop-filter:blur(8px);transition:border-color .2s,background .15s;user-select:none;padding:0;font-family:system-ui}
+.zoom-btn:hover{border-color:rgba(199,125,255,.5)}
+.zoom-btn:active{background:rgba(199,125,255,.1)}
 </style>
 </head>
 <body>
 <div id="hud">
   <h1>Capability Architecture · Module 5</h1>
-  <div class="sub">Drag to orbit · Scroll to zoom</div>
+  <div class="sub">Drag to orbit · Scroll or +/− to zoom</div>
   <div class="title">CODEBASE — Studio + Lab</div>
 </div>
-<div id="hint">DRAG TO ORBIT 360° · SCROLL TO ZOOM</div>
+<div id="hint">DRAG TO ORBIT 360° · SCROLL OR +/− TO ZOOM</div>
 <a id="back" href="../product_design_concept1.html">← Full Diagram</a>
+<div class="zoom-controls">
+  <button class="zoom-btn" id="zoomIn" title="Zoom in (+)">+</button>
+  <button class="zoom-btn" id="zoomOut" title="Zoom out (−)">−</button>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -39,7 +47,7 @@ renderer.toneMappingExposure=1.15;
 document.body.appendChild(renderer.domElement);
 
 let drag=false,pM={x:0,y:0};
-let sph={theta:0.5,phi:1.0,r:55};
+let sph={theta:0.0,phi:0.85,r:55};
 const lookTarget=new THREE.Vector3(0,0,0);
 function camUp(){
   camera.position.x=lookTarget.x+sph.r*Math.sin(sph.phi)*Math.sin(sph.theta);
@@ -52,7 +60,16 @@ renderer.domElement.addEventListener('pointerdown',e=>{drag=true;pM={x:e.clientX
 renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;sph.theta-=(e.clientX-pM.x)*0.005;sph.phi=Math.max(0.1,Math.min(2.9,sph.phi+(e.clientY-pM.y)*0.005));pM={x:e.clientX,y:e.clientY};camUp()});
 renderer.domElement.addEventListener('pointerup',()=>drag=false);
 renderer.domElement.addEventListener('pointerleave',()=>drag=false);
-renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();sph.r=Math.max(20,Math.min(120,sph.r+e.deltaY*0.1));camUp()},{passive:false});
+const MIN_R=20,MAX_R=120;let targetR=sph.r;const isEmbed=window!==window.top;
+if(!isEmbed){renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();targetR=Math.max(MIN_R,Math.min(MAX_R,targetR+e.deltaY*0.08))},{passive:false})}
+document.getElementById('zoomIn').addEventListener('click',()=>{targetR=Math.max(MIN_R,targetR-sph.r*0.2)});
+document.getElementById('zoomOut').addEventListener('click',()=>{targetR=Math.min(MAX_R,targetR+sph.r*0.2)});
+window.addEventListener('keydown',e=>{if(e.key==='='||e.key==='+'){e.preventDefault();targetR=Math.max(MIN_R,targetR-sph.r*0.2)}else if(e.key==='-'||e.key==='_'){e.preventDefault();targetR=Math.min(MAX_R,targetR+sph.r*0.2)}});
+let lastPinchDist=0;
+renderer.domElement.addEventListener('touchstart',e=>{if(e.touches.length===2){e.preventDefault();const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;lastPinchDist=Math.sqrt(dx*dx+dy*dy)}},{passive:false});
+renderer.domElement.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;const dist=Math.sqrt(dx*dx+dy*dy);targetR=Math.max(MIN_R,Math.min(MAX_R,targetR+(lastPinchDist-dist)*0.3));lastPinchDist=dist}},{passive:false});
+if('ontouchstart' in window){document.getElementById('hint').textContent='DRAG TO ORBIT 360\u00b0 \u00b7 PINCH TO ZOOM'}
+else if(isEmbed){document.getElementById('hint').textContent='DRAG TO ORBIT 360\u00b0 \u00b7 USE + / \u2212 TO ZOOM'}
 
 scene.add(new THREE.AmbientLight(0x223344,0.5));
 [[0x00e5ff,2.2,[-15,8,0]],[0xe63946,1.8,[15,8,0]],[0xc77dff,2.0,[0,0,15]],[0x6366f1,1.0,[0,-5,0]]]
@@ -93,112 +110,282 @@ scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vec
 scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,CORE_BOT,-CORE_OUTER_R),new THREE.Vector3(0,CORE_TOP,-CORE_OUTER_R)]),new THREE.LineBasicMaterial({color:0xc77dff,transparent:true,opacity:0.3})));
 scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,CORE_BOT,CORE_OUTER_R),new THREE.Vector3(0,CORE_TOP,CORE_OUTER_R)]),new THREE.LineBasicMaterial({color:0xc77dff,transparent:true,opacity:0.3})));
 
-// Studio half (left)
+// ════════════════════════════════════════════════
+// ═══ STUDIO (left) — CREATE ═══
+// ════════════════════════════════════════════════
 const studioArc=[];for(let i=0;i<=32;i++){const a=Math.PI/2+(i/32)*Math.PI;studioArc.push(new THREE.Vector3(Math.cos(a)*CORE_OUTER_R,0,Math.sin(a)*CORE_OUTER_R))}
-scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(studioArc),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.25})));
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(studioArc),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.35})));
 for(let lv=0;lv<3;lv++){const ly=CORE_BOT+(lv+0.5)*(CORE_H/3);const pts=[];for(let i=0;i<=32;i++){const a=Math.PI/2+(i/32)*Math.PI;pts.push(new THREE.Vector3(Math.cos(a)*CORE_OUTER_R*0.9,ly,Math.sin(a)*CORE_OUTER_R*0.9))}
-scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.08+lv*0.04})))}
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.12+lv*0.06})))}
 (()=>{const c=document.createElement('canvas');c.width=512;c.height=80;const x=c.getContext('2d');
-x.font='bold 36px monospace';x.fillStyle='#00e5ff';x.globalAlpha=0.85;x.textAlign='center';x.fillText('STUDIO',256,36);x.font='500 22px monospace';x.globalAlpha=0.5;x.fillText('CREATE',256,66);
-const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(-CORE_OUTER_R*0.55,2,0);s.scale.set(18,3,1);scene.add(s)})();
-// Studio volume
-scene.add((()=>{const m=new THREE.Mesh(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.7,CORE_OUTER_R*0.8),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.012,side:THREE.DoubleSide}));m.position.set(-CORE_OUTER_R*0.35,0,0);return m})());
-scene.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.7,CORE_OUTER_R*0.8)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.08})));
+x.font='bold 36px monospace';x.fillStyle='#00e5ff';x.globalAlpha=0.9;x.textAlign='center';x.fillText('STUDIO',256,36);x.font='500 22px monospace';x.globalAlpha=0.6;x.fillText('CREATE',256,66);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(-CORE_OUTER_R*0.55,CORE_TOP+2,0);s.scale.set(18,3,1);scene.add(s)})();
+
+// Studio volume — visible fill
+scene.add((()=>{const m=new THREE.Mesh(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.85,CORE_OUTER_R*0.85),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.04,side:THREE.DoubleSide}));m.position.set(-CORE_OUTER_R*0.35,0,0);return m})());
+scene.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.85,CORE_OUTER_R*0.85)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.25})));
 scene.children[scene.children.length-1].position.set(-CORE_OUTER_R*0.35,0,0);
 
-// Code Center
+// Studio core cylinder + glow
 const ccX=-CORE_OUTER_R*0.40,ccSize=14;
-scene.add((()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(ccSize/2,ccSize/2,4,32),new THREE.MeshPhysicalMaterial({color:0x001520,metalness:0.9,roughness:0.1,clearcoat:1,transparent:true,opacity:0.55}));m.position.set(ccX,0,0);return m})());
+scene.add((()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(ccSize/2,ccSize/2,4,32),new THREE.MeshPhysicalMaterial({color:0x001520,metalness:0.9,roughness:0.1,clearcoat:1,transparent:true,opacity:0.6}));m.position.set(ccX,0,0);return m})());
 const ccRp=[];for(let j=0;j<=64;j++){const a=(j/64)*Math.PI*2;ccRp.push(new THREE.Vector3(ccX+Math.cos(a)*ccSize/2,1.25,Math.sin(a)*ccSize/2))}
-scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ccRp),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.7})));
-const ccGlow=new THREE.Mesh(new THREE.SphereGeometry(3,16,16),new THREE.MeshBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.06}));ccGlow.position.set(ccX,0,0);scene.add(ccGlow);
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ccRp),new THREE.LineBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.8})));
+const ccGlow=new THREE.Mesh(new THREE.SphereGeometry(4,16,16),new THREE.MeshBasicMaterial({color:STUDIO_COL,transparent:true,opacity:0.1}));ccGlow.position.set(ccX,0,0);scene.add(ccGlow);
 (()=>{const c=document.createElement('canvas');c.width=512;c.height=64;const x=c.getContext('2d');
-x.font='bold 24px monospace';x.fillStyle='#00e5ff';x.globalAlpha=0.8;x.textAlign='center';x.fillText('CODE CENTER',256,28);x.font='400 14px monospace';x.globalAlpha=0.35;x.fillText('Cursor · Codex · Claude Code',256,50);
+x.font='bold 24px monospace';x.fillStyle='#00e5ff';x.globalAlpha=0.85;x.textAlign='center';x.fillText('CODE CENTER',256,28);x.font='400 14px monospace';x.globalAlpha=0.45;x.fillText('Cursor · Codex · Claude Code',256,50);
 const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(ccX,3.5,0);s.scale.set(16,2.5,1);scene.add(s)})();
 
 // ── CODEROOM ──
 const crX=ccX,crY=0,crZ=0;
-const crW=18,crH=8,crD=14;
-const crFrame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(crW,crH,crD)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.35}));
+const crW=22,crH=8,crD=18;
+const crFrame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(crW,crH,crD)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.45}));
 crFrame.position.set(crX,crY,crZ);scene.add(crFrame);
-const crFrame2=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(crW-0.5,crH-0.3,crD-0.5)),new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.12}));
+const crFrame2=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(crW-0.5,crH-0.3,crD-0.5)),new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.18}));
 crFrame2.position.set(crX,crY,crZ);scene.add(crFrame2);
 
-// Floor grid
-const crFloor=new THREE.Mesh(new THREE.PlaneGeometry(crW-0.5,crD-0.5),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.04,side:THREE.DoubleSide}));
+// Floor
+const crFloor=new THREE.Mesh(new THREE.PlaneGeometry(crW-0.5,crD-0.5),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.06,side:THREE.DoubleSide}));
 crFloor.rotation.x=-Math.PI/2;crFloor.position.set(crX,crY-crH/2+0.05,crZ);scene.add(crFloor);
-const crGrid=new THREE.GridHelper(crW-1,16,0x00e5ff,0x0a1525);crGrid.position.set(crX,crY-crH/2+0.06,crZ);crGrid.material.opacity=0.08;crGrid.material.transparent=true;scene.add(crGrid);
+const crGrid=new THREE.GridHelper(crW-1,16,0x00e5ff,0x0a1525);crGrid.position.set(crX,crY-crH/2+0.06,crZ);crGrid.material.opacity=0.12;crGrid.material.transparent=true;scene.add(crGrid);
 
-// Back wall code lines
-const bwMesh=new THREE.Mesh(new THREE.PlaneGeometry(crW-1,crH-0.8),new THREE.MeshBasicMaterial({color:0x001520,transparent:true,opacity:0.15,side:THREE.DoubleSide}));
+// Back wall with code lines
+const bwMesh=new THREE.Mesh(new THREE.PlaneGeometry(crW-1,crH-0.8),new THREE.MeshBasicMaterial({color:0x001520,transparent:true,opacity:0.2,side:THREE.DoubleSide}));
 bwMesh.position.set(crX,crY,crZ-crD/2+0.1);scene.add(bwMesh);
-scene.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(crW-0.8,crH-0.6)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.5}));m.position.set(crX,crY,crZ-crD/2+0.12);return m})());
-for(let row=0;row<18;row++){
-  const ly=crY+crH/2-0.6-row*(crH-0.8)/18;
-  const indent=Math.random()*2,lineW=1.5+Math.random()*5;
-  const colors=[0x00e5ff,0x6366f1,0x00e5a0,0xc77dff,0xe63946];
+scene.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(crW-0.8,crH-0.6)),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.6}));m.position.set(crX,crY,crZ-crD/2+0.12);return m})());
+for(let row=0;row<22;row++){
+  const ly=crY+crH/2-0.5-row*(crH-0.6)/22;
+  const indent=Math.random()*2.5,lineW=2+Math.random()*6;
+  const colors=[0x00e5ff,0x6366f1,0x00e5a0,0xc77dff,0x34d399];
   const lc=colors[Math.floor(Math.random()*colors.length)];
   scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
     new THREE.Vector3(crX-crW/2+0.8+indent,ly,crZ-crD/2+0.15),
     new THREE.Vector3(crX-crW/2+0.8+indent+lineW,ly,crZ-crD/2+0.15)
-  ]),new THREE.LineBasicMaterial({color:lc,transparent:true,opacity:0.15+Math.random()*0.2})));
+  ]),new THREE.LineBasicMaterial({color:lc,transparent:true,opacity:0.2+Math.random()*0.25})));
 }
 
-// Side walls
-for(let row=0;row<12;row++){
-  const ly=crY+crH/2-0.8-row*(crH-1)/12;const lineW=1+Math.random()*3;
-  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(crX-crW/2+0.15,ly,crZ-crD/2+1+Math.random()),
-    new THREE.Vector3(crX-crW/2+0.15,ly,crZ-crD/2+1+Math.random()+lineW)
-  ]),new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.1+Math.random()*0.12})));
-}
-for(let row=0;row<10;row++){
-  const ly=crY+crH/2-0.8-row*(crH-1)/10;const lineW=1+Math.random()*4;
-  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(crX+crW/2-0.15,ly,crZ-crD/2+0.5+Math.random()),
-    new THREE.Vector3(crX+crW/2-0.15,ly,crZ-crD/2+0.5+Math.random()+lineW)
-  ]),new THREE.LineBasicMaterial({color:0x00e5a0,transparent:true,opacity:0.08+Math.random()*0.1})));
-}
+// Side walls with code
+for(let row=0;row<14;row++){const ly=crY+crH/2-0.6-row*(crH-0.8)/14;const lineW=1.5+Math.random()*4;
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(crX-crW/2+0.15,ly,crZ-crD/2+1.5+Math.random()*2),
+  new THREE.Vector3(crX-crW/2+0.15,ly,crZ-crD/2+1.5+Math.random()*2+lineW)
+]),new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.12+Math.random()*0.15})))}
+for(let row=0;row<12;row++){const ly=crY+crH/2-0.6-row*(crH-0.8)/12;const lineW=1.5+Math.random()*5;
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(crX+crW/2-0.15,ly,crZ-crD/2+1+Math.random()*2),
+  new THREE.Vector3(crX+crW/2-0.15,ly,crZ-crD/2+1+Math.random()*2+lineW)
+]),new THREE.LineBasicMaterial({color:0x00e5a0,transparent:true,opacity:0.1+Math.random()*0.12})))}
 
-// Cursor
-const cursorDot=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.25,0.02),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.9}));
+// Typing cursor
+const cursorDot=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.3,0.02),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.95}));
 cursorDot.position.set(crX-1,crY+0.5,crZ-crD/2+0.18);scene.add(cursorDot);
 // Ceiling light
-const ceilStrip=new THREE.Mesh(new THREE.PlaneGeometry(crW-2,0.3),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.08,side:THREE.DoubleSide}));
+const ceilStrip=new THREE.Mesh(new THREE.PlaneGeometry(crW-2,0.4),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.12,side:THREE.DoubleSide}));
 ceilStrip.rotation.x=-Math.PI/2;ceilStrip.position.set(crX,crY+crH/2-0.05,crZ);scene.add(ceilStrip);
 
-// Room particles
-const crPN=60;const crPGeo=new THREE.BufferGeometry();const crPPos=new Float32Array(crPN*3);const crPCol=new Float32Array(crPN*3);
+// Studio room particles (dense, vibrant)
+const crPN=200;const crPGeo=new THREE.BufferGeometry();const crPPos=new Float32Array(crPN*3);const crPCol=new Float32Array(crPN*3);
+const studioPalette=[new THREE.Color(0x00e5ff),new THREE.Color(0x6366f1),new THREE.Color(0x00e5a0),new THREE.Color(0xc77dff),new THREE.Color(0x34d399)];
 for(let i=0;i<crPN;i++){crPPos[i*3]=crX+(Math.random()-0.5)*(crW-1);crPPos[i*3+1]=crY+(Math.random()-0.5)*(crH-0.5);crPPos[i*3+2]=crZ+(Math.random()-0.5)*(crD-1);
-const c=fpColors[Math.floor(Math.random()*fpColors.length)];crPCol[i*3]=c.r;crPCol[i*3+1]=c.g;crPCol[i*3+2]=c.b}
+const c=studioPalette[Math.floor(Math.random()*studioPalette.length)];crPCol[i*3]=c.r;crPCol[i*3+1]=c.g;crPCol[i*3+2]=c.b}
 crPGeo.setAttribute('position',new THREE.BufferAttribute(crPPos,3));crPGeo.setAttribute('color',new THREE.BufferAttribute(crPCol,3));
-const crParticles=new THREE.Points(crPGeo,new THREE.PointsMaterial({size:0.08,vertexColors:true,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending}));scene.add(crParticles);
+const crParticles=new THREE.Points(crPGeo,new THREE.PointsMaterial({size:0.14,vertexColors:true,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending}));scene.add(crParticles);
 
-// Lab half (right)
+// Studio scanning highlight
+const scanLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(crX-crW/2+0.6,0,crZ-crD/2+0.16),new THREE.Vector3(crX+crW/2-0.6,0,crZ-crD/2+0.16)
+]),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.7}));
+scene.add(scanLine);
+
+// Studio output flow (Studio → center)
+const sdFlowN=120;const sdFlowGeo=new THREE.BufferGeometry();const sdFlowPos=new Float32Array(sdFlowN*3);const sdFlowCol=new Float32Array(sdFlowN*3);
+const sdFlowPhase=new Float32Array(sdFlowN);
+for(let i=0;i<sdFlowN;i++){const p=Math.random();sdFlowPhase[i]=p;
+sdFlowPos[i*3]=crX*(1-p);sdFlowPos[i*3+1]=(Math.random()-0.5)*3;sdFlowPos[i*3+2]=(Math.random()-0.5)*3;
+const cc=new THREE.Color(0x00e5ff);cc.lerp(new THREE.Color(0xc77dff),p);sdFlowCol[i*3]=cc.r;sdFlowCol[i*3+1]=cc.g;sdFlowCol[i*3+2]=cc.b}
+sdFlowGeo.setAttribute('position',new THREE.BufferAttribute(sdFlowPos,3));sdFlowGeo.setAttribute('color',new THREE.BufferAttribute(sdFlowCol,3));
+const sdFlowPts=new THREE.Points(sdFlowGeo,new THREE.PointsMaterial({size:0.15,vertexColors:true,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending}));scene.add(sdFlowPts);
+
+// Studio energy rings (rotating halos around the room)
+const studioRings=[];
+for(let ri=0;ri<3;ri++){const rr=crW/2+1+ri*1.5;const pts=[];for(let j=0;j<=48;j++){const a=(j/48)*Math.PI*2;pts.push(new THREE.Vector3(crX+Math.cos(a)*rr,crY,Math.sin(a)*rr))}
+const ring=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.08+ri*0.04}));
+scene.add(ring);studioRings.push(ring)}
+
+// ════════════════════════════════════════════════
+// ═══ LAB (right) — ANALYZE ═══
+// ════════════════════════════════════════════════
 const labArc=[];for(let i=0;i<=32;i++){const a=-Math.PI/2+(i/32)*Math.PI;labArc.push(new THREE.Vector3(Math.cos(a)*CORE_OUTER_R,0,Math.sin(a)*CORE_OUTER_R))}
-scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(labArc),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.25})));
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(labArc),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.35})));
 for(let lv=0;lv<3;lv++){const ly=CORE_BOT+(lv+0.5)*(CORE_H/3);const pts=[];for(let i=0;i<=32;i++){const a=-Math.PI/2+(i/32)*Math.PI;pts.push(new THREE.Vector3(Math.cos(a)*CORE_OUTER_R*0.9,ly,Math.sin(a)*CORE_OUTER_R*0.9))}
-scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.08+lv*0.04})))}
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.12+lv*0.06})))}
 (()=>{const c=document.createElement('canvas');c.width=512;c.height=80;const x=c.getContext('2d');
-x.font='bold 36px monospace';x.fillStyle='#e63946';x.globalAlpha=0.85;x.textAlign='center';x.fillText('LAB',256,36);x.font='500 22px monospace';x.globalAlpha=0.5;x.fillText('ANALYZE',256,66);
-const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(CORE_OUTER_R*0.55,2,0);s.scale.set(18,3,1);scene.add(s)})();
-const labGlowMesh=new THREE.Mesh(new THREE.SphereGeometry(5,16,16),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.05}));labGlowMesh.position.set(CORE_OUTER_R*0.45,0,0);scene.add(labGlowMesh);
-scene.add((()=>{const m=new THREE.Mesh(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.7,CORE_OUTER_R*0.8),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.012,side:THREE.DoubleSide}));m.position.set(CORE_OUTER_R*0.35,0,0);return m})());
-scene.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.7,CORE_OUTER_R*0.8)),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.08})));
+x.font='bold 36px monospace';x.fillStyle='#e63946';x.globalAlpha=0.9;x.textAlign='center';x.fillText('LAB',256,36);x.font='500 22px monospace';x.globalAlpha=0.6;x.fillText('ANALYZE',256,66);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(CORE_OUTER_R*0.55,CORE_TOP+2,0);s.scale.set(18,3,1);scene.add(s)})();
+
+// Lab volume — visible fill
+scene.add((()=>{const m=new THREE.Mesh(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.85,CORE_OUTER_R*0.85),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.04,side:THREE.DoubleSide}));m.position.set(CORE_OUTER_R*0.35,0,0);return m})());
+scene.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(CORE_OUTER_R*0.9,CORE_H*0.85,CORE_OUTER_R*0.85)),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.25})));
 scene.children[scene.children.length-1].position.set(CORE_OUTER_R*0.35,0,0);
+
+// Lab core cylinder + glow
+const labX=CORE_OUTER_R*0.40,labSize=14;
+scene.add((()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(labSize/2,labSize/2,4,32),new THREE.MeshPhysicalMaterial({color:0x150508,metalness:0.9,roughness:0.1,clearcoat:1,transparent:true,opacity:0.6}));m.position.set(labX,0,0);return m})());
+const labRp=[];for(let j=0;j<=64;j++){const a=(j/64)*Math.PI*2;labRp.push(new THREE.Vector3(labX+Math.cos(a)*labSize/2,1.25,Math.sin(a)*labSize/2))}
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(labRp),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.8})));
+const labGlowMesh=new THREE.Mesh(new THREE.SphereGeometry(4,16,16),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.1}));labGlowMesh.position.set(labX,0,0);scene.add(labGlowMesh);
+(()=>{const c=document.createElement('canvas');c.width=512;c.height=64;const x=c.getContext('2d');
+x.font='bold 24px monospace';x.fillStyle='#e63946';x.globalAlpha=0.85;x.textAlign='center';x.fillText('ANALYSIS CENTER',256,28);x.font='400 14px monospace';x.globalAlpha=0.45;x.fillText('Gong · Salesforce · ClickUp',256,50);
+const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));s.position.set(labX,3.5,0);s.scale.set(16,2.5,1);scene.add(s)})();
+
+// ── LABROOM ──
+const lrX=labX,lrY=0,lrZ=0;
+const lrW=22,lrH=8,lrD=18;
+const lrFrame=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(lrW,lrH,lrD)),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.45}));
+lrFrame.position.set(lrX,lrY,lrZ);scene.add(lrFrame);
+const lrFrame2=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(lrW-0.5,lrH-0.3,lrD-0.5)),new THREE.LineBasicMaterial({color:0xf4a623,transparent:true,opacity:0.18}));
+lrFrame2.position.set(lrX,lrY,lrZ);scene.add(lrFrame2);
+
+// Lab floor
+const lrFloor=new THREE.Mesh(new THREE.PlaneGeometry(lrW-0.5,lrD-0.5),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.06,side:THREE.DoubleSide}));
+lrFloor.rotation.x=-Math.PI/2;lrFloor.position.set(lrX,lrY-lrH/2+0.05,lrZ);scene.add(lrFloor);
+const lrGrid=new THREE.GridHelper(lrW-1,16,LAB_COL,0x150810);lrGrid.position.set(lrX,lrY-lrH/2+0.06,lrZ);lrGrid.material.opacity=0.12;lrGrid.material.transparent=true;scene.add(lrGrid);
+
+// Lab data wall (analysis bars — warm palette)
+const lwMesh=new THREE.Mesh(new THREE.PlaneGeometry(lrW-1,lrH-0.8),new THREE.MeshBasicMaterial({color:0x150508,transparent:true,opacity:0.2,side:THREE.DoubleSide}));
+lwMesh.position.set(lrX,lrY,lrZ-lrD/2+0.1);scene.add(lwMesh);
+scene.add((()=>{const m=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(lrW-0.8,lrH-0.6)),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.6}));m.position.set(lrX,lrY,lrZ-lrD/2+0.12);return m})());
+const labBarColors=[0xe63946,0xf4a623,0xff6b9d,0xfb923c,0xf87171];
+const labBars=[];
+for(let row=0;row<20;row++){
+  const ly=lrY+lrH/2-0.5-row*(lrH-0.6)/20;
+  const barW=2.5+Math.random()*9;const barH=0.2;
+  const lc=labBarColors[Math.floor(Math.random()*labBarColors.length)];
+  const barMesh=new THREE.Mesh(new THREE.PlaneGeometry(barW,barH),new THREE.MeshBasicMaterial({color:lc,transparent:true,opacity:0.12+Math.random()*0.15,side:THREE.DoubleSide}));
+  barMesh.position.set(lrX-lrW/2+1+barW/2,ly,lrZ-lrD/2+0.14);scene.add(barMesh);
+  labBars.push({mesh:barMesh,baseW:barW,ly,color:lc});
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(lrX-lrW/2+0.8,ly,lrZ-lrD/2+0.15),
+    new THREE.Vector3(lrX-lrW/2+0.8+barW,ly,lrZ-lrD/2+0.15)
+  ]),new THREE.LineBasicMaterial({color:lc,transparent:true,opacity:0.25+Math.random()*0.2})));
+}
+
+// Lab side walls with readouts
+for(let row=0;row<14;row++){const ly=lrY+lrH/2-0.6-row*(lrH-0.8)/14;const lineW=1.5+Math.random()*4;
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(lrX+lrW/2-0.15,ly,lrZ-lrD/2+1.5+Math.random()*2),
+  new THREE.Vector3(lrX+lrW/2-0.15,ly,lrZ-lrD/2+1.5+Math.random()*2+lineW)
+]),new THREE.LineBasicMaterial({color:0xf4a623,transparent:true,opacity:0.12+Math.random()*0.15})))}
+for(let row=0;row<12;row++){const ly=lrY+lrH/2-0.6-row*(lrH-0.8)/12;const lineW=1.5+Math.random()*5;
+scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(lrX-lrW/2+0.15,ly,lrZ-lrD/2+1+Math.random()*2),
+  new THREE.Vector3(lrX-lrW/2+0.15,ly,lrZ-lrD/2+1+Math.random()*2+lineW)
+]),new THREE.LineBasicMaterial({color:0xff6b9d,transparent:true,opacity:0.1+Math.random()*0.12})))}
+
+// Lab scanner line
+const labScanner=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(0,lrY-lrH/2+0.3,lrZ-lrD/2+0.16),new THREE.Vector3(0,lrY+lrH/2-0.3,lrZ-lrD/2+0.16)
+]),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.8}));
+scene.add(labScanner);
+
+// Lab ceiling light
+const labCeilStrip=new THREE.Mesh(new THREE.PlaneGeometry(lrW-2,0.4),new THREE.MeshBasicMaterial({color:LAB_COL,transparent:true,opacity:0.12,side:THREE.DoubleSide}));
+labCeilStrip.rotation.x=-Math.PI/2;labCeilStrip.position.set(lrX,lrY+lrH/2-0.05,lrZ);scene.add(labCeilStrip);
+
+// Lab room particles (dense, vibrant, warm palette)
+const lrPN=200;const lrPGeo=new THREE.BufferGeometry();const lrPPos=new Float32Array(lrPN*3);const lrPCol=new Float32Array(lrPN*3);
+const labPalette=[new THREE.Color(0xe63946),new THREE.Color(0xf4a623),new THREE.Color(0xff6b9d),new THREE.Color(0xfb923c),new THREE.Color(0xf87171)];
+for(let i=0;i<lrPN;i++){lrPPos[i*3]=lrX+(Math.random()-0.5)*(lrW-1);lrPPos[i*3+1]=lrY+(Math.random()-0.5)*(lrH-0.5);lrPPos[i*3+2]=lrZ+(Math.random()-0.5)*(lrD-1);
+const c=labPalette[Math.floor(Math.random()*labPalette.length)];lrPCol[i*3]=c.r;lrPCol[i*3+1]=c.g;lrPCol[i*3+2]=c.b}
+lrPGeo.setAttribute('position',new THREE.BufferAttribute(lrPPos,3));lrPGeo.setAttribute('color',new THREE.BufferAttribute(lrPCol,3));
+const lrParticles=new THREE.Points(lrPGeo,new THREE.PointsMaterial({size:0.14,vertexColors:true,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending}));scene.add(lrParticles);
+
+// Lab intake flow (center → Lab)
+const ldFlowN=120;const ldFlowGeo=new THREE.BufferGeometry();const ldFlowPos=new Float32Array(ldFlowN*3);const ldFlowCol=new Float32Array(ldFlowN*3);
+const ldFlowPhase=new Float32Array(ldFlowN);
+for(let i=0;i<ldFlowN;i++){const p=Math.random();ldFlowPhase[i]=p;
+ldFlowPos[i*3]=labX*p;ldFlowPos[i*3+1]=(Math.random()-0.5)*3;ldFlowPos[i*3+2]=(Math.random()-0.5)*3;
+const cc=new THREE.Color(0xc77dff);cc.lerp(new THREE.Color(0xe63946),p);ldFlowCol[i*3]=cc.r;ldFlowCol[i*3+1]=cc.g;ldFlowCol[i*3+2]=cc.b}
+ldFlowGeo.setAttribute('position',new THREE.BufferAttribute(ldFlowPos,3));ldFlowGeo.setAttribute('color',new THREE.BufferAttribute(ldFlowCol,3));
+const ldFlowPts=new THREE.Points(ldFlowGeo,new THREE.PointsMaterial({size:0.15,vertexColors:true,transparent:true,opacity:0.6,blending:THREE.AdditiveBlending}));scene.add(ldFlowPts);
+
+// Lab energy rings
+const labRings=[];
+for(let ri=0;ri<3;ri++){const rr=lrW/2+1+ri*1.5;const pts=[];for(let j=0;j<=48;j++){const a=(j/48)*Math.PI*2;pts.push(new THREE.Vector3(lrX+Math.cos(a)*rr,lrY,Math.sin(a)*rr))}
+const ring=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:LAB_COL,transparent:true,opacity:0.08+ri*0.04}));
+scene.add(ring);labRings.push(ring)}
 
 // ═══ ANIMATE ═══
 const clock=new THREE.Clock();
 function animate(){
   requestAnimationFrame(animate);const t=clock.getElapsedTime();
-  const ccS=1+0.15*Math.sin(t*1.0);ccGlow.scale.set(ccS,ccS,ccS);ccGlow.material.opacity=0.04+0.04*Math.sin(t*1.4);
-  cursorDot.material.opacity=0.2+0.8*Math.abs(Math.sin(t*4));
-  cursorDot.position.x=crX-crW/2+1.5+((t*0.5)%6);
-  cursorDot.position.y=crY+crH/2-0.6-Math.floor((t*0.3)%18)*((crH-0.8)/18);
+
+  // Studio: core glow breathes
+  const ccS=1+0.2*Math.sin(t*1.0);ccGlow.scale.set(ccS,ccS,ccS);ccGlow.material.opacity=0.06+0.08*Math.sin(t*1.4);
+
+  // Studio: typing cursor blinks and moves
+  cursorDot.material.opacity=0.3+0.7*Math.abs(Math.sin(t*4));
+  cursorDot.position.x=crX-crW/2+2+((t*0.6)%8);
+  cursorDot.position.y=crY+crH/2-0.5-Math.floor((t*0.35)%22)*((crH-0.6)/22);
+
+  // Studio: particles swirl with life
   const crp=crParticles.geometry.attributes.position.array;
-  for(let i=0;i<crPN;i++){crp[i*3+1]+=Math.sin(t*0.5+i*0.2)*0.003}
+  for(let i=0;i<crPN;i++){crp[i*3+1]+=Math.sin(t*0.6+i*0.12)*0.008;crp[i*3]+=Math.cos(t*0.4+i*0.08)*0.004;crp[i*3+2]+=Math.sin(t*0.3+i*0.15)*0.003}
   crParticles.geometry.attributes.position.needsUpdate=true;
-  labGlowMesh.material.opacity=0.04+0.03*Math.sin(t*0.9+1);
+
+  // Studio: frame pulses
+  crFrame.material.opacity=0.35+0.15*Math.sin(t*0.8);
+
+  // Studio: scan line sweeps back wall
+  const scanY=crY+Math.sin(t*0.7)*((crH-1)/2);
+  const slp=scanLine.geometry.attributes.position.array;
+  slp[1]=scanY;slp[4]=scanY;
+  scanLine.geometry.attributes.position.needsUpdate=true;
+  scanLine.material.opacity=0.4+0.35*Math.abs(Math.sin(t*0.7));
+
+  // Studio: output flow pulses toward center
+  const sfp=sdFlowPts.geometry.attributes.position.array;
+  for(let i=0;i<sdFlowN;i++){let p=(sdFlowPhase[i]+t*0.1)%1;
+  sfp[i*3]=crX*(1-p);sfp[i*3+1]=Math.sin(t*0.5+i*0.25)*2*(1-p);sfp[i*3+2]=Math.cos(t*0.6+i*0.18)*2*(1-p)}
+  sdFlowPts.geometry.attributes.position.needsUpdate=true;
+  sdFlowPts.material.opacity=0.4+0.25*Math.sin(t*0.6);
+
+  // Studio: energy rings rotate slowly
+  studioRings.forEach((r,i)=>{r.rotation.y=t*0.15*(i+1);r.rotation.x=Math.sin(t*0.2+i)*0.1});
+
+  // Lab: core glow breathes (opposite phase)
+  const labS=1+0.2*Math.sin(t*1.0+Math.PI);labGlowMesh.scale.set(labS,labS,labS);
+  labGlowMesh.material.opacity=0.06+0.08*Math.sin(t*1.4+Math.PI);
+
+  // Lab: frame pulses (complementary)
+  lrFrame.material.opacity=0.35+0.15*Math.sin(t*0.8+Math.PI);
+
+  // Lab: scanner sweeps horizontally
+  const scanLX=lrX-lrW/2+1.5+((t*0.5)%(lrW-3));
+  const lsp=labScanner.geometry.attributes.position.array;
+  lsp[0]=scanLX;lsp[3]=scanLX;
+  labScanner.geometry.attributes.position.needsUpdate=true;
+  labScanner.material.opacity=0.5+0.35*Math.abs(Math.sin(t*1.2));
+
+  // Lab: data bars subtly pulse width
+  labBars.forEach((b,i)=>{const pulse=1+0.15*Math.sin(t*0.5+i*0.4);b.mesh.scale.x=pulse;b.mesh.material.opacity=0.1+0.1*Math.abs(Math.sin(t*0.4+i*0.3))});
+
+  // Lab: particles swirl
+  const lrp=lrParticles.geometry.attributes.position.array;
+  for(let i=0;i<lrPN;i++){lrp[i*3+1]+=Math.sin(t*0.6+i*0.12+2)*0.008;lrp[i*3]+=Math.cos(t*0.4+i*0.08+2)*0.004;lrp[i*3+2]+=Math.sin(t*0.3+i*0.15+2)*0.003}
+  lrParticles.geometry.attributes.position.needsUpdate=true;
+
+  // Lab: intake flow pulses from center
+  const lfp=ldFlowPts.geometry.attributes.position.array;
+  for(let i=0;i<ldFlowN;i++){let p=(ldFlowPhase[i]+t*0.1)%1;
+  lfp[i*3]=labX*p;lfp[i*3+1]=Math.sin(t*0.5+i*0.25+Math.PI)*2*p;lfp[i*3+2]=Math.cos(t*0.6+i*0.18+Math.PI)*2*p}
+  ldFlowPts.geometry.attributes.position.needsUpdate=true;
+  ldFlowPts.material.opacity=0.4+0.25*Math.sin(t*0.6+Math.PI);
+
+  // Lab: energy rings rotate (opposite direction)
+  labRings.forEach((r,i)=>{r.rotation.y=-t*0.15*(i+1);r.rotation.x=Math.sin(t*0.2+i+Math.PI)*0.1});
+
+  if(Math.abs(sph.r-targetR)>0.01){sph.r+=(targetR-sph.r)*0.12;camUp()}
   renderer.render(scene,camera);
 }
 animate();
